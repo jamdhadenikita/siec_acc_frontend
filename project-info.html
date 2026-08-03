@@ -35,6 +35,14 @@
 
   <div class="max-w-2xl mx-auto p-4 sm:p-8">
 
+    <div class="bg-white stat-card-border rounded-2xl px-6 py-4 shadow-sm mb-4 flex justify-center">
+      <img
+        src="/assets/Images/company-logo.png"
+        alt="Company logo"
+        class="h-40 w-auto max-w-full object-contain"
+      />
+    </div>
+
     <div id="loading-state" class="py-24 text-center text-gray-400">
       <p class="text-sm">Loading project info...</p>
     </div>
@@ -53,8 +61,16 @@
         <p id="pi-updated-at" class="text-xs text-gray-400"></p>
       </div>
 
-      <div id="pi-image-wrap" class="bg-white stat-card-border rounded-2xl p-4 shadow-sm mb-4 hidden">
-        <img id="pi-image" alt="Project image" class="w-full max-h-72 object-cover rounded-xl" />
+     <div id="pi-image-wrap" class="bg-white stat-card-border rounded-2xl p-4 shadow-sm mb-4 hidden">
+        <img id="pi-image" alt="Project image" class="w-full max-h-72 object-cover rounded-xl mb-3" />
+        <button
+          type="button"
+          id="pi-image-download-btn"
+          class="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-700 text-sm font-medium px-3.5 py-2 transition-colors"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Download Image
+        </button>
       </div>
 
       <div id="pi-overview-wrap" class="bg-white stat-card-border rounded-2xl p-6 shadow-sm mb-4 hidden">
@@ -105,9 +121,28 @@
       setOptionalSection("pi-vendor-wrap", "pi-vendor", record.vendorDetails);
       setOptionalSection("pi-notes-wrap", "pi-notes", record.notes);
 
-      if (record.image) {
+     if (record.image) {
         document.getElementById("pi-image-wrap").classList.remove("hidden");
         document.getElementById("pi-image").src = record.image.dataUrl;
+
+        var imageDownloadBtn = document.getElementById("pi-image-download-btn");
+        imageDownloadBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          dataUrlToBlob(record.image.dataUrl).then(function (blob) {
+            var blobUrl = URL.createObjectURL(blob);
+            var link = document.createElement("a");
+            link.href = blobUrl;
+            link.download = record.image.name || "project-image";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(blobUrl);
+          });
+        });
+      }
+
+      function dataUrlToBlob(dataUrl) {
+        return fetch(dataUrl).then(function (res) { return res.blob(); });
       }
 
       var filesList = document.getElementById("pi-files-list");
