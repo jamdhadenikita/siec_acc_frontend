@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+
+<title>QR Generator</title>
+
+<script>
+  (function () {
+    try {
+      var collapsed = localStorage.getItem("sidebarCollapsed") === "true";
+      document.documentElement.classList.add(collapsed ? "sidebar-collapsed" : "sidebar-expanded");
+    } catch (e) {
+      document.documentElement.classList.add("sidebar-expanded");
+    }
+  })();
+</script>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: { DEFAULT: "#6da84c", dark: "#5c9140", soft: "#eef5e8" },
+          secondary: { DEFAULT: "#1985bf", soft: "#e7f3fa" },
+        },
+      },
+    },
+  };
+</script>
+<link rel="stylesheet" href="assets/css/nav-sidebar.css" />
+
+<!-- Used only to build a downloadable PDF containing the QR code -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+   .stat-card-border{
+        border: 1px solid #65b03ab5;
+    }
+</style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+  <div class="flex min-h-screen">
+    <div id="sidebar-root"></div>
+
+    <div class="app-main flex-1 flex flex-col min-w-0">
+      <div id="topbar-root"></div>
+
+      <main class="p-4 sm:p-6 lg:p-8">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6 items-start">
+
+          <!-- ================= LEFT: FORM ================= -->
+          <div class="bg-white stat-card-border rounded-2xl p-6 shadow-sm">
+            <h2 class="text-base font-semibold text-gray-800 mb-1">QR Generator</h2>
+            <p class="text-sm text-gray-500 mb-6">
+              Fill in the project details, then generate a QR code that links to its info page.
+            </p>
+
+            <form id="project-form" class="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4">
+
+              <div class="sm:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Project Name</label>
+                <input
+                  id="field-project-name"
+                  type="text"
+                  required
+                  placeholder="e.g. Warehouse CCTV Rollout"
+                  class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
+                />
+              </div>
+
+              <div class="sm:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Product Overview Description</label>
+                <textarea
+                  id="field-product-overview"
+                  rows="3"
+                  placeholder="What this product/project covers..."
+                  class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary resize-y"
+                ></textarea>
+              </div>
+
+              <div class="sm:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Vendor Details Description</label>
+                <textarea
+                  id="field-vendor-details"
+                  rows="3"
+                  placeholder="Vendor name, contact, scope..."
+                  class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary resize-y"
+                ></textarea>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Image</label>
+                <input
+                  id="field-image"
+                  type="file"
+                  accept="image/*"
+                  class="w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-primary-soft file:text-primary-dark file:text-sm file:font-medium hover:file:bg-primary/20 rounded-xl border border-gray-200 px-2 py-1.5"
+                />
+                <p id="field-image-existing" class="text-xs text-gray-400 mt-1 hidden"></p>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Completion Report (PDF)</label>
+                <input
+                  id="field-completion-report"
+                  type="file"
+                  accept="application/pdf"
+                  class="w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-primary-soft file:text-primary-dark file:text-sm file:font-medium hover:file:bg-primary/20 rounded-xl border border-gray-200 px-2 py-1.5"
+                />
+                <p id="field-completion-report-existing" class="text-xs text-gray-400 mt-1 hidden"></p>
+              </div>
+
+              <div class="sm:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">General Report (PDF)</label>
+                <input
+                  id="field-general-report"
+                  type="file"
+                  accept="application/pdf"
+                  class="w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-primary-soft file:text-primary-dark file:text-sm file:font-medium hover:file:bg-primary/20 rounded-xl border border-gray-200 px-2 py-1.5"
+                />
+                <p id="field-general-report-existing" class="text-xs text-gray-400 mt-1 hidden"></p>
+              </div>
+
+              <div class="sm:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Notes</label>
+                <textarea
+                  id="field-notes"
+                  rows="3"
+                  placeholder="Any additional notes..."
+                  class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary resize-y"
+                ></textarea>
+              </div>
+
+              <div class="sm:col-span-2 flex items-center justify-between pt-2">
+                <span id="form-status" class="text-xs text-gray-400"></span>
+                <button
+                  type="submit"
+                  id="generate-qr-btn"
+                  class="inline-flex items-center gap-2 rounded-xl bg-primary hover:bg-primary-dark text-white text-sm font-semibold px-5 py-2.5 transition-colors"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg>
+                  Generate QR
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+          <!-- ================= RIGHT: QR RESULT ================= -->
+          <div class="bg-white stat-card-border rounded-2xl p-6 shadow-sm lg:sticky lg:top-24">
+            <h2 class="text-base font-semibold text-gray-800 mb-4">Generated QR</h2>
+
+            <div id="qr-empty-state" class="flex flex-col items-center justify-center text-center py-10 text-gray-400">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mb-3 opacity-60"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><path d="M14 14h3v3h-3z"></path><path d="M20 14h1v1h-1z"></path><path d="M14 20h1v1h-1z"></path><path d="M20 20h1v1h-1z"></path></svg>
+              <p class="text-sm">Fill the form and click <span class="font-medium text-gray-500">Generate QR</span> to see it here.</p>
+            </div>
+
+            <div id="qr-result" class="hidden">
+              <div class="flex justify-center mb-4">
+                <div class="p-4 rounded-2xl border border-gray-200 bg-gray-50">
+                  <img id="qr-image" alt="Generated QR code" class="w-48 h-48" />
+                </div>
+              </div>
+
+              <label class="block text-xs font-medium text-gray-500 mb-1.5">Shareable link</label>
+              <div class="flex items-center gap-2 mb-4">
+                <input id="qr-link-input" type="text" readonly class="flex-1 min-w-0 rounded-xl border border-gray-200 px-3 py-2 text-xs text-gray-600 bg-gray-50" />
+                <button id="qr-copy-btn" type="button" class="icon-btn shrink-0" aria-label="Copy link" title="Copy link">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <button id="qr-share-btn" type="button" class="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-700 text-sm font-medium px-3 py-2.5 transition-colors">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"></line><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"></line></svg>
+                  Share
+                </button>
+                <button id="qr-download-pdf-btn" type="button" class="inline-flex items-center justify-center gap-2 rounded-xl bg-secondary hover:bg-secondary text-white text-sm font-semibold px-3 py-2.5 transition-colors">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  Download PDF
+                </button>
+              </div>
+
+              <p class="text-xs text-gray-400 mt-4">
+                Scanning this QR opens <code class="px-1 py-0.5 bg-gray-100 rounded">project-info.html</code> with this project's submitted details and files.
+              </p>
+            </div>
+          </div>
+          
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="assets/js/project-store.js"></script>
+  <script src="assets/js/nav-sidebar.js"></script>
+  <script>
+    NavSidebar.init({
+      basePath: "",
+      activePage: "qr-generator",
+      pageTitle: "QR Generator",
+      user: { name: "Aarav Shah", role: "Administrator", avatarUrl: "" },
+    });
+
+    (function () {
+      var editId = new URLSearchParams(window.location.search).get("edit");
+      var currentId = editId || null;
+      var existingFiles = { image: null, completionReport: null, generalReport: null };
+
+      var form = document.getElementById("project-form");
+      var statusEl = document.getElementById("form-status");
+
+      // ---- Prefill when editing an existing project ----
+      if (editId) {
+        var record = ProjectStore.get(editId);
+        if (record) {
+          document.getElementById("field-project-name").value = record.projectName || "";
+          document.getElementById("field-product-overview").value = record.productOverview || "";
+          document.getElementById("field-vendor-details").value = record.vendorDetails || "";
+          document.getElementById("field-notes").value = record.notes || "";
+          existingFiles.image = record.image || null;
+          existingFiles.completionReport = record.completionReport || null;
+          existingFiles.generalReport = record.generalReport || null;
+
+          showExisting("field-image-existing", record.image);
+          showExisting("field-completion-report-existing", record.completionReport);
+          showExisting("field-general-report-existing", record.generalReport);
+
+          statusEl.textContent = "Editing existing project — QR link stays the same.";
+          renderResult(record);
+        }
+      }
+
+      function showExisting(id, fileRecord) {
+        var el = document.getElementById(id);
+        if (!fileRecord) return;
+        el.textContent = "Current file: " + fileRecord.name + " (choose a new file to replace it)";
+        el.classList.remove("hidden");
+      }
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        statusEl.textContent = "Saving...";
+
+        var imageInput = document.getElementById("field-image").files[0];
+        var completionInput = document.getElementById("field-completion-report").files[0];
+        var generalInput = document.getElementById("field-general-report").files[0];
+
+        Promise.all([
+          imageInput ? ProjectStore.fileToRecord(imageInput) : Promise.resolve(existingFiles.image),
+          completionInput ? ProjectStore.fileToRecord(completionInput) : Promise.resolve(existingFiles.completionReport),
+          generalInput ? ProjectStore.fileToRecord(generalInput) : Promise.resolve(existingFiles.generalReport),
+        ]).then(function (files) {
+          var data = {
+            projectName: document.getElementById("field-project-name").value.trim(),
+            productOverview: document.getElementById("field-product-overview").value.trim(),
+            vendorDetails: document.getElementById("field-vendor-details").value.trim(),
+            notes: document.getElementById("field-notes").value.trim(),
+            image: files[0],
+            completionReport: files[1],
+            generalReport: files[2],
+          };
+
+          return ProjectStore.upsert(data, currentId);
+        }).then(function (record) {
+          currentId = record.id;
+          statusEl.textContent = "Saved.";
+          renderResult(record);
+          // Reflect the id in the URL so a page refresh keeps editing the same record.
+          var url = new URL(window.location.href);
+          url.searchParams.set("edit", record.id);
+          window.history.replaceState({}, "", url);
+        }).catch(function (err) {
+          console.error("[qr-generator] save failed:", err);
+          statusEl.textContent = "Something went wrong — check the console.";
+        });
+      });
+
+      function renderResult(record) {
+        var infoUrl = new URL("project-info.html", window.location.href);
+        infoUrl.searchParams.set("id", record.id);
+        var infoUrlStr = infoUrl.toString();
+
+        document.getElementById("qr-empty-state").classList.add("hidden");
+        document.getElementById("qr-result").classList.remove("hidden");
+
+        var qrImg = document.getElementById("qr-image");
+        qrImg.src = "https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=" + encodeURIComponent(infoUrlStr);
+        qrImg.dataset.link = infoUrlStr;
+
+        document.getElementById("qr-link-input").value = infoUrlStr;
+      }
+
+      document.getElementById("qr-copy-btn").addEventListener("click", function () {
+        var input = document.getElementById("qr-link-input");
+        input.select();
+        navigator.clipboard && navigator.clipboard.writeText(input.value);
+      });
+
+      document.getElementById("qr-share-btn").addEventListener("click", function () {
+        var link = document.getElementById("qr-link-input").value;
+        if (navigator.share) {
+          navigator.share({ title: "Project info", url: link }).catch(function () {});
+        } else {
+          navigator.clipboard && navigator.clipboard.writeText(link);
+          alert("Link copied to clipboard (Web Share isn't supported in this browser).");
+        }
+      });
+
+      document.getElementById("qr-download-pdf-btn").addEventListener("click", function () {
+        var qrImg = document.getElementById("qr-image");
+        var jsPDFCtor = window.jspdf && window.jspdf.jsPDF;
+        if (!jsPDFCtor) {
+          alert("PDF library failed to load — check your internet connection.");
+          return;
+        }
+        var pdf = new jsPDFCtor({ unit: "pt", format: "a5" });
+        var pageWidth = pdf.internal.pageSize.getWidth();
+        pdf.setFontSize(14);
+        pdf.text(document.getElementById("field-project-name").value || "Project QR", pageWidth / 2, 40, { align: "center" });
+
+        var tempImg = new Image();
+        tempImg.crossOrigin = "anonymous";
+        tempImg.onload = function () {
+          var size = 220;
+          pdf.addImage(tempImg, "PNG", (pageWidth - size) / 2, 60, size, size);
+          pdf.setFontSize(9);
+          pdf.text(qrImg.dataset.link, pageWidth / 2, 60 + size + 24, { align: "center", maxWidth: pageWidth - 60 });
+          pdf.save((document.getElementById("field-project-name").value || "project") + "-qr.pdf");
+        };
+        tempImg.onerror = function () {
+          alert("Couldn't load the QR image for the PDF — try again.");
+        };
+        tempImg.src = qrImg.src;
+      });
+    })();
+  </script>
+</body>
+</html>
