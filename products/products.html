@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+<link rel="manifest" href="/favicon_io/site.webmanifest">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Settings</title>
+<title>Products</title>
 
 <!--
   ANTI-FLICKER SCRIPT — must be the first thing in <head>, before any
@@ -38,7 +42,7 @@
 </script>
 
 <!-- Shell styling (sidebar / topbar / overlays) — source of truth, loads after Tailwind -->
-<link rel="stylesheet" href="assets/css/nav-sidebar.css" />
+<link rel="stylesheet" href="/assets/css/nav-sidebar.css" />
 </head>
 
 <body class="bg-gray-50 text-gray-800 antialiased">
@@ -55,8 +59,10 @@
       <main class="p-4 sm:p-6 lg:p-8">
         <div class="max-w-6xl mx-auto">
           <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-           <h2 class="text-base font-semibold text-gray-800 mb-1">Under Construction</h2>
-<p class="text-sm text-gray-500">Coming soon… We're working on something great!</p>
+            <h2 class="text-base font-semibold text-gray-800 mb-1">Products</h2>
+            <p class="text-sm text-gray-500">
+              Placeholder page template
+            </p>
           </div>
         </div>
       </main>
@@ -64,21 +70,19 @@
     </div>
   </div>
 
-  <script src="assets/js/nav-sidebar.js"></script>
+  <script src="/assets/js/nav-sidebar.js"></script>
   <script>
     NavSidebar.init({
       basePath: "",
-      activePage: "settings",
-      pageTitle: "Settings",
+      activePage: "products",
+      pageTitle: "Products",
       user: {
-        name: "Aarav Shah",
-        role: "Administrator",
+        name: "Admin",
+        role: "Super Admin",
         avatarUrl: "", // leave empty to show initials fallback
       },
     });
 
-    // Once auth.js exists, override the default redirect, e.g.:
-    // NavSidebar.onLogoutConfirmed = function () { Auth.logout(); };
   </script>
 </body>
 </html>

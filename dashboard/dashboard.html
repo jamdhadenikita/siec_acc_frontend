@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+<link rel="manifest" href="/favicon_io/site.webmanifest">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Dashboard</title>
 
@@ -55,11 +59,9 @@
       <main class="p-4 sm:p-6 lg:p-8">
         <div class="max-w-6xl mx-auto">
           <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-            <h2 class="text-base font-semibold text-gray-800 mb-1">Page content</h2>
+            <h2 class="text-base font-semibold text-gray-800 mb-1">Dashboard</h2>
             <p class="text-sm text-gray-500">
-              Replace this block with the real page — the sidebar and top
-              nav above are shared, shipped from
-              <code class="px-1 py-0.5 bg-gray-100 rounded text-xs">partials/nav-sidebar.html</code>.
+              Placeholder page template
             </p>
           </div>
         </div>
@@ -75,14 +77,12 @@
       activePage: "dashboard",
       pageTitle: "Dashboard",
       user: {
-        name: "Aarav Shah",
-        role: "Administrator",
-        avatarUrl: "", // leave empty to show initials fallback
+        name: "Admin",
+        role: "Super Admin",
+        avatarUrl: "", 
       },
     });
 
-    // Once auth.js exists, override the default redirect, e.g.:
-    // NavSidebar.onLogoutConfirmed = function () { Auth.logout(); };
   </script>
 </body>
 </html>

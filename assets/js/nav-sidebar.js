@@ -4,6 +4,14 @@
  * all interactions (collapse/expand, mobile off-canvas, profile menu,
  * logout confirmation overlay, active-link highlighting).
  *
+ * Also defines window.Auth — the admin login/logout/session module.
+ * Login uses http-only cookies set by the backend (admin_token,
+ * refresh_token), so the browser handles the token automatically as
+ * long as every request uses `credentials: "include"`. JS never reads
+ * or stores the token itself — only the non-sensitive admin info
+ * (role, mobile, adminId) returned in the login response body is
+ * cached in localStorage, purely for showing who's logged in.
+ *
  * Usage (bottom of each admin page, right before </body>):
  *   <script src="assets/js/nav-sidebar.js"></script>
  *   <script>
@@ -11,9 +19,17 @@
  *       basePath: "",              // relative path prefix to project root
  *       activePage: "dashboard",   // matches data-page on a sidebar link
  *       pageTitle: "Dashboard",    // shown in the top bar
- *       user: { name: "Aarav Shah", role: "Administrator", avatarUrl: "" }
  *     });
  *   </script>
+ *
+ * NavSidebar.init() now enforces login: if no admin session is cached
+ * locally, it redirects to admin-login.html before rendering anything.
+ * This is a UX guard only, not real security — the actual gate is the
+ * http-only cookie enforced server-side once the JWT filter is applied
+ * to /api/project routes.
+ *
+ * On the login page itself, include this script but do NOT call
+ * NavSidebar.init() — just use window.Auth.login(...) directly.
  *
  * IMPORTANT (anti-flicker): pair this with the tiny inline script that
  * must sit in <head>, BEFORE any stylesheet — see snippet at the
@@ -26,6 +42,114 @@
   "use strict";
 
   var STORAGE_KEY = "sidebarCollapsed";
+  var AUTH_STORAGE_KEY = "adminAuth";
+
+  // ---- API config ----
+  var API_BASE_URL = "http://localhost:9091";
+  var LOGIN_URL = API_BASE_URL + "/api/admin/auth/login";
+  var LOGOUT_URL = API_BASE_URL + "/api/admin/auth/logout";
+
+  /* ====================================================================
+   * Auth — login/logout/session module
+   * ==================================================================== */
+  var Auth = {
+    /**
+     * Calls the real login API. On success, caches the non-sensitive
+     * admin info (role, mobile, adminId) in localStorage and resolves
+     * with it. The actual admin_token/refresh_token cookies are set by
+     * the backend as http-only — this code never touches them directly,
+     * `credentials: "include"` just tells the browser to store/send them.
+     */
+    login: function (mobile, password) {
+      return fetch(LOGIN_URL, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mobile: mobile, password: password }),
+      }).then(function (response) {
+        if (response.ok) return response.json();
+        return response.json()
+          .catch(function () {
+            throw new Error("Login failed with status " + response.status);
+          })
+          .then(function (errorBody) {
+            throw new Error(errorBody.message || "Invalid mobile number or password.");
+          });
+      }).then(function (adminInfo) {
+        Auth._storeAdmin(adminInfo);
+        return adminInfo;
+      });
+    },
+
+    /**
+     * Attempts to invalidate the session server-side, then always clears
+     * local state and redirects to login — even if the server call fails,
+     * so a dead/missing logout endpoint never traps the admin on the page.
+     */
+    logout: function () {
+      fetch(LOGOUT_URL, { method: "POST", credentials: "include" })
+        .catch(function (err) {
+          console.warn("[auth] logout endpoint call failed (continuing with local logout):", err);
+        })
+        .finally(function () {
+          Auth._clearAdmin();
+          window.location.href = Auth._loginPath();
+        });
+    },
+
+    getStoredAdmin: function () {
+      try {
+        var raw = localStorage.getItem(AUTH_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    },
+
+    isLoggedIn: function () {
+      return !!Auth.getStoredAdmin();
+    },
+
+    /**
+     * Client-side convenience guard only — redirects to login if there's
+     * no cached session. Does not (and cannot) verify the http-only
+     * cookie itself; real enforcement happens server-side.
+     */
+    requireAuth: function () {
+      if (!Auth.isLoggedIn()) {
+        window.location.href = Auth._loginPath();
+        return false;
+      }
+      return true;
+    },
+
+    _storeAdmin: function (adminInfo) {
+      try {
+        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({
+          role: adminInfo.role,
+          mobile: adminInfo.mobile,
+          adminId: adminInfo.adminId,
+        }));
+      } catch (e) {
+        console.warn("[auth] could not persist admin info to localStorage:", e);
+      }
+    },
+
+    _clearAdmin: function () {
+      try {
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+      } catch (e) {
+        /* ignore */
+      }
+    },
+
+    _loginPath: function () {
+      var basePath = (window.NavSidebar && window.NavSidebar._config && window.NavSidebar._config.basePath) || "";
+      return basePath + "admin-login.html";
+    },
+  };
+
+  window.Auth = Auth;
 
   /**
    * The sidebar + top nav markup, embedded directly as a string.
@@ -43,99 +167,151 @@
    * it is no longer loaded at runtime.
    */
   var NAV_SIDEBAR_TEMPLATE = [
-'<aside id="app-sidebar" class="app-sidebar">',
-'  <div class="sidebar-brand">',
-'    <a href="dashboard.html" class="sidebar-brand-link" aria-label="Go to dashboard">',
-'      <img src="assets/Images/company-logo.png" alt="Company logo" class="sidebar-logo-full" />',
-'      <img src="assets/Images/company-logo.png" alt="Company logo" class="sidebar-logo-mark" />',
-'    </a>',
-'    <button type="button" id="sidebar-collapse-btn" class="sidebar-collapse-btn" aria-label="Collapse sidebar" title="Collapse sidebar">',
-'      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>',
-'    </button>',
-'  </div>',
-'  <nav class="sidebar-nav" aria-label="Primary">',
-'    <ul class="sidebar-nav-list">',
-'      <li class="sidebar-nav-item">',
-'        <a href="dashboard.html" class="sidebar-nav-link" data-page="dashboard">',
-'          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg></span>',
-'          <span class="sidebar-nav-label">Dashboard</span>',
-'          <span class="sidebar-tooltip">Dashboard</span>',
-'        </a>',
-'      </li>',
+    '<aside id="app-sidebar" class="app-sidebar">',
+    '  <div class="sidebar-brand">',
+    '    <a href="/dashboard/dashboard.html" class="sidebar-brand-link" aria-label="Go to dashboard">',
+    '      <img src="/assets/Images/company-logo.png" alt="Company logo" class="sidebar-logo-full" />',
+    '      <img src="/assets/Images/company-logo.png" alt="Company logo" class="sidebar-logo-mark" />',
+    '    </a>',
+    '    <button type="button" id="sidebar-collapse-btn" class="sidebar-collapse-btn" aria-label="Collapse sidebar" title="Collapse sidebar">',
+    '      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>',
+    '    </button>',
+    '  </div>',
+    '  <nav class="sidebar-nav" aria-label="Primary">',
+    '    <ul class="sidebar-nav-list">',
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/dashboard/dashboard.html" class="sidebar-nav-link" data-page="dashboard">',
+    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg></span>',
+    '          <span class="sidebar-nav-label">Dashboard</span>',
+    '          <span class="sidebar-tooltip">Dashboard</span>',
+    '        </a>',
+    '      </li>',
 
-'      <li class="sidebar-nav-divider" role="separator"></li>',
-'      <li class="sidebar-nav-heading"><span>Tools</span></li>',
-'      <li class="sidebar-nav-item">',
-'        <a href="qr-generator.html" class="sidebar-nav-link" data-page="qr-generator">',
-'          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><path d="M14 14h3v3h-3z"></path><path d="M20 14h1v1h-1z"></path><path d="M14 20h1v1h-1z"></path><path d="M20 20h1v1h-1z"></path></svg></span>',
-'          <span class="sidebar-nav-label">QR Generator</span>',
-'          <span class="sidebar-tooltip">QR Generator</span>',
-'        </a>',
-'      </li>',
-'    </ul>',
+    '      <li class="sidebar-nav-divider" role="separator"></li>',
+    '      <li class="sidebar-nav-heading"><span>Tools</span></li>',
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/products/products.html" class="sidebar-nav-link" data-page="products">',
+    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></span>',
+    '          <span class="sidebar-nav-label">Products</span>',
+    '          <span class="sidebar-tooltip">Products</span>',
+    '        </a>',
+    '      </li>',
 
-'  </nav>',
-'  <hr>',
-'    <div class="text-sm m-4 text-gray-600">© 2026 Kunash Media Solutions</div>',
-'  <div class="sidebar-foot">',
-'    <button type="button" id="sidebar-expand-btn" class="sidebar-expand-btn" aria-label="Expand sidebar" title="Expand sidebar">',
-'      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>',
-'    </button>',
-'  </div>',
-'</aside>',
-'<div id="sidebar-backdrop" class="sidebar-backdrop" data-close-sidebar></div>',
-'<header id="app-topbar" class="app-topbar">',
-'  <div class="topbar-left">',
-'    <button type="button" id="mobile-menu-btn" class="icon-btn mobile-only" aria-label="Open menu">',
-'      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>',
-'    </button>',
-'    <h1 id="topbar-page-title" class="topbar-page-title">Dashboard</h1>',
-'  </div>',
-'  <div class="topbar-right">',
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/vendors/vendors.html" class="sidebar-nav-link" data-page="vendors">',
+    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V7l8-4v18"></path><path d="M19 21V11l-6-4"></path><path d="M9 9v.01"></path><path d="M9 12v.01"></path><path d="M9 15v.01"></path><path d="M9 18v.01"></path></svg></span>',
+    '          <span class="sidebar-nav-label">Vendors</span>',
+    '          <span class="sidebar-tooltip">Vendors</span>',
+    '        </a>',
+    '      </li>',
 
-'    <div id="profile-menu" class="profile-menu">',
-'      <button type="button" id="profile-trigger" class="profile-trigger" aria-haspopup="true" aria-expanded="false">',
-'        <span class="profile-avatar">',
-'          <img id="profile-avatar-img" src="" alt="" class="profile-avatar-img hidden" />',
-'          <span id="profile-avatar-fallback" class="profile-avatar-fallback">A</span>',
-'        </span>',
-'        <span class="profile-meta desktop-only">',
-'          <span id="profile-name" class="profile-name">Admin User</span>',
-'          <span id="profile-role" class="profile-role">Administrator</span>',
-'        </span>',
-'        <svg class="profile-caret desktop-only" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>',
-'      </button>',
-'      <div id="profile-dropdown" class="profile-dropdown" role="menu">',
-'        <div class="profile-dropdown-header">',
-'          <span id="profile-dropdown-name" class="profile-dropdown-name">Admin User</span>',
-'          <span id="profile-dropdown-role" class="profile-dropdown-role">Administrator</span>',
-'        </div>',
-'        <div class="profile-dropdown-divider"></div>',
-'        <div class="profile-dropdown-divider"></div>',
-'        <button type="button" id="logout-trigger" class="profile-dropdown-item profile-dropdown-item-danger" role="menuitem">',
-'          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>',
-'          <span>Logout</span>',
-'        </button>',
-'      </div>',
-'    </div>',
-'  </div>',
-'</header>',
-'<div id="mobile-nav-panel" class="mobile-nav-panel" aria-hidden="true"></div>',
-'<div id="logout-overlay" class="confirm-overlay" aria-hidden="true">',
-'  <div class="confirm-overlay-backdrop" data-close-logout></div>',
-'  <div class="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="logout-dialog-title">',
-'    <div class="confirm-dialog-icon">',
-'      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>',
-'    </div>',
-'    <h2 id="logout-dialog-title" class="confirm-dialog-title">Log out?</h2>',
-'    <p class="confirm-dialog-text">You\'ll need to sign in again to access the admin panel.</p>',
-'    <div class="confirm-dialog-actions">',
-'      <button type="button" id="logout-cancel-btn" class="confirm-btn confirm-btn-secondary">No, stay</button>',
-'      <button type="button" id="logout-confirm-btn" class="confirm-btn confirm-btn-danger">Yes, logout</button>',
-'    </div>',
-'  </div>',
-'</div>'
-  ].join("\n");
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/clients/clients.html" class="sidebar-nav-link" data-page="clients">',
+    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>',
+    '          <span class="sidebar-nav-label">Clients</span>',
+    '          <span class="sidebar-tooltip">Clients</span>',
+    '        </a>',
+    '      </li>',
+
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/quotations/quotations.html" class="sidebar-nav-link" data-page="quotations">',
+    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>',
+    '          <span class="sidebar-nav-label">Quotation</span>',
+    '          <span class="sidebar-tooltip">Quotation</span>',
+    '        </a>',
+    '      </li>',
+
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/invoices/invoices.html" class="sidebar-nav-link" data-page="invoices">',
+    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2h16v20l-3-2-3 2-3-2-3 2-3-2-1 2z"></path><line x1="8" y1="7" x2="16" y2="7"></line><line x1="8" y1="11" x2="16" y2="11"></line><line x1="8" y1="15" x2="12" y2="15"></line></svg></span>',
+    '          <span class="sidebar-nav-label">Invoices</span>',
+    '          <span class="sidebar-tooltip">Invoices</span>',
+    '        </a>',
+    '      </li>',
+
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/sales-orders/sales-orders.html" class="sidebar-nav-link" data-page="sales-orders">',
+    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></span>',
+    '          <span class="sidebar-nav-label">Sales Orders</span>',
+    '          <span class="sidebar-tooltip">Sales Orders</span>',
+    '        </a>',
+    '      </li>',
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/settings/settings.html" class="sidebar-nav-link" data-page="settings">',
+    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>',
+    '          <span class="sidebar-nav-label">Settings</span>',
+    '          <span class="sidebar-tooltip">Settings</span>',
+    '        </a>',
+    '      </li>',
+
+    '    </ul>',
+
+    '  </nav>',
+    '  <hr>',
+    '    <div class="text-sm m-4 text-gray-600">© 2026 Kunash Media Solutions</div>',
+    '  <div class="sidebar-foot">',
+    '    <button type="button" id="sidebar-expand-btn" class="sidebar-expand-btn" aria-label="Expand sidebar" title="Expand sidebar">',
+    '      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>',
+    '    </button>',
+    '  </div>',
+    '</aside>',
+    '<div id="sidebar-backdrop" class="sidebar-backdrop" data-close-sidebar></div>',
+    '<header id="app-topbar" class="app-topbar">',
+    '  <div class="topbar-left">',
+    '    <button type="button" id="mobile-menu-btn" class="icon-btn mobile-only" aria-label="Open menu">',
+    '      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>',
+    '    </button>',
+    '    <h1 id="topbar-page-title" class="topbar-page-title">Dashboard</h1>',
+    '  </div>',
+    '  <div class="topbar-right">',
+
+    '    <div id="profile-menu" class="profile-menu">',
+    '      <button type="button" id="profile-trigger" class="profile-trigger" aria-haspopup="true" aria-expanded="false">',
+    '        <span class="profile-avatar">',
+    '          <img id="profile-avatar-img" src="" alt="" class="profile-avatar-img hidden" />',
+    '          <span id="profile-avatar-fallback" class="profile-avatar-fallback">A</span>',
+    '        </span>',
+    '        <span class="profile-meta desktop-only">',
+    '          <span id="profile-name" class="profile-name">Admin User</span>',
+    '          <span id="profile-role" class="profile-role">Administrator</span>',
+    '        </span>',
+    '        <svg class="profile-caret desktop-only" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>',
+    '      </button>',
+    '      <div id="profile-dropdown" class="profile-dropdown" role="menu">',
+    '        <div class="profile-dropdown-header">',
+    '          <span id="profile-dropdown-name" class="profile-dropdown-name">Admin User</span>',
+    '          <span id="profile-dropdown-role" class="profile-dropdown-role">Administrator</span>',
+    '        </div>',
+    '        <div class="profile-dropdown-divider"></div>',
+    '        <div class="profile-dropdown-divider"></div>',
+    '        <button type="button" id="logout-trigger" class="profile-dropdown-item profile-dropdown-item-danger" role="menuitem">',
+    '          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>',
+    '          <span>Logout</span>',
+    '        </button>',
+    '      </div>',
+    '    </div>',
+    '  </div>',
+    '</header>',
+    '<div id="mobile-nav-panel" class="mobile-nav-panel" aria-hidden="true"></div>',
+    '<div id="logout-overlay" class="confirm-overlay" aria-hidden="true">',
+    '  <div class="confirm-overlay-backdrop" data-close-logout></div>',
+    '  <div class="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="logout-dialog-title">',
+    '    <div class="confirm-dialog-icon">',
+    '      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>',
+    '    </div>',
+    '    <h2 id="logout-dialog-title" class="confirm-dialog-title">Log out?</h2>',
+    '    <p class="confirm-dialog-text">You\'ll need to sign in again to access the admin panel.</p>',
+    '    <div class="confirm-dialog-actions">',
+    '      <button type="button" id="logout-cancel-btn" class="confirm-btn confirm-btn-secondary">No, stay</button>',
+    '      <button type="button" id="logout-confirm-btn" class="confirm-btn confirm-btn-danger">Yes, logout</button>',
+    '    </div>',
+    '  </div>',
+    '</div>'
+      ].join("\n");
 
   var NavSidebar = {
     _config: null,
@@ -146,10 +322,22 @@
           basePath: "",
           activePage: "",
           pageTitle: document.title || "",
-          user: { name: "Admin User", role: "Administrator", avatarUrl: "" },
+          user: null, // no longer required — real admin info comes from Auth
         },
         config || {}
       );
+
+      // Client-side session guard. Real enforcement is the http-only
+      // cookie checked server-side; this just avoids flashing admin UI
+      // at someone who was never logged in (or whose local cache is gone).
+
+
+      //=================================================//
+      //====uncomment to login check with token =======//
+      //=================================================//
+      // if (!Auth.requireAuth()) {
+      //   return;
+      // }
 
       try {
         this._inject(NAV_SIDEBAR_TEMPLATE);
@@ -221,7 +409,12 @@
     /* User info + page title                                            */
     /* ---------------------------------------------------------------- */
     _applyUser: function () {
-      var user = this._config.user || {};
+      // Real admin info (from login) takes priority; config.user is only
+      // a fallback for pages that still pass one explicitly.
+      var storedAdmin = Auth.getStoredAdmin();
+      var user = storedAdmin
+        ? { name: storedAdmin.adminId, role: storedAdmin.role }
+        : (this._config.user || {});
       var title = this._config.pageTitle;
 
       var setText = function (id, value) {
@@ -387,8 +580,6 @@
 
       if (confirmBtn) {
         confirmBtn.addEventListener("click", function () {
-          // TODO: wire this to auth.js once the JWT login/session module
-          // is added — e.g. Auth.logout().then(() => redirect to login).
           NavSidebar.onLogoutConfirmed();
         });
       }
@@ -399,13 +590,13 @@
     },
 
     /**
-     * Placeholder hook — replace with real JWT/session logout call.
-     * Kept as a separate method so auth.js can simply do:
-     *   NavSidebar.onLogoutConfirmed = function () { Auth.logout(); };
+     * Real logout — clears the session and redirects. Pages don't need
+     * to override this anymore; it's wired to Auth.logout() by default.
+     * Still overridable if a page ever needs custom post-logout behavior:
+     *   NavSidebar.onLogoutConfirmed = function () { ...; Auth.logout(); };
      */
     onLogoutConfirmed: function () {
-      console.info("[nav-sidebar] logout confirmed — wire this to auth.js");
-      window.location.href = (this._config.basePath || "") + "admin-login.html";
+      Auth.logout();
     },
   };
 

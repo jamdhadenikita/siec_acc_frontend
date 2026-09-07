@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+<link rel="manifest" href="/favicon_io/site.webmanifest">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Products</title>
+<title>Settings</title>
 
 <!--
   ANTI-FLICKER SCRIPT — must be the first thing in <head>, before any
@@ -38,7 +42,7 @@
 </script>
 
 <!-- Shell styling (sidebar / topbar / overlays) — source of truth, loads after Tailwind -->
-<link rel="stylesheet" href="assets/css/nav-sidebar.css" />
+<link rel="stylesheet" href="/assets/css/nav-sidebar.css" />
 </head>
 
 <body class="bg-gray-50 text-gray-800 antialiased">
@@ -55,11 +59,9 @@
       <main class="p-4 sm:p-6 lg:p-8">
         <div class="max-w-6xl mx-auto">
           <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-            <h2 class="text-base font-semibold text-gray-800 mb-1">Products</h2>
+            <h2 class="text-base font-semibold text-gray-800 mb-1">Settings</h2>
             <p class="text-sm text-gray-500">
-              Placeholder page — routing works, sidebar/top nav are shared
-              from <code class="px-1 py-0.5 bg-gray-100 rounded text-xs">assets/js/nav-sidebar.js</code>.
-              Replace this block with the real products content whenever ready.
+              Placeholder page template
             </p>
           </div>
         </div>
@@ -68,21 +70,19 @@
     </div>
   </div>
 
-  <script src="assets/js/nav-sidebar.js"></script>
+  <script src="/assets/js/nav-sidebar.js"></script>
   <script>
     NavSidebar.init({
       basePath: "",
-      activePage: "products",
-      pageTitle: "Products",
+      activePage: "settings",
+      pageTitle: "Settings",
       user: {
-        name: "Aarav Shah",
-        role: "Administrator",
+        name: "Admin",
+        role: "Super Admin",
         avatarUrl: "", // leave empty to show initials fallback
       },
     });
 
-    // Once auth.js exists, override the default redirect, e.g.:
-    // NavSidebar.onLogoutConfirmed = function () { Auth.logout(); };
   </script>
 </body>
 </html>

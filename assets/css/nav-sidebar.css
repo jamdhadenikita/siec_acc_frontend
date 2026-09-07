@@ -121,7 +121,7 @@ html.nav-ready #topbar-root {
 .sidebar-brand-link { display: flex; align-items: center; min-width: 0; }
 
 .sidebar-logo-full { 
-  height: 50px;
+  height: 43px;
   width: 100%;
   object-fit: cover;
   margin: 10px 50px 0px; 
