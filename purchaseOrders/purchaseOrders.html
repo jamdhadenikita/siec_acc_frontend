@@ -8,7 +8,7 @@
 <link rel="manifest" href="/favicon_io/site.webmanifest">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<title>Sales Orders — Aquilon ERP</title>
+<title>Purchase Orders — Aquilon ERP</title>
 
 <script>
   (function () {
@@ -253,8 +253,8 @@
     height: 14px;
   }
 
-  /* SO Preview */
-  .so-preview {
+  /* PO Preview */
+  .po-preview {
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
@@ -263,7 +263,7 @@
     margin: 0 auto;
     font-family: 'Inter', system-ui, sans-serif;
   }
-  .so-preview .so-header {
+  .po-preview .po-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -271,48 +271,48 @@
     padding-bottom: 16px;
     margin-bottom: 16px;
   }
-  .so-preview .so-company-name {
+  .po-preview .po-company-name {
     font-size: 18px;
     font-weight: 700;
     color: #1a1a2e;
   }
-  .so-preview .so-company-details {
+  .po-preview .po-company-details {
     font-size: 11px;
     color: #6b7280;
     line-height: 1.5;
     margin-top: 4px;
   }
-  .so-preview .so-title {
+  .po-preview .po-title {
     font-size: 22px;
     font-weight: 700;
     color: #6da84c;
     letter-spacing: 0.04em;
   }
-  .so-preview .so-meta {
+  .po-preview .po-meta {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
     margin-bottom: 16px;
     font-size: 12px;
   }
-  .so-preview .so-meta .meta-label {
+  .po-preview .po-meta .meta-label {
     font-weight: 600;
     color: #6b7280;
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
-  .so-preview .so-meta .meta-value {
+  .po-preview .po-meta .meta-value {
     font-weight: 600;
     color: #1a1a2e;
   }
-  .so-preview .so-table {
+  .po-preview .po-table {
     width: 100%;
     border-collapse: collapse;
     margin: 12px 0;
     font-size: 12px;
   }
-  .so-preview .so-table th {
+  .po-preview .po-table th {
     background: #f8fafc;
     text-align: left;
     padding: 8px 10px;
@@ -323,33 +323,33 @@
     color: #6b7280;
     border-bottom: 2px solid #e5e7eb;
   }
-  .so-preview .so-table td {
+  .po-preview .po-table td {
     padding: 8px 10px;
     border-bottom: 1px solid #f1f5f9;
   }
-  .so-preview .so-totals {
+  .po-preview .po-totals {
     margin-top: 12px;
     border-top: 2px solid #e5e7eb;
     padding-top: 12px;
     text-align: right;
     font-size: 13px;
   }
-  .so-preview .so-totals .total-row {
+  .po-preview .po-totals .total-row {
     display: flex;
     justify-content: flex-end;
     gap: 30px;
     padding: 3px 0;
   }
-  .so-preview .so-totals .total-row .label {
+  .po-preview .po-totals .total-row .label {
     color: #6b7280;
     font-weight: 500;
   }
-  .so-preview .so-totals .total-row .value {
+  .po-preview .po-totals .total-row .value {
     font-weight: 600;
     min-width: 120px;
     text-align: right;
   }
-  .so-preview .so-totals .grand-total {
+  .po-preview .po-totals .grand-total {
     font-size: 16px;
     font-weight: 700;
     color: #6da84c;
@@ -357,7 +357,7 @@
     padding-top: 8px;
     margin-top: 4px;
   }
-  .so-preview .so-footer {
+  .po-preview .po-footer {
     margin-top: 20px;
     font-size: 11px;
     color: #6b7280;
@@ -365,7 +365,7 @@
     padding-top: 12px;
     text-align: center;
   }
-  .so-preview .so-terms {
+  .po-preview .po-terms {
     font-size: 11px;
     color: #6b7280;
     margin-top: 8px;
@@ -375,11 +375,10 @@
   }
 
   /* Status colors */
-  .status-pending { background: #fef3c7; color: #92400e; }
-  .status-approved { background: #dcfce7; color: #166534; }
-  .status-rejected { background: #fee2e2; color: #991b1b; }
-  .status-fulfilled { background: #dbeafe; color: #1e40af; }
-  .status-partial { background: #ede9fe; color: #5b21b6; }
+  .status-draft { background: #f1f5f9; color: #475569; }
+  .status-sent { background: #dbeafe; color: #1e40af; }
+  .status-received { background: #dcfce7; color: #166534; }
+  .status-partial { background: #fef3c7; color: #92400e; }
 </style>
 </head>
 
@@ -401,9 +400,9 @@
           <!-- ===== PAGE HEADER ===== -->
           <div class="flex flex-wrap items-start justify-between gap-3 mb-4">
             <div>
-              <div class="page-breadcrumb">Sales</div>
-              <h1 class="page-title text-gray-900">Sales Orders</h1>
-              <p class="page-subtitle mt-0.5">Record customer confirmed orders. Convert from quotations or create directly.</p>
+              <div class="page-breadcrumb">Purchase</div>
+              <h1 class="page-title text-gray-900">Purchase Orders</h1>
+              <p class="page-subtitle mt-0.5">Place formal orders with vendors. Track approval and receipt status.</p>
             </div>
             <div class="flex gap-2 flex-wrap">
               <div class="relative inline-block" data-dd-trigger>
@@ -417,30 +416,29 @@
                 <div id="filterDD" data-dd-menu class="hidden absolute top-full left-0 mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-lg p-3 z-50">
                   <div class="mb-2">
                     <label class="text-[9px] font-semibold text-gray-500 uppercase tracking-wide">Status</label>
-                    <select id="filterStatus" onchange="filterSalesOrders()" class="form-input text-[10px]">
+                    <select id="filterStatus" onchange="filterPO()" class="form-input text-[10px]">
                       <option value="all">All Status</option>
-                      <option value="pending">Pending</option>
-                      <option value="approved">Approved</option>
-                      <option value="rejected">Rejected</option>
-                      <option value="partial">Partial Fulfilled</option>
-                      <option value="fulfilled">Fulfilled</option>
+                      <option value="draft">Draft</option>
+                      <option value="sent">Sent</option>
+                      <option value="partial">Partially Received</option>
+                      <option value="received">Received</option>
                     </select>
                   </div>
                   <div class="mb-2">
-                    <label class="text-[9px] font-semibold text-gray-500 uppercase tracking-wide">Customer</label>
-                    <select id="filterCustomer" onchange="filterSalesOrders()" class="form-input text-[10px]">
-                      <option value="all">All Customers</option>
+                    <label class="text-[9px] font-semibold text-gray-500 uppercase tracking-wide">Vendor</label>
+                    <select id="filterVendor" onchange="filterPO()" class="form-input text-[10px]">
+                      <option value="all">All Vendors</option>
                     </select>
                   </div>
                   <button onclick="clearFilters()" class="text-[10px] text-primary font-semibold hover:underline">Clear Filters</button>
                 </div>
               </div>
 
-              <button onclick="openAddSO()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[11px] font-semibold px-3 py-2 rounded-lg transition shadow-sm">
+              <button onclick="openAddPO()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[11px] font-semibold px-3 py-2 rounded-lg transition shadow-sm">
                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <path d="M12 5v14M5 12h14"/>
                 </svg>
-                New Sales Order
+                New Purchase Order
               </button>
             </div>
           </div>
@@ -449,19 +447,19 @@
           <div class="grid grid-cols-2 md:grid-cols-5 gap-2.5 mb-4">
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
               <div class="stat-label">Total</div>
-              <div class="stat-value" id="totalOrders">0</div>
+              <div class="stat-value" id="totalPO">0</div>
             </div>
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Pending</div>
-              <div class="stat-value text-amber-600" id="pendingOrders">0</div>
+              <div class="stat-label">Draft</div>
+              <div class="stat-value text-gray-500" id="draftPO">0</div>
             </div>
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Approved</div>
-              <div class="stat-value text-blue-600" id="approvedOrders">0</div>
+              <div class="stat-label">Sent</div>
+              <div class="stat-value text-blue-600" id="sentPO">0</div>
             </div>
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Fulfilled</div>
-              <div class="stat-value text-green-600" id="fulfilledOrders">0</div>
+              <div class="stat-label">Received</div>
+              <div class="stat-value text-green-600" id="receivedPO">0</div>
             </div>
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
               <div class="stat-label">Total Value</div>
@@ -469,8 +467,8 @@
             </div>
           </div>
 
-          <!-- ===== SALES ORDERS TABLE ===== -->
-          <div id="salesOrdersPanel"></div>
+          <!-- ===== PURCHASE ORDERS TABLE ===== -->
+          <div id="poPanel"></div>
 
         </div>
       </main>
@@ -488,8 +486,8 @@
     // =============================================================
     NavSidebar.init({
       basePath: "",
-      activePage: "salesorders",
-      pageTitle: "Sales Orders",
+      activePage: "purchase",
+      pageTitle: "Purchase Orders",
       user: {
         name: "Admin",
         role: "Super Admin",
@@ -530,14 +528,14 @@
     function iconSearch() {
       return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>`;
     }
-    function iconChevronDown() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>`;
+    function iconSend() {
+      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>`;
     }
-    function iconConvert() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>`;
+    function iconReceive() {
+      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>`;
     }
-    function iconApprove() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>`;
+    function iconCurrency() {
+      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`;
     }
 
     // =============================================================
@@ -642,33 +640,45 @@
     // =============================================================
     function money(n) { return '₹' + Number(n).toLocaleString('en-IN'); }
 
+    function formatCurrency(amount, currency) {
+      var symbols = { INR: '₹', USD: '$', EUR: '€', GBP: '£', AED: 'د.إ' };
+      var symbol = symbols[currency] || '₹';
+      return symbol + Number(amount).toLocaleString('en-IN');
+    }
+
+    function getCurrencySymbol(currency) {
+      var symbols = { INR: '₹', USD: '$', EUR: '€', GBP: '£', AED: 'د.إ' };
+      return symbols[currency] || '₹';
+    }
+
     function statusBadge(status) {
       var map = {
-        pending: 'badge-amber',
-        approved: 'badge-blue',
-        rejected: 'badge-red',
-        partial: 'badge-purple',
-        fulfilled: 'badge-green'
+        draft: 'badge-gray',
+        sent: 'badge-blue',
+        partial: 'badge-amber',
+        received: 'badge-green'
       };
       var dot = {
-        pending: 'badge-dot-amber',
-        approved: 'badge-dot-blue',
-        rejected: 'badge-dot-red',
-        partial: 'badge-dot-purple',
-        fulfilled: 'badge-dot-green'
+        draft: 'badge-dot-gray',
+        sent: 'badge-dot-blue',
+        partial: 'badge-dot-amber',
+        received: 'badge-dot-green'
       };
       var label = status.charAt(0).toUpperCase() + status.slice(1);
-      if (status === 'partial') label = 'Partial';
+      if (status === 'partial') label = 'Partially Received';
       return '<span class="badge ' + map[status] + '"><span class="badge-dot ' + dot[status] + '"></span>' + label + '</span>';
     }
 
-    function rowActionsHtml(editFn, delFn, viewFn, approveFn) {
+    function rowActionsHtml(editFn, delFn, viewFn, sendFn, receiveFn) {
       var html = '<div class="flex gap-1">';
       if (viewFn) {
         html += '<button onclick="' + viewFn + '" class="btn-icon-action" title="View">' + iconEye() + '</button>';
       }
-      if (approveFn) {
-        html += '<button onclick="' + approveFn + '" class="btn-icon-action primary" title="Approve">' + iconApprove() + '</button>';
+      if (sendFn) {
+        html += '<button onclick="' + sendFn + '" class="btn-icon-action primary" title="Send">' + iconSend() + '</button>';
+      }
+      if (receiveFn) {
+        html += '<button onclick="' + receiveFn + '" class="btn-icon-action primary" title="Mark Received">' + iconReceive() + '</button>';
       }
       html += '<button onclick="' + editFn + '" class="btn-icon-action" title="Edit">' + iconEdit() + '</button>';
       html += '<button onclick="' + delFn + '" class="btn-icon-action danger" title="Delete">' + iconTrash() + '</button>';
@@ -706,313 +716,338 @@
     // DATA
     // =============================================================
 
-    var customers = [
-      { id: 'CUS-001', name: 'XYZ Retail Store', address: 'A-12, Connaught Place, New Delhi' },
-      { id: 'CUS-002', name: 'ABC Enterprises', address: '45, Industrial Estate, Pune' },
-      { id: 'CUS-003', name: 'Rahul Sharma', address: '12, Green Park, Mumbai' },
-      { id: 'CUS-004', name: 'Tech Solutions Inc.', address: '88, Electronics City, Bengaluru' },
-      { id: 'CUS-005', name: 'Priya Patel', address: '22, Lake View, Surat' },
-      { id: 'CUS-006', name: 'Global Exports Ltd.', address: '101, Trade Tower, Delhi' },
+    var vendors = [
+      { id: 'VEN-001', name: 'Global Imports Inc.', gstin: '27AABCU1234D1ZP', state: 'Maharashtra', stateCode: '27' },
+      { id: 'VEN-002', name: 'Local Supplier Co.', gstin: '', state: 'Maharashtra', stateCode: '27' },
+      { id: 'VEN-003', name: 'ABC Distributors', gstin: '24XYZBC1234E1ZP', state: 'Delhi', stateCode: '07' },
+      { id: 'VEN-004', name: 'Tech Components Ltd.', gstin: '29TECH1234H1ZP', state: 'Karnataka', stateCode: '29' },
+      { id: 'VEN-005', name: 'Premium Raw Materials', gstin: '19PRM1234J1ZP', state: 'Kerala', stateCode: '32' },
     ];
 
     var items = [
-      { id: 'ITM-1001', name: 'Centrifugal Blower — 5HP', price: 42000, gst: 18, unit: 'Pcs' },
-      { id: 'ITM-1002', name: 'Dual Media Filter Vessel — 500L', price: 118000, gst: 18, unit: 'Pcs' },
-      { id: 'ITM-1003', name: 'Activated Carbon Media', price: 6500, gst: 18, unit: 'Kg' },
-      { id: 'ITM-1004', name: 'PVC Pressure Pipe — 6"', price: 850, gst: 18, unit: 'Mtr' },
-      { id: 'ITM-1005', name: 'Chemical Dosing Pump — 50LPH', price: 28000, gst: 18, unit: 'Pcs' },
+      { id: 'ITM-1001', name: 'Centrifugal Blower — 5HP', price: 35000, gst: 18, unit: 'Pcs' },
+      { id: 'ITM-1002', name: 'Dual Media Filter Vessel — 500L', price: 95000, gst: 18, unit: 'Pcs' },
+      { id: 'ITM-1003', name: 'Activated Carbon Media', price: 4800, gst: 18, unit: 'Kg' },
+      { id: 'ITM-1004', name: 'PVC Pressure Pipe — 6"', price: 620, gst: 18, unit: 'Mtr' },
+      { id: 'ITM-1005', name: 'Chemical Dosing Pump — 50LPH', price: 21000, gst: 18, unit: 'Pcs' },
     ];
 
-    var salesOrders = [{
-      id: 'SO-001',
-      number: 'SO/25-26/001',
+    var exchangeRates = { INR: 1, USD: 83.5, EUR: 90.2, GBP: 105.8, AED: 22.7 };
+
+    var purchaseOrders = [{
+      id: 'PO-001',
+      number: 'PO/25-26/001',
       date: '2026-01-12',
-      customerId: 'CUS-001',
-      customerName: 'XYZ Retail Store',
-      customerAddress: 'A-12, Connaught Place, New Delhi',
-      deliveryLocation: 'A-12, Connaught Place, New Delhi',
+      vendorId: 'VEN-001',
+      vendorName: 'Global Imports Inc.',
+      vendorGST: '27AABCU1234D1ZP',
+      vendorState: 'Maharashtra',
+      vendorStateCode: '27',
       expectedDelivery: '2026-02-12',
-      paymentTerms: 'Net 15 days',
-      status: 'approved',
+      paymentTerms: 'Net 30 days',
+      currency: 'INR',
+      exchangeRate: 1,
+      status: 'sent',
       items: [
-        { itemId: 'ITM-1001', name: 'Centrifugal Blower — 5HP', qty: 2, rate: 42000, gst: 18, unit: 'Pcs' },
-        { itemId: 'ITM-1003', name: 'Activated Carbon Media', qty: 10, rate: 6500, gst: 18, unit: 'Kg' }
+        { itemId: 'ITM-1001', name: 'Centrifugal Blower — 5HP', qty: 2, rate: 35000, gst: 18, unit: 'Pcs' },
+        { itemId: 'ITM-1003', name: 'Activated Carbon Media', qty: 10, rate: 4800, gst: 18, unit: 'Kg' }
       ],
       discount: 5,
       tax: 18,
       total: 0,
+      totalINR: 0,
+      receivedQty: {},
       createdAt: '2026-01-12',
-      convertedFrom: 'QUOT-001',
-      fulfillmentStatus: 'partial',
-      notes: 'Customer confirmed order from quotation'
+      notes: 'Urgent order for project WHE'
     }, {
-      id: 'SO-002',
-      number: 'SO/25-26/002',
+      id: 'PO-002',
+      number: 'PO/25-26/002',
       date: '2026-01-18',
-      customerId: 'CUS-002',
-      customerName: 'ABC Enterprises',
-      customerAddress: '45, Industrial Estate, Pune',
-      deliveryLocation: '45, Industrial Estate, Pune',
+      vendorId: 'VEN-002',
+      vendorName: 'Local Supplier Co.',
+      vendorGST: '',
+      vendorState: 'Maharashtra',
+      vendorStateCode: '27',
       expectedDelivery: '2026-02-18',
-      paymentTerms: 'Net 30 days',
-      status: 'pending',
+      paymentTerms: 'Net 15 days',
+      currency: 'INR',
+      exchangeRate: 1,
+      status: 'draft',
       items: [
-        { itemId: 'ITM-1002', name: 'Dual Media Filter Vessel — 500L', qty: 1, rate: 118000, gst: 18, unit: 'Pcs' },
-        { itemId: 'ITM-1004', name: 'PVC Pressure Pipe — 6"', qty: 20, rate: 850, gst: 18, unit: 'Mtr' }
+        { itemId: 'ITM-1002', name: 'Dual Media Filter Vessel — 500L', qty: 1, rate: 95000, gst: 18, unit: 'Pcs' },
+        { itemId: 'ITM-1004', name: 'PVC Pressure Pipe — 6"', qty: 20, rate: 620, gst: 18, unit: 'Mtr' }
       ],
       discount: 10,
       tax: 18,
       total: 0,
+      totalINR: 0,
+      receivedQty: {},
       createdAt: '2026-01-18',
-      convertedFrom: null,
-      fulfillmentStatus: 'pending',
-      notes: 'Awaiting approval from management'
+      notes: 'Awaiting approval'
     }, {
-      id: 'SO-003',
-      number: 'SO/25-26/003',
+      id: 'PO-003',
+      number: 'PO/25-26/003',
       date: '2026-01-22',
-      customerId: 'CUS-003',
-      customerName: 'Rahul Sharma',
-      customerAddress: '12, Green Park, Mumbai',
-      deliveryLocation: '12, Green Park, Mumbai',
+      vendorId: 'VEN-003',
+      vendorName: 'ABC Distributors',
+      vendorGST: '24XYZBC1234E1ZP',
+      vendorState: 'Delhi',
+      vendorStateCode: '07',
       expectedDelivery: '2026-02-22',
-      paymentTerms: 'Advance Payment',
-      status: 'fulfilled',
+      paymentTerms: 'Net 7 days',
+      currency: 'INR',
+      exchangeRate: 1,
+      status: 'received',
       items: [
-        { itemId: 'ITM-1005', name: 'Chemical Dosing Pump — 50LPH', qty: 2, rate: 28000, gst: 18, unit: 'Pcs' }
+        { itemId: 'ITM-1005', name: 'Chemical Dosing Pump — 50LPH', qty: 2, rate: 21000, gst: 18, unit: 'Pcs' }
       ],
       discount: 0,
       tax: 18,
       total: 0,
+      totalINR: 0,
+      receivedQty: { 'ITM-1005': 2 },
       createdAt: '2026-01-22',
-      convertedFrom: 'QUOT-003',
-      fulfillmentStatus: 'fulfilled',
-      notes: 'Order completed and delivered'
+      notes: 'Complete order received'
     }, {
-      id: 'SO-004',
-      number: 'SO/25-26/004',
+      id: 'PO-004',
+      number: 'PO/25-26/004',
       date: '2026-01-28',
-      customerId: 'CUS-004',
-      customerName: 'Tech Solutions Inc.',
-      customerAddress: '88, Electronics City, Bengaluru',
-      deliveryLocation: '88, Electronics City, Bengaluru',
+      vendorId: 'VEN-004',
+      vendorName: 'Tech Components Ltd.',
+      vendorGST: '29TECH1234H1ZP',
+      vendorState: 'Karnataka',
+      vendorStateCode: '29',
       expectedDelivery: '2026-02-28',
       paymentTerms: 'Net 45 days',
-      status: 'rejected',
+      currency: 'USD',
+      exchangeRate: 83.5,
+      status: 'sent',
       items: [
-        { itemId: 'ITM-1001', name: 'Centrifugal Blower — 5HP', qty: 3, rate: 42000, gst: 18, unit: 'Pcs' }
+        { itemId: 'ITM-1001', name: 'Centrifugal Blower — 5HP', qty: 3, rate: 420, gst: 18, unit: 'Pcs' }
       ],
       discount: 8,
       tax: 18,
       total: 0,
+      totalINR: 0,
+      receivedQty: { 'ITM-1001': 1 },
       createdAt: '2026-01-28',
-      convertedFrom: null,
-      fulfillmentStatus: 'pending',
-      notes: 'Rejected due to credit limit exceeded'
+      notes: 'International order - USD currency'
     }, {
-      id: 'SO-005',
-      number: 'SO/25-26/005',
+      id: 'PO-005',
+      number: 'PO/25-26/005',
       date: '2026-02-05',
-      customerId: 'CUS-006',
-      customerName: 'Global Exports Ltd.',
-      customerAddress: '101, Trade Tower, Delhi',
-      deliveryLocation: '101, Trade Tower, Delhi',
+      vendorId: 'VEN-005',
+      vendorName: 'Premium Raw Materials',
+      vendorGST: '19PRM1234J1ZP',
+      vendorState: 'Kerala',
+      vendorStateCode: '32',
       expectedDelivery: '2026-03-05',
-      paymentTerms: 'Net 15 days',
-      status: 'approved',
+      paymentTerms: 'Net 30 days',
+      currency: 'INR',
+      exchangeRate: 1,
+      status: 'partial',
       items: [
-        { itemId: 'ITM-1002', name: 'Dual Media Filter Vessel — 500L', qty: 2, rate: 118000, gst: 18, unit: 'Pcs' },
-        { itemId: 'ITM-1005', name: 'Chemical Dosing Pump — 50LPH', qty: 3, rate: 28000, gst: 18, unit: 'Pcs' }
+        { itemId: 'ITM-1002', name: 'Dual Media Filter Vessel — 500L', qty: 2, rate: 95000, gst: 18, unit: 'Pcs' },
+        { itemId: 'ITM-1005', name: 'Chemical Dosing Pump — 50LPH', qty: 3, rate: 21000, gst: 18, unit: 'Pcs' }
       ],
       discount: 5,
       tax: 18,
       total: 0,
+      totalINR: 0,
+      receivedQty: { 'ITM-1002': 1, 'ITM-1005': 0 },
       createdAt: '2026-02-05',
-      convertedFrom: null,
-      fulfillmentStatus: 'pending',
-      notes: 'Approved, awaiting fulfillment'
+      notes: 'Partial shipment received'
     }];
 
-    var nextSONo = 6;
+    var nextPONo = 6;
 
     // Calculate totals
-    salesOrders.forEach(function(so) {
-      var subtotal = so.items.reduce(function(sum, item) { return sum + (item.qty * item.rate); }, 0);
-      var discountAmt = subtotal * (so.discount / 100);
+    purchaseOrders.forEach(function(po) {
+      var subtotal = po.items.reduce(function(sum, item) { return sum + (item.qty * item.rate); }, 0);
+      var discountAmt = subtotal * (po.discount / 100);
       var afterDiscount = subtotal - discountAmt;
-      var taxAmt = afterDiscount * (so.tax / 100);
-      so.total = afterDiscount + taxAmt;
+      var taxAmt = afterDiscount * (po.tax / 100);
+      po.total = afterDiscount + taxAmt;
+      po.totalINR = po.total * po.exchangeRate;
     });
 
     // =============================================================
     // FUNCTIONS
     // =============================================================
 
-    function getCustomerName(id) {
-      var c = customers.find(function(x) { return x.id === id; });
-      return c ? c.name : id;
+    function getVendorName(id) {
+      var v = vendors.find(function(x) { return x.id === id; });
+      return v ? v.name : id;
     }
 
     function renderStats() {
-      var total = salesOrders.length;
-      var pending = salesOrders.filter(function(so) { return so.status === 'pending'; }).length;
-      var approved = salesOrders.filter(function(so) { return so.status === 'approved'; }).length;
-      var fulfilled = salesOrders.filter(function(so) { return so.status === 'fulfilled'; }).length;
-      var totalVal = salesOrders.reduce(function(sum, so) { return sum + so.total; }, 0);
+      var total = purchaseOrders.length;
+      var draft = purchaseOrders.filter(function(po) { return po.status === 'draft'; }).length;
+      var sent = purchaseOrders.filter(function(po) { return po.status === 'sent'; }).length;
+      var received = purchaseOrders.filter(function(po) { return po.status === 'received'; }).length;
+      var totalVal = purchaseOrders.reduce(function(sum, po) { return sum + po.totalINR; }, 0);
 
-      document.getElementById('totalOrders').textContent = total;
-      document.getElementById('pendingOrders').textContent = pending;
-      document.getElementById('approvedOrders').textContent = approved;
-      document.getElementById('fulfilledOrders').textContent = fulfilled;
+      document.getElementById('totalPO').textContent = total;
+      document.getElementById('draftPO').textContent = draft;
+      document.getElementById('sentPO').textContent = sent;
+      document.getElementById('receivedPO').textContent = received;
       document.getElementById('totalValue').textContent = money(totalVal);
 
-      var filterCustomer = document.getElementById('filterCustomer');
-      var currentVal = filterCustomer.value;
-      filterCustomer.innerHTML = '<option value="all">All Customers</option>';
-      customers.forEach(function(c) {
-        filterCustomer.innerHTML += '<option value="' + c.id + '">' + c.name + '</option>';
+      var filterVendor = document.getElementById('filterVendor');
+      var currentVal = filterVendor.value;
+      filterVendor.innerHTML = '<option value="all">All Vendors</option>';
+      vendors.forEach(function(v) {
+        filterVendor.innerHTML += '<option value="' + v.id + '">' + v.name + '</option>';
       });
-      filterCustomer.value = currentVal;
+      filterVendor.value = currentVal;
     }
 
-    function getFilteredSalesOrders() {
+    function getFilteredPO() {
       var searchInput = document.getElementById('searchInput');
       var q = searchInput ? searchInput.value.toLowerCase() : '';
       var status = document.getElementById('filterStatus').value || 'all';
-      var customer = document.getElementById('filterCustomer').value || 'all';
+      var vendor = document.getElementById('filterVendor').value || 'all';
 
-      return salesOrders.filter(function(so) {
-        var matchSearch = so.number.toLowerCase().indexOf(q) !== -1 ||
-          so.customerName.toLowerCase().indexOf(q) !== -1 ||
-          so.id.toLowerCase().indexOf(q) !== -1;
-        var matchStatus = status === 'all' || so.status === status;
-        var matchCustomer = customer === 'all' || so.customerId === customer;
-        return matchSearch && matchStatus && matchCustomer;
+      return purchaseOrders.filter(function(po) {
+        var matchSearch = po.number.toLowerCase().indexOf(q) !== -1 ||
+          po.vendorName.toLowerCase().indexOf(q) !== -1 ||
+          po.id.toLowerCase().indexOf(q) !== -1;
+        var matchStatus = status === 'all' || po.status === status;
+        var matchVendor = vendor === 'all' || po.vendorId === vendor;
+        return matchSearch && matchStatus && matchVendor;
       });
     }
 
-    function renderSalesOrders() {
-      var filtered = getFilteredSalesOrders();
+    function renderPO() {
+      var filtered = getFilteredPO();
 
       var rowsHtml = '';
       if (filtered.length === 0) {
         rowsHtml = `
           <tr>
-            <td colspan="8" class="text-center py-10 text-gray-400 text-sm">
+            <td colspan="9" class="text-center py-10 text-gray-400 text-sm">
               <div class="flex justify-center mb-2 empty-icon-svg">${iconDocument()}</div>
-              No sales orders found. Try adjusting your filters or
-              <button onclick="openAddSO()" class="text-primary font-semibold hover:underline">create a new sales order</button>.
+              No purchase orders found. Try adjusting your filters or
+              <button onclick="openAddPO()" class="text-primary font-semibold hover:underline">create a new purchase order</button>.
             </td>
           </tr>`;
       } else {
-        rowsHtml = filtered.map(function(so) {
-          var canApprove = so.status === 'pending';
+        rowsHtml = filtered.map(function(po) {
+          var canSend = po.status === 'draft';
+          var canReceive = po.status === 'sent' || po.status === 'partial';
+          var currencySymbol = getCurrencySymbol(po.currency);
           return `
             <tr class="border-b border-gray-100 table-row-hover">
               <td class="px-3 py-2.5">
-                <div class="font-semibold text-gray-800 text-sm">${so.number}</div>
-                <div class="text-[10px] text-gray-400 font-mono">${so.id}</div>
+                <div class="font-semibold text-gray-800 text-sm">${po.number}</div>
+                <div class="text-[10px] text-gray-400 font-mono">${po.id}</div>
               </td>
-              <td class="px-3 py-2.5 text-xs">${so.date}</td>
-              <td class="px-3 py-2.5 text-sm text-gray-700">${so.customerName}</td>
-              <td class="px-3 py-2.5 text-xs">${so.expectedDelivery}</td>
-              <td class="px-3 py-2.5 font-mono font-semibold text-sm">${money(so.total)}</td>
-              <td class="px-3 py-2.5">${statusBadge(so.status)}</td>
-              <td class="px-3 py-2.5 text-[10px] font-semibold ${so.fulfillmentStatus === 'fulfilled' ? 'text-green-600' : so.fulfillmentStatus === 'partial' ? 'text-purple-600' : 'text-amber-600'}">${so.fulfillmentStatus.charAt(0).toUpperCase() + so.fulfillmentStatus.slice(1)}</td>
+              <td class="px-3 py-2.5 text-xs">${po.date}</td>
+              <td class="px-3 py-2.5 text-sm text-gray-700">${po.vendorName}</td>
+              <td class="px-3 py-2.5 text-xs">${po.expectedDelivery}</td>
+              <td class="px-3 py-2.5 font-mono font-semibold text-sm">${currencySymbol}${Number(po.total).toLocaleString('en-IN')}</td>
+              <td class="px-3 py-2.5 text-[10px]">${po.items.reduce(function(sum, item) { return sum + item.qty; }, 0)} items</td>
+              <td class="px-3 py-2.5">${statusBadge(po.status)}</td>
               <td class="px-3 py-2.5">${rowActionsHtml(
-                "editSO('"+so.id+"')",
-                "delSO('"+so.id+"')",
-                "viewSO('"+so.id+"')",
-                canApprove ? "approveSO('"+so.id+"')" : null
+                "editPO('"+po.id+"')",
+                "delPO('"+po.id+"')",
+                "viewPO('"+po.id+"')",
+                canSend ? "sendPO('"+po.id+"')" : null,
+                canReceive ? "receivePO('"+po.id+"')" : null
               )}</td>
             </tr>`;
         }).join('');
       }
 
       var panelHtml = panelWrap(
-        'All Sales Orders <span class="text-[10px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + filtered.length + '</span>',
-        tableHtml(['SO #', 'Date', 'Customer', 'Expected Delivery', 'Total', 'Status', 'Fulfillment', 'Actions'], rowsHtml),
-        '<div class="flex items-center gap-2"><span class="text-[10px] text-gray-400">Show:</span><select id="pageSizeSelect" onchange="renderSalesOrders()" class="text-[10px] border border-gray-200 rounded-lg px-2 py-1 bg-white outline-none"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select></div>'
+        'Purchase Orders <span class="text-[10px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + filtered.length + '</span>',
+        tableHtml(['PO #', 'Date', 'Vendor', 'Expected Delivery', 'Total', 'Items', 'Status', 'Actions'], rowsHtml),
+        '<div class="flex items-center gap-2"><span class="text-[10px] text-gray-400">Show:</span><select id="pageSizeSelect" onchange="renderPO()" class="text-[10px] border border-gray-200 rounded-lg px-2 py-1 bg-white outline-none"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select></div>'
       );
 
-      document.getElementById('salesOrdersPanel').innerHTML = panelHtml;
+      document.getElementById('poPanel').innerHTML = panelHtml;
       renderStats();
     }
 
-    function filterSalesOrders() { renderSalesOrders(); }
+    function filterPO() { renderPO(); }
 
     function clearFilters() {
       document.getElementById('filterStatus').value = 'all';
-      document.getElementById('filterCustomer').value = 'all';
+      document.getElementById('filterVendor').value = 'all';
       var searchInput = document.getElementById('searchInput');
       if (searchInput) searchInput.value = '';
-      renderSalesOrders();
+      renderPO();
       toggleFilterDD();
     }
 
     // =============================================================
-    // VIEW SALES ORDER
+    // VIEW PURCHASE ORDER
     // =============================================================
 
-    function viewSO(id) {
-      var so = salesOrders.find(function(x) { return x.id === id; });
-      if (!so) return;
+    function viewPO(id) {
+      var po = purchaseOrders.find(function(x) { return x.id === id; });
+      if (!po) return;
 
-      var itemsHtml = so.items.map(function(item) {
+      var itemsHtml = po.items.map(function(item) {
         var amount = item.qty * item.rate;
+        var received = po.receivedQty && po.receivedQty[item.itemId] ? po.receivedQty[item.itemId] : 0;
         return `
           <tr>
             <td class="px-2 py-1.5 text-xs">${item.name}</td>
             <td class="px-2 py-1.5 text-xs text-center">${item.qty}</td>
+            <td class="px-2 py-1.5 text-xs text-center">${received}</td>
             <td class="px-2 py-1.5 text-xs text-center">${item.unit || 'Pcs'}</td>
-            <td class="px-2 py-1.5 text-xs font-mono text-right">${money(item.rate)}</td>
-            <td class="px-2 py-1.5 text-xs font-mono text-right">${money(amount)}</td>
+            <td class="px-2 py-1.5 text-xs font-mono text-right">${formatCurrency(item.rate, po.currency)}</td>
+            <td class="px-2 py-1.5 text-xs font-mono text-right">${formatCurrency(amount, po.currency)}</td>
           </tr>`;
       }).join('');
 
-      var subtotal = so.items.reduce(function(sum, item) { return sum + (item.qty * item.rate); }, 0);
-      var discountAmt = subtotal * (so.discount / 100);
+      var subtotal = po.items.reduce(function(sum, item) { return sum + (item.qty * item.rate); }, 0);
+      var discountAmt = subtotal * (po.discount / 100);
       var afterDiscount = subtotal - discountAmt;
-      var taxAmt = afterDiscount * (so.tax / 100);
+      var taxAmt = afterDiscount * (po.tax / 100);
 
       var modalContent = `
-        ${modalHeader('Sales Order Details — ' + so.number, so.id)}
+        ${modalHeader('Purchase Order Details — ' + po.number, po.id)}
         <div class="px-5 py-4 modal-scroll">
 
-          <div class="so-preview">
-            <div class="so-header">
+          <div class="po-preview">
+            <div class="po-header">
               <div>
-                <div class="so-company-name">${company.name || 'Kunash Media Pvt. Ltd.'}</div>
-                <div class="so-company-details">
+                <div class="po-company-name">${company.name || 'Kunash Media Pvt. Ltd.'}</div>
+                <div class="po-company-details">
                   ${company.address || '401, Creative Hub, BKC, Mumbai - 400051'}<br>
                   GSTIN: ${company.gstin || '27AABCU1234D1ZP'} | Phone: ${company.phone || '+91-9876543210'}
                 </div>
               </div>
               <div style="text-align:right;">
-                <div class="so-title">SALES ORDER</div>
+                <div class="po-title">PURCHASE ORDER</div>
               </div>
             </div>
 
-            <div class="so-meta">
+            <div class="po-meta">
               <div>
-                <div class="meta-label">Customer</div>
-                <div class="meta-value">${so.customerName}</div>
-                <div class="text-xs text-gray-500">${so.customerAddress || ''}</div>
+                <div class="meta-label">Vendor</div>
+                <div class="meta-value">${po.vendorName}</div>
+                <div class="text-xs text-gray-500">GSTIN: ${po.vendorGST || '—'}</div>
+                <div class="text-xs text-gray-500">State: ${po.vendorState}</div>
               </div>
               <div style="text-align:right;">
-                <div><span class="meta-label">SO #</span> <span class="meta-value">${so.number}</span></div>
-                <div><span class="meta-label">Date</span> <span class="meta-value">${so.date}</span></div>
-                <div><span class="meta-label">Expected Delivery</span> <span class="meta-value">${so.expectedDelivery}</span></div>
-                <div><span class="meta-label">Status</span> ${statusBadge(so.status)}</div>
-                <div><span class="meta-label">Fulfillment</span> <span class="text-xs font-semibold ${so.fulfillmentStatus === 'fulfilled' ? 'text-green-600' : so.fulfillmentStatus === 'partial' ? 'text-purple-600' : 'text-amber-600'}">${so.fulfillmentStatus.charAt(0).toUpperCase() + so.fulfillmentStatus.slice(1)}</span></div>
+                <div><span class="meta-label">PO #</span> <span class="meta-value">${po.number}</span></div>
+                <div><span class="meta-label">Date</span> <span class="meta-value">${po.date}</span></div>
+                <div><span class="meta-label">Expected Delivery</span> <span class="meta-value">${po.expectedDelivery}</span></div>
+                <div><span class="meta-label">Payment Terms</span> <span class="meta-value">${po.paymentTerms}</span></div>
+                <div><span class="meta-label">Currency</span> <span class="meta-value">${po.currency}</span></div>
+                <div><span class="meta-label">Status</span> ${statusBadge(po.status)}</div>
               </div>
             </div>
 
-            <table class="so-table">
+            <table class="po-table">
               <thead>
                 <tr>
                   <th>Description</th>
-                  <th class="text-center">Qty</th>
+                  <th class="text-center">Ordered</th>
+                  <th class="text-center">Received</th>
                   <th class="text-center">Unit</th>
                   <th class="text-right">Rate</th>
                   <th class="text-right">Amount</th>
@@ -1021,17 +1056,17 @@
               <tbody>${itemsHtml}</tbody>
             </table>
 
-            <div class="so-totals">
-              <div class="total-row"><span class="label">Subtotal</span><span class="value">${money(subtotal)}</span></div>
-              ${so.discount > 0 ? `<div class="total-row"><span class="label">Discount (${so.discount}%)</span><span class="value" style="color:#dc2626;">-${money(discountAmt)}</span></div>` : ''}
-              <div class="total-row"><span class="label">Tax (${so.tax}%)</span><span class="value">${money(taxAmt)}</span></div>
-              <div class="grand-total total-row"><span class="label">Grand Total</span><span class="value">${money(so.total)}</span></div>
+            <div class="po-totals">
+              <div class="total-row"><span class="label">Subtotal</span><span class="value">${formatCurrency(subtotal, po.currency)}</span></div>
+              ${po.discount > 0 ? `<div class="total-row"><span class="label">Discount (${po.discount}%)</span><span class="value" style="color:#dc2626;">-${formatCurrency(discountAmt, po.currency)}</span></div>` : ''}
+              <div class="total-row"><span class="label">Tax (${po.tax}%)</span><span class="value">${formatCurrency(taxAmt, po.currency)}</span></div>
+              <div class="grand-total total-row"><span class="label">Grand Total</span><span class="value">${formatCurrency(po.total, po.currency)}</span></div>
+              ${po.currency !== 'INR' ? `<div class="text-[10px] text-gray-400 mt-1">INR Equivalent: ${money(po.totalINR)} (Rate: ${po.exchangeRate})</div>` : ''}
             </div>
 
-            ${so.convertedFrom ? `<div class="text-xs text-gray-500 mt-2">Converted from Quotation: ${so.convertedFrom}</div>` : ''}
-            ${so.notes ? `<div class="so-terms"><strong>Notes:</strong> ${so.notes}</div>` : ''}
-            <div class="so-footer">
-              <p>This is a system generated sales order. | Payment Terms: ${so.paymentTerms}</p>
+            ${po.notes ? `<div class="po-terms"><strong>Notes:</strong> ${po.notes}</div>` : ''}
+            <div class="po-footer">
+              <p>This is a system generated purchase order. | ${company.name}</p>
             </div>
           </div>
 
@@ -1043,30 +1078,31 @@
     }
 
     // =============================================================
-    // ADD / EDIT SALES ORDER
+    // ADD / EDIT PURCHASE ORDER
     // =============================================================
 
-    function openAddSO() { openSOModal(null); }
+    function openAddPO() { openPOModal(null); }
 
-    function editSO(id) {
-      var so = salesOrders.find(function(x) { return x.id === id; });
-      if (so) openSOModal(so);
+    function editPO(id) {
+      var po = purchaseOrders.find(function(x) { return x.id === id; });
+      if (po) openPOModal(po);
     }
 
-    function openSOModal(existing) {
+    function openPOModal(existing) {
       var e = existing || {
-        number: 'SO/25-26/' + String(salesOrders.length + 1).padStart(3, '0'),
+        number: 'PO/25-26/' + String(purchaseOrders.length + 1).padStart(3, '0'),
         date: new Date().toISOString().split('T')[0],
         expectedDelivery: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString().split('T')[0],
-        customerId: customers[0].id,
-        paymentTerms: 'Net 15 days',
-        status: 'pending',
+        vendorId: vendors[0].id,
+        paymentTerms: 'Net 30 days',
+        currency: 'INR',
+        exchangeRate: 1,
+        status: 'draft',
         items: [],
         discount: 0,
         tax: 18,
         total: 0,
-        notes: '',
-        fulfillmentStatus: 'pending'
+        notes: ''
       };
       var isEdit = !!existing;
 
@@ -1082,10 +1118,10 @@
                 </select>
               </td>
               <td class="px-2 py-1">
-                <input type="number" class="form-input text-[10px] item-qty" value="${item.qty}" data-idx="${idx}" placeholder="Qty" onchange="calcSOTotal()">
+                <input type="number" class="form-input text-[10px] item-qty" value="${item.qty}" data-idx="${idx}" placeholder="Qty" onchange="calcPOTotal()">
               </td>
               <td class="px-2 py-1">
-                <input type="number" class="form-input text-[10px] item-rate" value="${item.rate}" data-idx="${idx}" placeholder="Rate" onchange="calcSOTotal()">
+                <input type="number" class="form-input text-[10px] item-rate" value="${item.rate}" data-idx="${idx}" placeholder="Rate" onchange="calcPOTotal()">
               </td>
               <td class="px-2 py-1 text-center">
                 <button onclick="removeLineItem(this)" class="text-red-500 hover:text-red-700 transition">${iconX()}</button>
@@ -1094,23 +1130,27 @@
         }).join('');
       }
 
+      var currencyOptions = ['INR', 'USD', 'EUR', 'GBP', 'AED'];
+
       var modalContent = `
-        ${modalHeader(isEdit ? 'Edit Sales Order' : 'New Sales Order', isEdit ? e.number : 'Create a new sales order for customer')}
+        ${modalHeader(isEdit ? 'Edit Purchase Order' : 'New Purchase Order', isEdit ? e.number : 'Create a new purchase order for vendor')}
 
         <div class="px-5 py-4 modal-scroll">
 
           <!-- Header Fields -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-            ${fld('SO #', '<input type="text" class="form-input" id="f_number" value="' + e.number + '" disabled>')}
+            ${fld('PO #', '<input type="text" class="form-input" id="f_number" value="' + e.number + '" disabled>')}
             ${fld('Date *', '<input type="date" class="form-input" id="f_date" value="' + e.date + '">')}
-            ${fld('Customer *', '<select id="f_customer" class="form-input" onchange="updateCustomerAddress()">' + customers.map(function(c) { return '<option ' + (c.id === e.customerId ? 'selected' : '') + ' value="' + c.id + '">' + c.name + '</option>'; }).join('') + '</select>')}
+            ${fld('Vendor *', '<select id="f_vendor" class="form-input" onchange="updateVendorDetails()">' + vendors.map(function(v) { return '<option ' + (v.id === e.vendorId ? 'selected' : '') + ' value="' + v.id + '">' + v.name + '</option>'; }).join('') + '</select>')}
             ${fld('Expected Delivery *', '<input type="date" class="form-input" id="f_delivery" value="' + e.expectedDelivery + '">')}
           </div>
 
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
-            ${fld('Delivery Location', '<input type="text" class="form-input" id="f_deliveryLocation" value="' + (e.deliveryLocation || '') + '" placeholder="Delivery address">')}
-            ${fld('Payment Terms', '<select class="form-input" id="f_paymentTerms"><option ' + (e.paymentTerms === 'Net 7 days' ? 'selected' : '') + '>Net 7 days</option><option ' + (e.paymentTerms === 'Net 15 days' ? 'selected' : '') + '>Net 15 days</option><option ' + (e.paymentTerms === 'Net 30 days' ? 'selected' : '') + '>Net 30 days</option><option ' + (e.paymentTerms === 'Net 45 days' ? 'selected' : '') + '>Net 45 days</option><option ' + (e.paymentTerms === 'Advance Payment' ? 'selected' : '') + '>Advance Payment</option><option ' + (e.paymentTerms === 'Cash on Delivery' ? 'selected' : '') + '>Cash on Delivery</option></select>')}
-            ${fld('Status', '<select class="form-input" id="f_status"><option ' + (e.status === 'pending' ? 'selected' : '') + ' value="pending">Pending</option><option ' + (e.status === 'approved' ? 'selected' : '') + ' value="approved">Approved</option><option ' + (e.status === 'rejected' ? 'selected' : '') + ' value="rejected">Rejected</option><option ' + (e.status === 'fulfilled' ? 'selected' : '') + ' value="fulfilled">Fulfilled</option></select>')}
+          <!-- Multi-Currency (Enhancement #2) -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2">
+            ${fld('Currency', '<select id="f_currency" class="form-input" onchange="updateCurrency()">' + currencyOptions.map(function(c) { return '<option ' + (c === e.currency ? 'selected' : '') + ' value="' + c + '">' + c + '</option>'; }).join('') + '</select>', 'Select currency for this PO')}
+            ${fld('Exchange Rate', '<input type="number" class="form-input" id="f_exchangeRate" value="' + e.exchangeRate + '" step="0.01" onchange="calcPOTotal()">')}
+            ${fld('INR Equivalent', '<input type="text" class="form-input" id="f_inrEquivalent" value="' + (e.totalINR ? money(e.totalINR) : '₹0') + '" disabled style="background:#f3f4f6;">')}
+            ${fld('Payment Terms', '<select class="form-input" id="f_paymentTerms"><option ' + (e.paymentTerms === 'Net 7 days' ? 'selected' : '') + '>Net 7 days</option><option ' + (e.paymentTerms === 'Net 15 days' ? 'selected' : '') + '>Net 15 days</option><option ' + (e.paymentTerms === 'Net 30 days' ? 'selected' : '') + '>Net 30 days</option><option ' + (e.paymentTerms === 'Net 45 days' ? 'selected' : '') + '>Net 45 days</option><option ' + (e.paymentTerms === 'Advance Payment' ? 'selected' : '') + '>Advance Payment</option></select>')}
           </div>
 
           <!-- Line Items -->
@@ -1140,19 +1180,19 @@
 
           <!-- Footer Fields -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
-            ${fld('Discount (%)', '<input type="number" class="form-input" id="f_discount" value="' + e.discount + '" placeholder="0" onchange="calcSOTotal()">')}
-            ${fld('Tax Rate (%)', '<select class="form-input" id="f_tax" onchange="calcSOTotal()"><option ' + (e.tax == 0 ? 'selected' : '') + '>0</option><option ' + (e.tax == 5 ? 'selected' : '') + '>5</option><option ' + (e.tax == 12 ? 'selected' : '') + '>12</option><option ' + (e.tax == 18 ? 'selected' : '') + '>18</option><option ' + (e.tax == 28 ? 'selected' : '') + '>28</option></select>')}
-            ${fld('Total Amount', '<input type="text" class="form-input" id="f_total" value="' + (e.total ? money(e.total) : '₹0') + '" disabled style="font-weight:bold;color:#6da84c;">')}
-            ${fld('Fulfillment Status', '<select class="form-input" id="f_fulfillment"><option ' + (e.fulfillmentStatus === 'pending' ? 'selected' : '') + ' value="pending">Pending</option><option ' + (e.fulfillmentStatus === 'partial' ? 'selected' : '') + ' value="partial">Partial</option><option ' + (e.fulfillmentStatus === 'fulfilled' ? 'selected' : '') + ' value="fulfilled">Fulfilled</option></select>')}
+            ${fld('Discount (%)', '<input type="number" class="form-input" id="f_discount" value="' + e.discount + '" placeholder="0" onchange="calcPOTotal()">')}
+            ${fld('Tax Rate (%)', '<select class="form-input" id="f_tax" onchange="calcPOTotal()"><option ' + (e.tax == 0 ? 'selected' : '') + '>0</option><option ' + (e.tax == 5 ? 'selected' : '') + '>5</option><option ' + (e.tax == 12 ? 'selected' : '') + '>12</option><option ' + (e.tax == 18 ? 'selected' : '') + '>18</option><option ' + (e.tax == 28 ? 'selected' : '') + '>28</option></select>')}
+            ${fld('Total Amount', '<input type="text" class="form-input" id="f_total" value="' + (e.total ? formatCurrency(e.total, e.currency) : '0') + '" disabled style="font-weight:bold;color:#6da84c;">')}
+            ${fld('Status', '<select class="form-input" id="f_status"><option ' + (e.status === 'draft' ? 'selected' : '') + ' value="draft">Draft</option><option ' + (e.status === 'sent' ? 'selected' : '') + ' value="sent">Sent</option><option ' + (e.status === 'partial' ? 'selected' : '') + ' value="partial">Partially Received</option><option ' + (e.status === 'received' ? 'selected' : '') + ' value="received">Received</option></select>')}
           </div>
 
-          ${fld('Notes', '<textarea rows="2" class="form-input" id="f_notes" placeholder="Any additional notes">' + (e.notes || '') + '</textarea>')}
+          ${fld('Notes', '<textarea rows="2" class="form-input" id="f_notes" placeholder="Additional notes">' + (e.notes || '') + '</textarea>')}
         </div>
-        ${modalFooter(isEdit ? 'Update Sales Order' : 'Save Sales Order', 'onclick="saveSO(\'' + (isEdit ? e.id : '') + '\')"')}
+        ${modalFooter(isEdit ? 'Update Purchase Order' : 'Save Purchase Order', 'onclick="savePO(\'' + (isEdit ? e.id : '') + '\')"')}
       `;
 
       openModal(modalContent, { width: 'max-w-4xl' });
-      setTimeout(function() { calcSOTotal(); }, 100);
+      setTimeout(function() { calcPOTotal(); }, 100);
     }
 
     // =============================================================
@@ -1175,10 +1215,10 @@
           </select>
         </td>
         <td class="px-2 py-1">
-          <input type="number" class="form-input text-[10px] item-qty" value="1" data-idx="${idx}" placeholder="Qty" onchange="calcSOTotal()">
+          <input type="number" class="form-input text-[10px] item-qty" value="1" data-idx="${idx}" placeholder="Qty" onchange="calcPOTotal()">
         </td>
         <td class="px-2 py-1">
-          <input type="number" class="form-input text-[10px] item-rate" value="0" data-idx="${idx}" placeholder="Rate" onchange="calcSOTotal()">
+          <input type="number" class="form-input text-[10px] item-rate" value="0" data-idx="${idx}" placeholder="Rate" onchange="calcPOTotal()">
         </td>
         <td class="px-2 py-1 text-center">
           <button onclick="removeLineItem(this)" class="text-red-500 hover:text-red-700 transition">${iconX()}</button>
@@ -1192,7 +1232,7 @@
         var rateInput = this.closest('tr').querySelector('.item-rate');
         if (selectedItem && rateInput) {
           rateInput.value = selectedItem.price;
-          calcSOTotal();
+          calcPOTotal();
         }
       });
       select.dispatchEvent(new Event('change'));
@@ -1205,18 +1245,23 @@
       if (tbody && tbody.children.length === 0) {
         tbody.innerHTML = '<tr><td colspan="4" class="text-center py-3 text-gray-400 text-xs">No items added. Click "Add Item" to add products/services.</td></tr>';
       }
-      calcSOTotal();
+      calcPOTotal();
     }
 
-    function updateCustomerAddress() {
-      var customerId = document.getElementById('f_customer').value;
-      var customer = customers.find(function(c) { return c.id === customerId; });
-      if (customer && customer.address) {
-        document.getElementById('f_deliveryLocation').value = customer.address;
-      }
+    function updateVendorDetails() {
+      var vendorId = document.getElementById('f_vendor').value;
+      var vendor = vendors.find(function(v) { return v.id === vendorId; });
+      // Currency can be auto-set based on vendor (for foreign vendors)
     }
 
-    function calcSOTotal() {
+    function updateCurrency() {
+      var currency = document.getElementById('f_currency').value;
+      var rates = { INR: 1, USD: 83.5, EUR: 90.2, GBP: 105.8, AED: 22.7 };
+      document.getElementById('f_exchangeRate').value = rates[currency] || 1;
+      calcPOTotal();
+    }
+
+    function calcPOTotal() {
       var rows = document.querySelectorAll('#lineItemsBody .line-item-row');
       var subtotal = 0;
       rows.forEach(function(row) {
@@ -1227,35 +1272,42 @@
 
       var discount = parseFloat(document.getElementById('f_discount').value) || 0;
       var tax = parseFloat(document.getElementById('f_tax').value) || 0;
+      var exchangeRate = parseFloat(document.getElementById('f_exchangeRate').value) || 1;
+      var currency = document.getElementById('f_currency').value;
 
       var discountAmt = subtotal * (discount / 100);
       var afterDiscount = subtotal - discountAmt;
       var taxAmt = afterDiscount * (tax / 100);
       var total = afterDiscount + taxAmt;
 
-      document.getElementById('f_total').value = money(total);
+      var currencySymbol = getCurrencySymbol(currency);
+      document.getElementById('f_total').value = currencySymbol + Number(total).toLocaleString('en-IN');
+
+      var totalINR = total * exchangeRate;
+      document.getElementById('f_inrEquivalent').value = '₹' + Number(totalINR).toLocaleString('en-IN');
+
       return total;
     }
 
     // =============================================================
-    // SAVE / DELETE SALES ORDER
+    // SAVE / DELETE PURCHASE ORDER
     // =============================================================
 
-    function saveSO(existingId) {
+    function savePO(existingId) {
       var number = document.getElementById('f_number').value;
       var date = document.getElementById('f_date').value;
-      var customerId = document.getElementById('f_customer').value;
-      var deliveryLocation = document.getElementById('f_deliveryLocation').value || '';
+      var vendorId = document.getElementById('f_vendor').value;
       var expectedDelivery = document.getElementById('f_delivery').value;
+      var currency = document.getElementById('f_currency').value;
+      var exchangeRate = parseFloat(document.getElementById('f_exchangeRate').value) || 1;
       var paymentTerms = document.getElementById('f_paymentTerms').value;
       var status = document.getElementById('f_status').value;
-      var fulfillment = document.getElementById('f_fulfillment').value;
       var discount = parseFloat(document.getElementById('f_discount').value) || 0;
       var tax = parseFloat(document.getElementById('f_tax').value) || 0;
       var notes = document.getElementById('f_notes').value || '';
 
-      if (!date || !customerId || !expectedDelivery) {
-        showToast('Please fill all required fields (Date, Customer, Expected Delivery)', 'error');
+      if (!date || !vendorId || !expectedDelivery) {
+        showToast('Please fill all required fields (Date, Vendor, Expected Delivery)', 'error');
         return;
       }
 
@@ -1279,7 +1331,7 @@
       });
 
       if (itemsData.length === 0) {
-        showToast('Please add at least one item to the sales order', 'error');
+        showToast('Please add at least one item to the purchase order', 'error');
         return;
       }
 
@@ -1288,92 +1340,149 @@
       var afterDiscount = subtotal - discountAmt;
       var taxAmt = afterDiscount * (tax / 100);
       var total = afterDiscount + taxAmt;
+      var totalINR = total * exchangeRate;
 
-      var customer = customers.find(function(c) { return c.id === customerId; });
-      var customerName = customer ? customer.name : '';
+      var vendor = vendors.find(function(v) { return v.id === vendorId; });
+      var vendorName = vendor ? vendor.name : '';
+
+      // Initialize receivedQty
+      var receivedQty = {};
+      itemsData.forEach(function(item) {
+        receivedQty[item.itemId] = 0;
+      });
 
       if (existingId) {
-        var so = salesOrders.find(function(x) { return x.id === existingId; });
-        if (so) {
-          so.number = number;
-          so.date = date;
-          so.customerId = customerId;
-          so.customerName = customerName;
-          so.customerAddress = customer ? customer.address : '';
-          so.deliveryLocation = deliveryLocation || (customer ? customer.address : '');
-          so.expectedDelivery = expectedDelivery;
-          so.paymentTerms = paymentTerms;
-          so.status = status;
-          so.items = itemsData;
-          so.discount = discount;
-          so.tax = tax;
-          so.total = total;
-          so.fulfillmentStatus = fulfillment;
-          so.notes = notes;
-          showToast('Sales Order updated successfully', 'success');
+        var po = purchaseOrders.find(function(x) { return x.id === existingId; });
+        if (po) {
+          po.number = number;
+          po.date = date;
+          po.vendorId = vendorId;
+          po.vendorName = vendorName;
+          po.vendorGST = vendor ? vendor.gstin : '';
+          po.vendorState = vendor ? vendor.state : '';
+          po.vendorStateCode = vendor ? vendor.stateCode : '';
+          po.expectedDelivery = expectedDelivery;
+          po.paymentTerms = paymentTerms;
+          po.currency = currency;
+          po.exchangeRate = exchangeRate;
+          po.items = itemsData;
+          po.discount = discount;
+          po.tax = tax;
+          po.total = total;
+          po.totalINR = totalINR;
+          po.status = status;
+          po.notes = notes;
+          // Preserve received quantities
+          if (po.receivedQty) {
+            Object.keys(po.receivedQty).forEach(function(key) {
+              if (receivedQty.hasOwnProperty(key)) {
+                receivedQty[key] = po.receivedQty[key] || 0;
+              }
+            });
+          }
+          po.receivedQty = receivedQty;
+          showToast('Purchase Order updated successfully', 'success');
         }
       } else {
-        var newSO = {
-          id: 'SO-' + String(nextSONo++).padStart(3, '0'),
-          number: number || 'SO/25-26/' + String(salesOrders.length + 1).padStart(3, '0'),
+        var newPO = {
+          id: 'PO-' + String(nextPONo++).padStart(3, '0'),
+          number: number || 'PO/25-26/' + String(purchaseOrders.length + 1).padStart(3, '0'),
           date: date,
-          customerId: customerId,
-          customerName: customerName,
-          customerAddress: customer ? customer.address : '',
-          deliveryLocation: deliveryLocation || (customer ? customer.address : ''),
+          vendorId: vendorId,
+          vendorName: vendorName,
+          vendorGST: vendor ? vendor.gstin : '',
+          vendorState: vendor ? vendor.state : '',
+          vendorStateCode: vendor ? vendor.stateCode : '',
           expectedDelivery: expectedDelivery,
           paymentTerms: paymentTerms,
-          status: status,
+          currency: currency,
+          exchangeRate: exchangeRate,
           items: itemsData,
           discount: discount,
           tax: tax,
           total: total,
-          fulfillmentStatus: fulfillment,
+          totalINR: totalINR,
+          status: status,
+          receivedQty: receivedQty,
           notes: notes,
-          createdAt: date,
-          convertedFrom: null
+          createdAt: date
         };
-        salesOrders.unshift(newSO);
-        showToast('Sales Order created successfully', 'success');
+        purchaseOrders.unshift(newPO);
+        showToast('Purchase Order created successfully', 'success');
       }
 
       closeModal();
-      renderSalesOrders();
+      renderPO();
     }
 
-    function delSO(id) {
-      var so = salesOrders.find(function(x) { return x.id === id; });
-      if (!so) return;
+    function delPO(id) {
+      var po = purchaseOrders.find(function(x) { return x.id === id; });
+      if (!po) return;
 
       var modalContent = `
-        ${modalHeader('Delete Sales Order', so.number)}
+        ${modalHeader('Delete Purchase Order', po.number)}
         <div class="px-5 py-4 text-sm text-gray-600">
-          <p>Are you sure you want to permanently delete <b class="text-gray-800">${so.number}</b>?</p>
+          <p>Are you sure you want to permanently delete <b class="text-gray-800">${po.number}</b>?</p>
           <p class="text-gray-400 text-[11px] mt-1">This action cannot be undone. All associated data will be removed.</p>
-          <p class="text-amber-600 text-[11px] mt-2">Total Value: ${money(so.total)}</p>
+          <p class="text-amber-600 text-[11px] mt-2">Total Value: ${formatCurrency(po.total, po.currency)}</p>
         </div>
-        ${modalFooter('Delete', 'onclick="confirmDeleteSO(\'' + id + '\')"', '')}
+        ${modalFooter('Delete', 'onclick="confirmDeletePO(\'' + id + '\')"', '')}
       `;
       openModal(modalContent, { width: 'max-w-md' });
     }
 
-    function confirmDeleteSO(id) {
-      salesOrders = salesOrders.filter(function(x) { return x.id !== id; });
+    function confirmDeletePO(id) {
+      purchaseOrders = purchaseOrders.filter(function(x) { return x.id !== id; });
       closeModal();
-      renderSalesOrders();
-      showToast('Sales Order deleted successfully', 'warning');
+      renderPO();
+      showToast('Purchase Order deleted successfully', 'warning');
     }
 
     // =============================================================
     // ACTIONS
     // =============================================================
 
-    function approveSO(id) {
-      var so = salesOrders.find(function(x) { return x.id === id; });
-      if (!so) return;
-      so.status = 'approved';
-      renderSalesOrders();
-      showToast('Sales Order ' + so.number + ' approved!', 'success');
+    function sendPO(id) {
+      var po = purchaseOrders.find(function(x) { return x.id === id; });
+      if (!po) return;
+      po.status = 'sent';
+      renderPO();
+      showToast('Purchase Order ' + po.number + ' sent to vendor!', 'success');
+    }
+
+    function receivePO(id) {
+      var po = purchaseOrders.find(function(x) { return x.id === id; });
+      if (!po) return;
+
+      // Simple receive - mark all items as received
+      var allReceived = true;
+      po.items.forEach(function(item) {
+        if (po.receivedQty[item.itemId] === undefined) {
+          po.receivedQty[item.itemId] = 0;
+        }
+        if (po.receivedQty[item.itemId] < item.qty) {
+          po.receivedQty[item.itemId] = item.qty;
+          allReceived = false;
+        }
+      });
+
+      // Check if all items are fully received
+      var fullyReceived = true;
+      po.items.forEach(function(item) {
+        if ((po.receivedQty[item.itemId] || 0) < item.qty) {
+          fullyReceived = false;
+        }
+      });
+
+      if (fullyReceived) {
+        po.status = 'received';
+        showToast('All items received for ' + po.number + '!', 'success');
+      } else {
+        po.status = 'partial';
+        showToast('Items marked as received for ' + po.number + ' (Partial)', 'info');
+      }
+
+      renderPO();
     }
 
     // =============================================================
@@ -1386,8 +1495,8 @@
         var searchHtml = `
           <div class="hidden sm:flex flex-1 max-w-[420px] relative ml-4">
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">${iconSearch()}</span>
-            <input type="text" id="searchInput" placeholder="Search sales orders by number, customer…"
-              onkeyup="filterSalesOrders()"
+            <input type="text" id="searchInput" placeholder="Search purchase orders by number, vendor…"
+              onkeyup="filterPO()"
               class="w-full border border-gray-200 bg-gray-50 focus:bg-white rounded-lg pl-9 pr-3 py-1.5 text-xs outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition placeholder:text-gray-400">
           </div>
         `;
@@ -1406,7 +1515,6 @@
     // INIT
     // =============================================================
 
-    // Company details for SO preview
     var company = {
       name: 'Kunash Media Pvt. Ltd.',
       address: '401, Creative Hub, BKC, Bandra East, Mumbai - 400051',
@@ -1414,13 +1522,14 @@
       phone: '+91-9876543210'
     };
 
-    renderSalesOrders();
+    renderPO();
 
-    console.log('📄 Sales Orders Module Loaded Successfully');
-    console.log('📊 Total Sales Orders:', salesOrders.length);
-    console.log('📌 Status: Pending(' + salesOrders.filter(function(so) { return so.status === 'pending'; }).length +
-      '), Approved(' + salesOrders.filter(function(so) { return so.status === 'approved'; }).length +
-      '), Fulfilled(' + salesOrders.filter(function(so) { return so.status === 'fulfilled'; }).length + ')');
+    console.log('📄 Purchase Orders Module Loaded Successfully');
+    console.log('📊 Total POs:', purchaseOrders.length);
+    console.log('📌 Status: Draft(' + purchaseOrders.filter(function(po) { return po.status === 'draft'; }).length +
+      '), Sent(' + purchaseOrders.filter(function(po) { return po.status === 'sent'; }).length +
+      '), Received(' + purchaseOrders.filter(function(po) { return po.status === 'received'; }).length + ')');
+    console.log('🌐 Multi-Currency Support (Enhancement #2) enabled');
 
   </script>
 

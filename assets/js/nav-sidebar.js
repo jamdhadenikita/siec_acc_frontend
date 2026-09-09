@@ -174,14 +174,14 @@
     '      <img src="/assets/Images/company-logo.png" alt="Company logo" class="sidebar-logo-mark" />',
     '    </a>',
     '    <button type="button" id="sidebar-collapse-btn" class="sidebar-collapse-btn" aria-label="Collapse sidebar" title="Collapse sidebar">',
-    '      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>',
+    '      <i class="fa-solid fa-chevron-left"></i>',
     '    </button>',
     '  </div>',
     '  <nav class="sidebar-nav" aria-label="Primary">',
     '    <ul class="sidebar-nav-list">',
     '      <li class="sidebar-nav-item">',
     '        <a href="/dashboard/dashboard.html" class="sidebar-nav-link" data-page="dashboard">',
-    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"></rect><rect x="14" y="3" width="7" height="5" rx="1.5"></rect><rect x="14" y="12" width="7" height="9" rx="1.5"></rect><rect x="3" y="16" width="7" height="5" rx="1.5"></rect></svg></span>',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-gauge"></i></span>',
     '          <span class="sidebar-nav-label">Dashboard</span>',
     '          <span class="sidebar-tooltip">Dashboard</span>',
     '        </a>',
@@ -191,7 +191,7 @@
     '      <li class="sidebar-nav-heading"><span>Tools</span></li>',
     '      <li class="sidebar-nav-item">',
     '        <a href="/products/products.html" class="sidebar-nav-link" data-page="products">',
-    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></span>',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-box"></i></span>',
     '          <span class="sidebar-nav-label">Products</span>',
     '          <span class="sidebar-tooltip">Products</span>',
     '        </a>',
@@ -199,7 +199,7 @@
 
     '      <li class="sidebar-nav-item">',
     '        <a href="/vendors/vendors.html" class="sidebar-nav-link" data-page="vendors">',
-    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V7l8-4v18"></path><path d="M19 21V11l-6-4"></path><path d="M9 9v.01"></path><path d="M9 12v.01"></path><path d="M9 15v.01"></path><path d="M9 18v.01"></path></svg></span>',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-building"></i></span>',
     '          <span class="sidebar-nav-label">Vendors</span>',
     '          <span class="sidebar-tooltip">Vendors</span>',
     '        </a>',
@@ -207,43 +207,80 @@
 
     '      <li class="sidebar-nav-item">',
     '        <a href="/clients/clients.html" class="sidebar-nav-link" data-page="clients">',
-    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-users"></i></span>',
     '          <span class="sidebar-nav-label">Clients</span>',
     '          <span class="sidebar-tooltip">Clients</span>',
     '        </a>',
     '      </li>',
 
-
     '      <li class="sidebar-nav-item">',
     '        <a href="/quotations/quotations.html" class="sidebar-nav-link" data-page="quotations">',
-    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-file-lines"></i></span>',
     '          <span class="sidebar-nav-label">Quotation</span>',
     '          <span class="sidebar-tooltip">Quotation</span>',
     '        </a>',
     '      </li>',
 
-
     '      <li class="sidebar-nav-item">',
     '        <a href="/invoices/invoices.html" class="sidebar-nav-link" data-page="invoices">',
-    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2h16v20l-3-2-3 2-3-2-3 2-3-2-1 2z"></path><line x1="8" y1="7" x2="16" y2="7"></line><line x1="8" y1="11" x2="16" y2="11"></line><line x1="8" y1="15" x2="12" y2="15"></line></svg></span>',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-file-invoice"></i></span>',
     '          <span class="sidebar-nav-label">Invoices</span>',
     '          <span class="sidebar-tooltip">Invoices</span>',
     '        </a>',
     '      </li>',
 
-
     '      <li class="sidebar-nav-item">',
     '        <a href="/sales-orders/sales-orders.html" class="sidebar-nav-link" data-page="sales-orders">',
-    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></span>',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-cart-shopping"></i></span>',
     '          <span class="sidebar-nav-label">Sales Orders</span>',
     '          <span class="sidebar-tooltip">Sales Orders</span>',
     '        </a>',
     '      </li>',
 
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/deliveryChallan/deliveryChallan.html" class="sidebar-nav-link" data-page="deliveryChallan">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-truck"></i></span>',
+    '          <span class="sidebar-nav-label">Delivery Challan</span>',
+    '          <span class="sidebar-tooltip">Delivery Challan</span>',
+    '        </a>',
+    '      </li>',
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/purchaseOrders/purchaseOrders.html" class="sidebar-nav-link" data-page="purchaseOrders">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-truck-fast"></i></span>',
+    '          <span class="sidebar-nav-label">Purchase Orders</span>',
+    '          <span class="sidebar-tooltip">Purchase Orders</span>',
+    '        </a>',
+    '      </li>',
+
+    
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/purchaseBills/purchaseBills.html" class="sidebar-nav-link" data-page="purchaseBills">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-file-invoice-dollar"></i></span>',
+    '          <span class="sidebar-nav-label">Purchase Bills</span>',
+    '          <span class="sidebar-tooltip">Purchase Bills</span>',
+    '        </a>',
+    '      </li>',
+
+    '    <li class="sidebar-nav-item">',
+    '        <a href="/inventory/inventory.html" class="sidebar-nav-link" data-page="inventory">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-boxes-stacked"></i></span>',
+    '          <span class="sidebar-nav-label">Inventory</span>',
+    '          <span class="sidebar-tooltip">Inventory</span>',
+    '        </a>',
+    '      </li>',
+
+    '     <li class="sidebar-nav-item">',
+    '        <a href="/expenses/expenses.html" class="sidebar-nav-link" data-page="expenses">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-money-bill-wave"></i></span>',
+    '          <span class="sidebar-nav-label">Expenses</span>',
+    '          <span class="sidebar-tooltip">Expenses</span>',
+    '        </a>',
+    '      </li>',
 
     '      <li class="sidebar-nav-item">',
     '        <a href="/settings/settings.html" class="sidebar-nav-link" data-page="settings">',
-    '          <span class="sidebar-nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-gear"></i></span>',
     '          <span class="sidebar-nav-label">Settings</span>',
     '          <span class="sidebar-tooltip">Settings</span>',
     '        </a>',
@@ -256,7 +293,7 @@
     '    <div class="text-sm m-4 text-gray-600">© 2026 Kunash Media Solutions</div>',
     '  <div class="sidebar-foot">',
     '    <button type="button" id="sidebar-expand-btn" class="sidebar-expand-btn" aria-label="Expand sidebar" title="Expand sidebar">',
-    '      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>',
+    '      <i class="fa-solid fa-chevron-right"></i>',
     '    </button>',
     '  </div>',
     '</aside>',
@@ -264,7 +301,7 @@
     '<header id="app-topbar" class="app-topbar">',
     '  <div class="topbar-left">',
     '    <button type="button" id="mobile-menu-btn" class="icon-btn mobile-only" aria-label="Open menu">',
-    '      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>',
+    '      <i class="fa-solid fa-bars"></i>',
     '    </button>',
     '    <h1 id="topbar-page-title" class="topbar-page-title">Dashboard</h1>',
     '  </div>',
@@ -280,7 +317,7 @@
     '          <span id="profile-name" class="profile-name">Admin User</span>',
     '          <span id="profile-role" class="profile-role">Administrator</span>',
     '        </span>',
-    '        <svg class="profile-caret desktop-only" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>',
+    '        <i class="fa-solid fa-chevron-down profile-caret desktop-only"></i>',
     '      </button>',
     '      <div id="profile-dropdown" class="profile-dropdown" role="menu">',
     '        <div class="profile-dropdown-header">',
@@ -290,7 +327,7 @@
     '        <div class="profile-dropdown-divider"></div>',
     '        <div class="profile-dropdown-divider"></div>',
     '        <button type="button" id="logout-trigger" class="profile-dropdown-item profile-dropdown-item-danger" role="menuitem">',
-    '          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>',
+    '          <i class="fa-solid fa-arrow-right-from-bracket"></i>',
     '          <span>Logout</span>',
     '        </button>',
     '      </div>',
@@ -302,7 +339,7 @@
     '  <div class="confirm-overlay-backdrop" data-close-logout></div>',
     '  <div class="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="logout-dialog-title">',
     '    <div class="confirm-dialog-icon">',
-    '      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>',
+    '      <i class="fa-solid fa-arrow-right-from-bracket"></i>',
     '    </div>',
     '    <h2 id="logout-dialog-title" class="confirm-dialog-title">Log out?</h2>',
     '    <p class="confirm-dialog-text">You\'ll need to sign in again to access the admin panel.</p>',
@@ -340,19 +377,38 @@
       //   return;
       // }
 
+      // Injecting the markup is the one step that must succeed for
+      // anything else to make sense — if it fails, bail out entirely.
       try {
         this._inject(NAV_SIDEBAR_TEMPLATE);
-        this._applyUser();
-        this._applyActiveLink();
-        this._bindCollapseToggle();
-        this._bindMobileNav();
-        this._bindProfileMenu();
-        this._bindLogoutOverlay();
-        this._paintReady();
       } catch (err) {
-        console.error("[nav-sidebar] failed to render:", err);
+        console.error("[nav-sidebar] failed to inject markup:", err);
         this._paintReady();
+        return;
       }
+
+      // Every other step gets its OWN try/catch. Previously these were
+      // all in one block, so a failure early on (e.g. a corrupted
+      // localStorage admin blob in _applyUser) silently skipped
+      // _applyActiveLink and every step after it — which is why the
+      // active nav highlight could appear to "randomly" stop working.
+      var steps = [
+        "_applyUser",
+        "_applyActiveLink",
+        "_bindCollapseToggle",
+        "_bindMobileNav",
+        "_bindProfileMenu",
+        "_bindLogoutOverlay",
+      ];
+      for (var i = 0; i < steps.length; i++) {
+        try {
+          this[steps[i]]();
+        } catch (err) {
+          console.error("[nav-sidebar] " + steps[i] + " failed:", err);
+        }
+      }
+
+      this._paintReady();
     },
 
     _inject: function (html) {
@@ -446,11 +502,42 @@
     },
 
     _applyActiveLink: function () {
-      var page = this._config.activePage;
-      if (!page) return;
       var links = document.querySelectorAll(".sidebar-nav-link[data-page]");
+      var page = this._config.activePage;
+      var matched = false;
+
+      // Primary: match the configured activePage against data-page,
+      // case-insensitively (so "deliverychallan" still matches
+      // data-page="deliveryChallan" instead of silently matching nothing).
+      if (page) {
+        var pageLower = String(page).toLowerCase();
+        links.forEach(function (link) {
+          var linkPage = (link.getAttribute("data-page") || "").toLowerCase();
+          if (linkPage === pageLower) {
+            link.classList.add("active");
+            link.setAttribute("aria-current", "page");
+            matched = true;
+          }
+        });
+      }
+
+      if (matched) return;
+
+      // Fallback: no activePage was passed, or it didn't match anything —
+      // auto-detect the active link by comparing each link's URL path to
+      // the current page's path. This means highlighting still works
+      // correctly without relying on activePage being spelled exactly
+      // right on every page.
+      var currentPath = window.location.pathname.replace(/\/+$/, "").toLowerCase();
       links.forEach(function (link) {
-        if (link.getAttribute("data-page") === page) {
+        var href = link.getAttribute("href") || "";
+        var linkPath;
+        try {
+          linkPath = new URL(href, window.location.origin).pathname.replace(/\/+$/, "").toLowerCase();
+        } catch (e) {
+          return; // malformed href, skip
+        }
+        if (linkPath && linkPath === currentPath) {
           link.classList.add("active");
           link.setAttribute("aria-current", "page");
         }
