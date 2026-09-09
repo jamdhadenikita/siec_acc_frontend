@@ -7,14 +7,9 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
 <link rel="manifest" href="/favicon_io/site.webmanifest">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Settings</title>
+<title>Organization Setup — Aquilon ERP</title>
 
-<!--
-  ANTI-FLICKER SCRIPT — must be the first thing in <head>, before any
-  stylesheet. It reads the saved collapse state synchronously and sets
-  it on <html> so the sidebar is the correct width on the very first
-  paint. Copy this exact block, unchanged, to the top of every admin page.
--->
+<!-- ANTI-FLICKER SCRIPT -->
 <script>
   (function () {
     try {
@@ -26,7 +21,7 @@
   })();
 </script>
 
-<!-- Tailwind (utility classes for page content) -->
+<!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -41,8 +36,230 @@
   };
 </script>
 
-<!-- Shell styling (sidebar / topbar / overlays) — source of truth, loads after Tailwind -->
+<!-- Shell styling -->
 <link rel="stylesheet" href="/assets/css/nav-sidebar.css" />
+
+<!-- Page-specific styles -->
+<style>
+  .form-input {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #fafafa;
+    color: #1a1a2e;
+  }
+  .form-input:focus {
+    border-color: #6da84c;
+    box-shadow: 0 0 0 3px rgba(109, 168, 76, 0.15);
+    background: #ffffff;
+  }
+  .form-input:disabled {
+    background: #f3f4f6;
+    cursor: not-allowed;
+  }
+  .form-label {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #374151;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .form-label .required { color: #ef4444; margin-left: 2px; }
+  .form-hint { font-size: 10.5px; color: #9ca3af; margin-top: 3px; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .badge-green { background: #dcfce7; color: #166534; }
+  .badge-amber { background: #fef3c7; color: #92400e; }
+  .badge-gray { background: #f1f5f9; color: #475569; }
+  .badge-blue { background: #dbeafe; color: #1e40af; }
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .badge-dot-green { background: #22c55e; }
+  .badge-dot-amber { background: #f59e0b; }
+  .badge-dot-gray { background: #94a3b8; }
+  .badge-dot-blue { background: #3b82f6; }
+
+  .stat-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  .table-row-hover:hover {
+    background: #f8fafc;
+  }
+
+  .modal-tab-btn {
+    transition: all 0.2s ease;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    color: #6b7280;
+    cursor: pointer;
+    background: transparent;
+  }
+  .modal-tab-btn.active {
+    color: #6da84c;
+    border-bottom-color: #6da84c;
+  }
+  .modal-tab-btn:hover:not(.active) {
+    color: #1f2937;
+    border-bottom-color: #d1d5db;
+  }
+  .modal-tab-panel { display: none; }
+  .modal-tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.96) translateY(6px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .animate-modal { animation: modalIn 0.18s ease; }
+
+  .btn-icon-action {
+    transition: all 0.15s ease;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-icon-action:hover {
+    background: #f1f5f9;
+    color: #6da84c;
+  }
+  .btn-icon-action.danger:hover {
+    background: #fee2e2;
+    color: #ef4444;
+  }
+
+  .toast {
+    animation: fadeIn 0.2s ease;
+  }
+  .toast-success { background: #16a34a; }
+  .toast-error { background: #dc2626; }
+  .toast-warning { background: #f59e0b; }
+  .toast-info { background: #6da84c; }
+
+  .modal-scroll {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  .modal-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+  .modal-scroll::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+  }
+
+  .empty-icon-svg {
+    opacity: 0.2;
+    width: 48px;
+    height: 48px;
+    color: #94a3b8;
+  }
+
+  /* Tabs inside page */
+  .page-tab-btn {
+    transition: all 0.2s ease;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    color: #6b7280;
+    cursor: pointer;
+    background: transparent;
+  }
+  .page-tab-btn.active {
+    color: #6da84c;
+    border-bottom-color: #6da84c;
+    font-weight: 600;
+  }
+  .page-tab-btn:hover:not(.active) {
+    color: #1f2937;
+    border-bottom-color: #d1d5db;
+  }
+  .page-tab-panel { display: none; }
+  .page-tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+  /* Logo upload */
+  .logo-upload-area {
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: pointer;
+  }
+  .logo-upload-area:hover {
+    border-color: #6da84c;
+    background: #f8fafc;
+  }
+  .logo-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin: 0 auto;
+    display: block;
+    background: #f1f5f9;
+  }
+
+  /* Unit card */
+  .unit-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 14px 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .unit-card:hover {
+    border-color: #6da84c;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Custom field item */
+  .custom-field-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    transition: border-color 0.2s;
+  }
+  .custom-field-item:hover {
+    border-color: #6da84c;
+  }
+</style>
 </head>
 
 <body class="bg-gray-50 text-gray-800 antialiased">
@@ -55,34 +272,1062 @@
       <!-- Top bar gets injected here -->
       <div id="topbar-root"></div>
 
-      <!-- ============= PAGE CONTENT STARTS HERE ============= -->
+      <!-- ========================================================== -->
+      <!-- ============= PAGE CONTENT STARTS HERE ==================== -->
+      <!-- ========================================================== -->
       <main class="p-4 sm:p-6 lg:p-8">
-        <div class="max-w-6xl mx-auto">
-          <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-            <h2 class="text-base font-semibold text-gray-800 mb-1">Settings</h2>
-            <p class="text-sm text-gray-500">
-              Placeholder page template
-            </p>
+
+        <!-- Toast Container -->
+        <div id="toastWrap" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2 items-end"></div>
+
+        <!-- Modal Root -->
+        <div id="modalRoot"></div>
+
+        <div class="max-w-7xl mx-auto">
+
+          <!-- Page Header -->
+          <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
+            <div>
+              <div class="text-[11px] font-semibold tracking-wide uppercase text-primary">System</div>
+              <h1 class="text-[24px] sm:text-[28px] font-bold tracking-tight text-gray-900">Organization Setup</h1>
+              <p class="text-[13px] text-gray-500 mt-1">Configure your company profile, GST, financial settings, branches and custom fields.</p>
+            </div>
+            <div class="flex gap-2.5 flex-wrap">
+              <button onclick="saveCompany()" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-[13px] font-semibold px-5 py-2.5 rounded-lg transition shadow-sm">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                  <path d="M17 21v-8H7v8"/>
+                  <path d="M7 3v5h8"/>
+                </svg>
+                Save Settings
+              </button>
+              <button onclick="resetSettings()" class="inline-flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[13px] font-semibold px-4 py-2.5 rounded-lg transition">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 12a9 9 0 109-9 9 9 0 00-9 9z"/>
+                  <path d="M12 8v4l3 3"/>
+                </svg>
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <!-- ========================================================== -->
+          <!-- TABS -->
+          <!-- ========================================================== -->
+          <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+
+            <!-- Tab Headers -->
+            <div class="flex overflow-x-auto border-b border-gray-200 px-4 pt-2 gap-1" id="pageTabs">
+              <button class="page-tab-btn active" data-tab="tab-general">
+                <svg class="w-4 h-4 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                General
+              </button>
+              <button class="page-tab-btn" data-tab="tab-tax">
+                <svg class="w-4 h-4 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/>
+                  <path d="M9 12l2 2 4-4"/>
+                </svg>
+                Tax & GST
+              </button>
+              <button class="page-tab-btn" data-tab="tab-financial">
+                <svg class="w-4 h-4 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 21h18"/>
+                  <path d="M5 21V10M10 21V10M14 21V10M19 21V10"/>
+                  <path d="M2 10l10-6 10 6"/>
+                </svg>
+                Financial
+              </button>
+              <button class="page-tab-btn" data-tab="tab-units">
+                <svg class="w-4 h-4 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/>
+                  <path d="M3 12h18"/>
+                </svg>
+                Units / Branches
+                <span class="ml-1.5 text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full">3</span>
+              </button>
+              <button class="page-tab-btn" data-tab="tab-custom">
+                <svg class="w-4 h-4 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 5v14M5 12h14"/>
+                </svg>
+                Custom Fields
+                <span class="ml-1.5 text-[10px] bg-amber-500 text-white px-1.5 py-0.5 rounded-full">4</span>
+              </button>
+              <button class="page-tab-btn" data-tab="tab-templates">
+                <svg class="w-4 h-4 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/>
+                  <path d="M14 2v6h6"/>
+                </svg>
+                Templates
+              </button>
+              <button class="page-tab-btn" data-tab="tab-email">
+                <svg class="w-4 h-4 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <path d="M22 6l-10 7L2 6"/>
+                </svg>
+                Email
+              </button>
+            </div>
+
+            <!-- ========================================================== -->
+            <!-- TAB PANELS -->
+            <!-- ========================================================== -->
+            <div class="p-5">
+
+              <!-- ========================================================== -->
+              <!-- TAB 1: GENERAL -->
+              <!-- ========================================================== -->
+              <div id="tab-general" class="page-tab-panel active">
+
+                <div class="grid md:grid-cols-3 gap-6">
+
+                  <!-- Logo Upload -->
+                  <div class="md:col-span-1">
+                    <label class="form-label">Company Logo</label>
+                    <div class="logo-upload-area" onclick="document.getElementById('logoInput').click()">
+                      <div class="w-28 h-28 mx-auto rounded-lg bg-gray-100 flex items-center justify-center text-4xl font-bold text-primary/40" id="logoPreview">
+                        KM
+                      </div>
+                      <input type="file" id="logoInput" accept="image/*" class="hidden" onchange="previewLogo(event)">
+                      <p class="text-[11px] text-gray-400 mt-2">PNG, JPG or SVG • Max 2MB</p>
+                      <button type="button" class="mt-2 text-[12px] font-semibold text-primary hover:underline">Choose File</button>
+                    </div>
+                  </div>
+
+                  <!-- Company Details -->
+                  <div class="md:col-span-2 space-y-4">
+                    <div class="grid sm:grid-cols-2 gap-4">
+                      <div>
+                        <label class="form-label">Legal Company Name <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="compLegalName" value="Kunash Media Pvt. Ltd." placeholder="Enter legal name">
+                      </div>
+                      <div>
+                        <label class="form-label">Display Name <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="compDisplayName" value="Kunash Media" placeholder="Display name">
+                      </div>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                      <div>
+                        <label class="form-label">Company Type</label>
+                        <select class="form-input" id="compType">
+                          <option>Proprietorship</option>
+                          <option>Partnership</option>
+                          <option selected>Pvt Ltd</option>
+                          <option>LLP</option>
+                          <option>Public Ltd</option>
+                          <option>NGO / Trust</option>
+                          <option>Freelancer</option>
+                          <option>Others</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="form-label">Registration Number (CIN/LLPIN)</label>
+                        <input type="text" class="form-input" id="compRegNo" value="U72200MH2020PTC123456" placeholder="e.g., U12345MH2020PTC123456">
+                      </div>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                      <div>
+                        <label class="form-label">Company Email <span class="required">*</span></label>
+                        <input type="email" class="form-input" id="compEmail" value="info@kunashmedia.com" placeholder="company@domain.com">
+                      </div>
+                      <div>
+                        <label class="form-label">Contact Number <span class="required">*</span></label>
+                        <input type="tel" class="form-input" id="compPhone" value="+91-9876543210" placeholder="+91-XXXXXXXXXX">
+                      </div>
+                    </div>
+                    <div>
+                      <label class="form-label">Website</label>
+                      <input type="url" class="form-input" id="compWebsite" value="https://www.kunashmedia.com" placeholder="https://example.com">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Address Section -->
+                <div class="mt-6 pt-6 border-t border-gray-100">
+                  <h4 class="text-[14px] font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    Registered Address
+                  </h4>
+                  <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="sm:col-span-2">
+                      <label class="form-label">Address Line 1 <span class="required">*</span></label>
+                      <input type="text" class="form-input" id="compAddr1" value="401, Creative Hub, BKC" placeholder="Building, Street">
+                    </div>
+                    <div>
+                      <label class="form-label">Address Line 2</label>
+                      <input type="text" class="form-input" id="compAddr2" value="Bandra East" placeholder="Locality, Area">
+                    </div>
+                    <div>
+                      <label class="form-label">City <span class="required">*</span></label>
+                      <input type="text" class="form-input" id="compCity" value="Mumbai" placeholder="City name">
+                    </div>
+                    <div>
+                      <label class="form-label">State <span class="required">*</span></label>
+                      <select class="form-input" id="compState" onchange="updateStateCode()">
+                        <option value="Maharashtra" selected>Maharashtra</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="form-label">State Code <span class="required">*</span></label>
+                      <input type="text" class="form-input" id="compStateCode" value="27" disabled>
+                      <div class="form-hint">Auto-filled from state selection</div>
+                    </div>
+                    <div>
+                      <label class="form-label">Pincode <span class="required">*</span></label>
+                      <input type="number" class="form-input" id="compPincode" value="400051" placeholder="6-digit PIN">
+                    </div>
+                    <div>
+                      <label class="form-label">Country</label>
+                      <select class="form-input" id="compCountry">
+                        <option selected>India</option>
+                        <option>United States</option>
+                        <option>United Kingdom</option>
+                        <option>UAE</option>
+                        <option>Singapore</option>
+                        <option>Australia</option>
+                        <option>Canada</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Date of Incorporation -->
+                <div class="mt-4 grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="form-label">Date of Incorporation</label>
+                    <input type="date" class="form-input" id="compIncDate" value="2020-08-15">
+                  </div>
+                  <div>
+                    <label class="form-label">Time Zone</label>
+                    <select class="form-input" id="compTimezone">
+                      <option selected>IST (GMT+5:30)</option>
+                      <option>UTC (GMT+0:00)</option>
+                      <option>EST (GMT-5:00)</option>
+                      <option>PST (GMT-8:00)</option>
+                      <option>GMT (GMT+0:00)</option>
+                      <option>CST (GMT-6:00)</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- ========================================================== -->
+              <!-- TAB 2: TAX & GST -->
+              <!-- ========================================================== -->
+              <div id="tab-tax" class="page-tab-panel">
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="form-label">GSTIN (GST Number)</label>
+                    <input type="text" class="form-input" id="gstGstin" value="27AABCU1234D1ZP" placeholder="15-digit GSTIN">
+                    <div class="form-hint">Format: 2-digit state code + 10-digit PAN + 3-digit entity code</div>
+                  </div>
+                  <div>
+                    <label class="form-label">PAN Number <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="gstPan" value="AABCU1234D" placeholder="10-digit PAN">
+                  </div>
+                  <div>
+                    <label class="form-label">GST Registration Type</label>
+                    <select class="form-input" id="gstRegType">
+                      <option selected>Regular</option>
+                      <option>Composition</option>
+                      <option>Unregistered</option>
+                      <option>Export-Oriented</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">Tax Payment Method</label>
+                    <select class="form-input" id="gstPayMethod">
+                      <option selected>Both (Cash & Credit)</option>
+                      <option>Cash Only</option>
+                      <option>Credit Only</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">Default Place of Supply</label>
+                    <select class="form-input" id="gstPlaceSupply">
+                      <option selected>Maharashtra</option>
+                      <option>Delhi</option>
+                      <option>Karnataka</option>
+                      <option>Tamil Nadu</option>
+                      <option>Gujarat</option>
+                      <option>Uttar Pradesh</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">Tax Calculation Method</label>
+                    <select class="form-input" id="gstCalcMethod">
+                      <option selected>Exclusive (Tax added to price)</option>
+                      <option>Inclusive (Tax included in price)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">HSN/SAC Applicability</label>
+                    <div class="flex items-center gap-4 mt-1.5">
+                      <label class="flex items-center gap-2 text-[13px]">
+                        <input type="radio" name="hsn" value="enabled" checked> <span class="font-medium">Enabled</span>
+                      </label>
+                      <label class="flex items-center gap-2 text-[13px]">
+                        <input type="radio" name="hsn" value="disabled"> <span class="font-medium">Disabled</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="form-label">Reverse Charge (RCM) Applicable</label>
+                    <div class="flex items-center gap-4 mt-1.5">
+                      <label class="flex items-center gap-2 text-[13px]">
+                        <input type="radio" name="rcm" value="yes"> <span class="font-medium">Yes</span>
+                      </label>
+                      <label class="flex items-center gap-2 text-[13px]">
+                        <input type="radio" name="rcm" value="no" checked> <span class="font-medium">No</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tax Rates Configuration -->
+                <div class="mt-6 pt-6 border-t border-gray-100">
+                  <h4 class="text-[14px] font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/>
+                      <path d="M9 12l2 2 4-4"/>
+                    </svg>
+                    Tax Rate Configuration
+                  </h4>
+                  <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div>
+                      <label class="form-label">GST Rate 1</label>
+                      <select class="form-input">
+                        <option>0% (Nil/Exempt)</option>
+                        <option selected>5%</option>
+                        <option>12%</option>
+                        <option>18%</option>
+                        <option>28%</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="form-label">GST Rate 2</label>
+                      <select class="form-input">
+                        <option>0% (Nil/Exempt)</option>
+                        <option>5%</option>
+                        <option selected>12%</option>
+                        <option>18%</option>
+                        <option>28%</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="form-label">GST Rate 3</label>
+                      <select class="form-input">
+                        <option>0% (Nil/Exempt)</option>
+                        <option>5%</option>
+                        <option>12%</option>
+                        <option selected>18%</option>
+                        <option>28%</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="form-label">GST Rate 4</label>
+                      <select class="form-input">
+                        <option>0% (Nil/Exempt)</option>
+                        <option>5%</option>
+                        <option>12%</option>
+                        <option>18%</option>
+                        <option selected>28%</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ========================================================== -->
+              <!-- TAB 3: FINANCIAL -->
+              <!-- ========================================================== -->
+              <div id="tab-financial" class="page-tab-panel">
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="form-label">Financial Year Start <span class="required">*</span></label>
+                    <input type="date" class="form-input" id="fyStart" value="2025-04-01">
+                  </div>
+                  <div>
+                    <label class="form-label">Financial Year End <span class="required">*</span></label>
+                    <input type="date" class="form-input" id="fyEnd" value="2026-03-31">
+                  </div>
+                  <div>
+                    <label class="form-label">Base Currency <span class="required">*</span></label>
+                    <select class="form-input" id="baseCurrency">
+                      <option selected>INR (₹) — Indian Rupee</option>
+                      <option>USD ($) — US Dollar</option>
+                      <option>EUR (€) — Euro</option>
+                      <option>GBP (£) — British Pound</option>
+                      <option>AED (د.إ) — UAE Dirham</option>
+                      <option>SGD (S$) — Singapore Dollar</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">Secondary Currencies (Multi-Currency)</label>
+                    <select class="form-input" id="secondaryCurrencies" multiple>
+                      <option selected>USD ($)</option>
+                      <option>EUR (€)</option>
+                      <option selected>GBP (£)</option>
+                      <option>AED (د.إ)</option>
+                      <option>SGD (S$)</option>
+                    </select>
+                    <div class="form-hint">Hold Ctrl/Cmd to select multiple</div>
+                  </div>
+                  <div>
+                    <label class="form-label">Exchange Rate Update Method</label>
+                    <select class="form-input" id="exchangeMethod">
+                      <option selected>Manual</option>
+                      <option>API Auto-Update (RBI)</option>
+                      <option>API Auto-Update (Google)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">Accounting Method</label>
+                    <select class="form-input" id="accountingMethod">
+                      <option selected>Accrual (Mercantile)</option>
+                      <option>Cash (Cash Basis)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">Fiscal Year Locking</label>
+                    <div class="flex items-center gap-4 mt-1.5">
+                      <label class="flex items-center gap-2 text-[13px]">
+                        <input type="radio" name="fyLock" value="locked"> <span class="font-medium">Locked</span>
+                      </label>
+                      <label class="flex items-center gap-2 text-[13px]">
+                        <input type="radio" name="fyLock" value="unlocked" checked> <span class="font-medium">Unlocked</span>
+                      </label>
+                    </div>
+                    <div class="form-hint">Locking prevents editing of previous year's entries</div>
+                  </div>
+                  <div>
+                    <label class="form-label">Date Format</label>
+                    <select class="form-input" id="dateFormat">
+                      <option selected>DD-MM-YYYY</option>
+                      <option>MM-DD-YYYY</option>
+                      <option>YYYY-MM-DD</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Numbering Prefixes -->
+                <div class="mt-6 pt-6 border-t border-gray-100">
+                  <h4 class="text-[14px] font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M4 4.5A2.5 2.5 0 016.5 2H20v18H6.5A2.5 2.5 0 014 17.5v-13z"/>
+                      <path d="M4 17.5A2.5 2.5 0 016.5 20H20"/>
+                    </svg>
+                    Document Numbering
+                  </h4>
+                  <div class="grid sm:grid-cols-3 gap-4">
+                    <div>
+                      <label class="form-label">Invoice Prefix</label>
+                      <input type="text" class="form-input" id="prefixInvoice" value="INV/25-26/">
+                    </div>
+                    <div>
+                      <label class="form-label">Purchase Bill Prefix</label>
+                      <input type="text" class="form-input" id="prefixPurchase" value="PUR/25-26/">
+                    </div>
+                    <div>
+                      <label class="form-label">Sales Order Prefix</label>
+                      <input type="text" class="form-input" id="prefixSO" value="SO/25-26/">
+                    </div>
+                    <div>
+                      <label class="form-label">Purchase Order Prefix</label>
+                      <input type="text" class="form-input" id="prefixPO" value="PO/25-26/">
+                    </div>
+                    <div>
+                      <label class="form-label">Delivery Challan Prefix</label>
+                      <input type="text" class="form-input" id="prefixDC" value="DC/25-26/">
+                    </div>
+                    <div>
+                      <label class="form-label">Estimate Prefix</label>
+                      <input type="text" class="form-input" id="prefixEst" value="EST/25-26/">
+                    </div>
+                    <div>
+                      <label class="form-label">Payment Receipt Prefix</label>
+                      <input type="text" class="form-input" id="prefixReceipt" value="REC/25-26/">
+                    </div>
+                    <div>
+                      <label class="form-label">Journal Voucher Prefix</label>
+                      <input type="text" class="form-input" id="prefixJV" value="JV/25-26/">
+                    </div>
+                    <div>
+                      <label class="form-label">Starting Number</label>
+                      <input type="number" class="form-input" id="startNumber" value="1">
+                    </div>
+                    <div>
+                      <label class="form-label">Numbering Reset Cycle</label>
+                      <select class="form-input" id="resetCycle">
+                        <option selected>Yearly</option>
+                        <option>Monthly</option>
+                        <option>Never</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ========================================================== -->
+              <!-- TAB 4: UNITS / BRANCHES (Multi-Unit Support) -->
+              <!-- ========================================================== -->
+              <div id="tab-units" class="page-tab-panel">
+                <div class="flex items-center justify-between mb-4">
+                  <div>
+                    <h4 class="text-[14px] font-semibold text-gray-800">Branches, Offices &amp; Warehouses</h4>
+                    <p class="text-[12px] text-gray-500">Manage all physical locations of your business</p>
+                  </div>
+                  <button onclick="openUnitModal()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[12px] font-semibold px-3.5 py-2 rounded-lg transition">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                    Add New Unit
+                  </button>
+                </div>
+
+                <!-- Units Table -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                  <table class="w-full text-[13px]">
+                    <thead class="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Unit Name</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Code</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">City</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Type</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Default</th>
+                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Status</th>
+                        <th class="px-4 py-3 text-right font-semibold text-gray-600">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100" id="unitsTableBody">
+                      <!-- Unit 1 -->
+                      <tr class="table-row-hover">
+                        <td class="px-4 py-3 font-medium text-gray-800">Head Office - Mumbai</td>
+                        <td class="px-4 py-3 font-mono text-[12px] text-gray-500">HO-MUM</td>
+                        <td class="px-4 py-3">Mumbai</td>
+                        <td class="px-4 py-3"><span class="text-[11px] px-2 py-0.5 rounded-full bg-primary-soft text-primary-dark font-semibold">Head Office</span></td>
+                        <td class="px-4 py-3"><span class="w-5 h-5 rounded-full bg-green-500 text-white flex items-center justify-center text-[11px]">✓</span></td>
+                        <td class="px-4 py-3"><span class="badge badge-green">Active</span></td>
+                        <td class="px-4 py-3 text-right">
+                          <button onclick="editUnit('HO-MUM')" class="btn-icon-action" title="Edit">${iconEdit()}</button>
+                          <button onclick="deleteUnit('HO-MUM')" class="btn-icon-action danger" title="Delete">${iconTrash()}</button>
+                        </td>
+                      </tr>
+                      <!-- Unit 2 -->
+                      <tr class="table-row-hover">
+                        <td class="px-4 py-3 font-medium text-gray-800">Branch Office - Pune</td>
+                        <td class="px-4 py-3 font-mono text-[12px] text-gray-500">BR-PUN</td>
+                        <td class="px-4 py-3">Pune</td>
+                        <td class="px-4 py-3"><span class="text-[11px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-semibold">Branch</span></td>
+                        <td class="px-4 py-3"><span class="w-5 h-5 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center text-[11px]">—</span></td>
+                        <td class="px-4 py-3"><span class="badge badge-green">Active</span></td>
+                        <td class="px-4 py-3 text-right">
+                          <button onclick="editUnit('BR-PUN')" class="btn-icon-action" title="Edit">${iconEdit()}</button>
+                          <button onclick="deleteUnit('BR-PUN')" class="btn-icon-action danger" title="Delete">${iconTrash()}</button>
+                        </td>
+                      </tr>
+                      <!-- Unit 3 -->
+                      <tr class="table-row-hover">
+                        <td class="px-4 py-3 font-medium text-gray-800">Warehouse - Bhiwandi</td>
+                        <td class="px-4 py-3 font-mono text-[12px] text-gray-500">WH-BHI</td>
+                        <td class="px-4 py-3">Bhiwandi</td>
+                        <td class="px-4 py-3"><span class="text-[11px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 font-semibold">Warehouse</span></td>
+                        <td class="px-4 py-3"><span class="w-5 h-5 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center text-[11px]">—</span></td>
+                        <td class="px-4 py-3"><span class="badge badge-amber">Inactive</span></td>
+                        <td class="px-4 py-3 text-right">
+                          <button onclick="editUnit('WH-BHI')" class="btn-icon-action" title="Edit">${iconEdit()}</button>
+                          <button onclick="deleteUnit('WH-BHI')" class="btn-icon-action danger" title="Delete">${iconTrash()}</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- ========================================================== -->
+              <!-- TAB 5: CUSTOM FIELDS (Dynamic) -->
+              <!-- ========================================================== -->
+              <div id="tab-custom" class="page-tab-panel">
+                <div class="flex items-center justify-between mb-4">
+                  <div>
+                    <h4 class="text-[14px] font-semibold text-gray-800">Custom Fields</h4>
+                    <p class="text-[12px] text-gray-500">Add industry-specific fields for your business</p>
+                  </div>
+                  <button onclick="openCustomFieldModal()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[12px] font-semibold px-3.5 py-2 rounded-lg transition">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                    Add Field
+                  </button>
+                </div>
+
+                <!-- Custom Fields List -->
+                <div class="space-y-3" id="customFieldsList">
+                  <div class="custom-field-item">
+                    <div>
+                      <span class="font-semibold text-gray-800">Industry Type</span>
+                      <span class="text-[11px] ml-3 px-2 py-0.5 rounded bg-primary-soft text-primary-dark">Text</span>
+                      <span class="text-[12px] text-gray-500 ml-3">Value: Digital Marketing</span>
+                    </div>
+                    <div class="flex gap-1.5">
+                      <button onclick="editCustomField('Industry Type')" class="btn-icon-action" title="Edit">${iconEdit()}</button>
+                      <button onclick="deleteCustomField('Industry Type')" class="btn-icon-action danger" title="Delete">${iconTrash()}</button>
+                    </div>
+                  </div>
+                  <div class="custom-field-item">
+                    <div>
+                      <span class="font-semibold text-gray-800">Number of Employees</span>
+                      <span class="text-[11px] ml-3 px-2 py-0.5 rounded bg-amber-100 text-amber-700">Number</span>
+                      <span class="text-[12px] text-gray-500 ml-3">Value: 50</span>
+                    </div>
+                    <div class="flex gap-1.5">
+                      <button onclick="editCustomField('Number of Employees')" class="btn-icon-action" title="Edit">${iconEdit()}</button>
+                      <button onclick="deleteCustomField('Number of Employees')" class="btn-icon-action danger" title="Delete">${iconTrash()}</button>
+                    </div>
+                  </div>
+                  <div class="custom-field-item">
+                    <div>
+                      <span class="font-semibold text-gray-800">ISO Certified</span>
+                      <span class="text-[11px] ml-3 px-2 py-0.5 rounded bg-green-100 text-green-700">Toggle</span>
+                      <span class="text-[12px] text-gray-500 ml-3">Value: Yes</span>
+                    </div>
+                    <div class="flex gap-1.5">
+                      <button onclick="editCustomField('ISO Certified')" class="btn-icon-action" title="Edit">${iconEdit()}</button>
+                      <button onclick="deleteCustomField('ISO Certified')" class="btn-icon-action danger" title="Delete">${iconTrash()}</button>
+                    </div>
+                  </div>
+                  <div class="custom-field-item">
+                    <div>
+                      <span class="font-semibold text-gray-800">License Renewal Date</span>
+                      <span class="text-[11px] ml-3 px-2 py-0.5 rounded bg-blue-100 text-blue-700">Date</span>
+                      <span class="text-[12px] text-gray-500 ml-3">Value: 31-12-2025</span>
+                    </div>
+                    <div class="flex gap-1.5">
+                      <button onclick="editCustomField('License Renewal Date')" class="btn-icon-action" title="Edit">${iconEdit()}</button>
+                      <button onclick="deleteCustomField('License Renewal Date')" class="btn-icon-action danger" title="Delete">${iconTrash()}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ========================================================== -->
+              <!-- TAB 6: TEMPLATES -->
+              <!-- ========================================================== -->
+              <div id="tab-templates" class="page-tab-panel">
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="form-label">Default Invoice Template</label>
+                    <select class="form-input" id="invoiceTemplate">
+                      <option selected>Template 1 - Classic</option>
+                      <option>Template 2 - Modern</option>
+                      <option>Template 3 - Minimal</option>
+                      <option>Template 4 - Corporate</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">PDF Paper Size</label>
+                    <select class="form-input" id="pdfSize">
+                      <option selected>A4</option>
+                      <option>Letter</option>
+                      <option>Legal</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">PDF Orientation</label>
+                    <select class="form-input" id="pdfOrientation">
+                      <option selected>Portrait</option>
+                      <option>Landscape</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">Signature on Invoices</label>
+                    <div class="flex items-center gap-4 mt-1.5">
+                      <label class="flex items-center gap-2 text-[13px]">
+                        <input type="radio" name="signature" value="enabled" checked> <span class="font-medium">Enabled</span>
+                      </label>
+                      <label class="flex items-center gap-2 text-[13px]">
+                        <input type="radio" name="signature" value="disabled"> <span class="font-medium">Disabled</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="form-label">Payment Terms (Default)</label>
+                    <select class="form-input" id="defaultPaymentTerms">
+                      <option selected>Net 15 days</option>
+                      <option>Net 7 days</option>
+                      <option>Net 30 days</option>
+                      <option>Net 45 days</option>
+                      <option>Net 60 days</option>
+                      <option>Advance Payment</option>
+                      <option>Cash on Delivery</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Invoice Footer -->
+                <div class="mt-4">
+                  <label class="form-label">Invoice Footer / Notes</label>
+                  <textarea rows="3" class="form-input" id="invoiceFooter" placeholder="Default footer text for all invoices">Thanks for your business! For any queries, contact us at +91-9876543210</textarea>
+                </div>
+
+                <!-- Bank Details -->
+                <div class="mt-4">
+                  <label class="form-label">Bank Details (for Invoice)</label>
+                  <textarea rows="2" class="form-input" id="bankDetails" placeholder="Bank account details to show on invoice">Bank: HDFC Bank, A/C: 1234567890, IFSC: HDFC0000123, Branch: BKC</textarea>
+                </div>
+              </div>
+
+              <!-- ========================================================== -->
+              <!-- TAB 7: EMAIL -->
+              <!-- ========================================================== -->
+              <div id="tab-email" class="page-tab-panel">
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="form-label">Default From Email <span class="required">*</span></label>
+                    <input type="email" class="form-input" id="emailFrom" value="no-reply@kunashmedia.com" placeholder="no-reply@domain.com">
+                  </div>
+                  <div>
+                    <label class="form-label">Default From Name <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="emailFromName" value="Kunash Media Team" placeholder="Display name">
+                  </div>
+                  <div>
+                    <label class="form-label">SMTP Server</label>
+                    <input type="text" class="form-input" id="smtpServer" value="smtp.kunashmedia.com" placeholder="smtp.domain.com">
+                  </div>
+                  <div>
+                    <label class="form-label">SMTP Port</label>
+                    <input type="number" class="form-input" id="smtpPort" value="587" placeholder="587 or 465">
+                  </div>
+                  <div>
+                    <label class="form-label">SMTP Encryption</label>
+                    <select class="form-input" id="smtpEncryption">
+                      <option selected>TLS</option>
+                      <option>SSL</option>
+                      <option>None</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">SMTP Username</label>
+                    <input type="text" class="form-input" id="smtpUsername" value="no-reply@kunashmedia.com" placeholder="Username">
+                  </div>
+                  <div>
+                    <label class="form-label">SMTP Password</label>
+                    <input type="password" class="form-input" id="smtpPassword" value="password123" placeholder="••••••••">
+                  </div>
+                </div>
+
+                <!-- Email Templates -->
+                <div class="mt-6 pt-6 border-t border-gray-100">
+                  <h4 class="text-[14px] font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                      <path d="M22 6l-10 7L2 6"/>
+                    </svg>
+                    Email Templates
+                    <span class="text-[10px] font-normal text-gray-400">(Enhancement #1 — Payment Email Automation)</span>
+                  </h4>
+
+                  <div class="space-y-3">
+                    <div>
+                      <label class="form-label">Payment Confirmation Email Template</label>
+                      <textarea rows="4" class="form-input" id="paymentEmailTemplate" placeholder="HTML email template">Dear {vendor_name},
+
+                      This is to confirm that we have processed your payment.
+
+                      <b>Payment Details:</b>
+                      - Amount: {amount}
+                      - Date: {payment_date}
+                      - Bill/Reference: {bill_number}
+                      - Mode of Payment: {payment_mode}
+
+                      Please find the payment receipt attached.
+
+                      Regards,
+                      {company_name} Team
+                    </textarea>
+                    <div class="form-hint">Use placeholders: {vendor_name}, {amount}, {payment_date}, {bill_number}, {payment_mode}, {company_name}</div>
+                  </div>
+
+                  <div>
+                    <label class="form-label">Invoice Email Template</label>
+                    <textarea rows="3" class="form-input" id="invoiceEmailTemplate" placeholder="HTML email template">Dear {customer_name},
+
+                    Please find attached your invoice {invoice_number}.
+
+                    <b>Invoice Details:</b>
+                    - Amount: {amount}
+                    - Due Date: {due_date}
+
+                    Please make the payment by the due date.
+
+                    Regards,
+                    {company_name} Team
+                  </textarea>
+                  <div class="form-hint">Use placeholders: {customer_name}, {invoice_number}, {amount}, {due_date}, {company_name}</div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /p-5 -->
+        </div><!-- /card -->
+
+        <!-- Bottom Actions -->
+        <div class="flex flex-wrap items-center justify-between gap-3 mt-6">
+          <div class="text-[12px] text-gray-500 flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
+            Last updated: <span class="font-medium text-gray-700" id="lastUpdated">Today at 10:30 AM</span>
+          </div>
+          <div class="flex gap-3">
+            <button onclick="resetSettings()" class="px-5 py-2.5 rounded-lg border border-gray-200 text-[13px] font-semibold text-gray-600 hover:bg-gray-50 transition">
+              Cancel
+            </button>
+            <button onclick="saveCompany()" class="px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-dark text-white text-[13px] font-semibold transition shadow-sm flex items-center gap-1.5">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                <path d="M17 21v-8H7v8"/>
+                <path d="M7 3v5h8"/>
+              </svg>
+              Save All Changes
+            </button>
           </div>
         </div>
-      </main>
-      <!-- ============= PAGE CONTENT ENDS HERE ============= -->
-    </div>
+
+      </div>
+    </main>
+    <!-- ========================================================== -->
+    <!-- ============= PAGE CONTENT ENDS HERE ====================== -->
+    <!-- ========================================================== -->
   </div>
+</div>
 
-  <script src="/assets/js/nav-sidebar.js"></script>
-  <script>
-    NavSidebar.init({
-      basePath: "",
-      activePage: "settings",
-      pageTitle: "Settings",
-      user: {
-        name: "Admin",
-        role: "Super Admin",
-        avatarUrl: "", // leave empty to show initials fallback
-      },
+<!-- ========================================================== -->
+<!-- SCRIPTS -->
+<!-- ========================================================== -->
+
+<!-- Shell JS -->
+<script src="/assets/js/nav-sidebar.js"></script>
+
+<!-- Main Organization Setup JS -->
+<script>
+  // =============================================================
+  // NAV-SIDEBAR INIT — activePage: "settings"
+  // =============================================================
+  NavSidebar.init({
+    basePath: "",
+    activePage: "settings",
+    pageTitle: "Organization Setup",
+    user: {
+      name: "Admin",
+      role: "Super Admin",
+      avatarUrl: "",
+    },
+  });
+
+  // =============================================================
+  // SVG Icons (for use in HTML and JS)
+  // =============================================================
+  function iconEdit() {
+    return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
+  }
+  function iconTrash() {
+    return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>`;
+  }
+  function iconX() {
+    return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
+  }
+  function iconPlus() {
+    return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>`;
+  }
+  function iconSave() {
+    return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>`;
+  }
+  function iconInfo() {
+    return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>`;
+  }
+
+  // =============================================================
+  // TOAST SYSTEM
+  // =============================================================
+  function showToast(message, kind) {
+    kind = kind || 'success';
+    var wrap = document.getElementById('toastWrap');
+    var colors = {
+      success: 'bg-green-600',
+      info: 'bg-primary',
+      warning: 'bg-amber-600',
+      error: 'bg-red-600'
+    };
+    var el = document.createElement('div');
+    el.className = 'toast ' + colors[kind] + ' text-white text-sm font-semibold px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 max-w-xs';
+    el.innerHTML = '<span>' + message + '</span>';
+    wrap.appendChild(el);
+    setTimeout(function() {
+      el.style.transition = 'opacity .3s';
+      el.style.opacity = '0';
+      setTimeout(function() { el.remove(); }, 300);
+    }, 2600);
+  }
+
+  // =============================================================
+  // PAGE TABS
+  // =============================================================
+  document.addEventListener('DOMContentLoaded', function() {
+    var tabs = document.querySelectorAll('.page-tab-btn');
+    tabs.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        tabs.forEach(function(b) { b.classList.remove('active'); });
+        this.classList.add('active');
+        var panels = document.querySelectorAll('.page-tab-panel');
+        panels.forEach(function(p) { p.classList.remove('active'); });
+        document.getElementById(this.dataset.tab).classList.add('active');
+      });
     });
+  });
 
-  </script>
+  // =============================================================
+  // STATE CODE UPDATER
+  // =============================================================
+  function updateStateCode() {
+    var state = document.getElementById('compState').value;
+    var stateCodeMap = {
+      'Maharashtra': '27',
+      'Delhi': '07',
+      'Karnataka': '29',
+      'Tamil Nadu': '33',
+      'Gujarat': '24',
+      'Uttar Pradesh': '09',
+      'Rajasthan': '08',
+      'Kerala': '32',
+      'Telangana': '36',
+      'West Bengal': '19',
+      'Andhra Pradesh': '28',
+      'Bihar': '10',
+      'Chhattisgarh': '22',
+      'Goa': '30',
+      'Haryana': '06',
+      'Himachal Pradesh': '02',
+      'Jharkhand': '20',
+      'Madhya Pradesh': '23',
+      'Odisha': '21',
+      'Punjab': '03',
+      'Uttarakhand': '05'
+    };
+    document.getElementById('compStateCode').value = stateCodeMap[state] || '';
+  }
+
+  // =============================================================
+  // LOGO PREVIEW
+  // =============================================================
+  function previewLogo(event) {
+    var file = event.target.files[0];
+    if (file) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var preview = document.getElementById('logoPreview');
+        preview.innerHTML = '<img src="' + e.target.result + '" class="logo-preview" alt="Logo">';
+      };
+      reader.readAsDataURL(file);
+      showToast('Logo uploaded successfully', 'success');
+    }
+  }
+
+  // =============================================================
+  // UNIT MODAL
+  // =============================================================
+  function openUnitModal() {
+    showToast('Unit modal — coming soon!', 'info');
+  }
+
+  function editUnit(code) {
+    showToast('Editing unit: ' + code, 'info');
+  }
+
+  function deleteUnit(code) {
+    if (confirm('Are you sure you want to delete unit "' + code + '"?')) {
+      showToast('Unit "' + code + '" deleted', 'warning');
+    }
+  }
+
+  // =============================================================
+  // CUSTOM FIELD MODAL
+  // =============================================================
+  function openCustomFieldModal() {
+    showToast('Custom field modal — coming soon!', 'info');
+  }
+
+  function editCustomField(name) {
+    showToast('Editing custom field: ' + name, 'info');
+  }
+
+  function deleteCustomField(name) {
+    if (confirm('Delete custom field "' + name + '"?')) {
+      showToast('Custom field "' + name + '" deleted', 'warning');
+    }
+  }
+
+  // =============================================================
+  // SAVE / RESET
+  // =============================================================
+  function saveCompany() {
+    var name = document.getElementById('compLegalName').value;
+    if (!name) {
+      showToast('Please enter company name', 'error');
+      return;
+    }
+    showToast('✅ Company settings saved successfully!', 'success');
+    document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+  }
+
+  function resetSettings() {
+    if (confirm('Are you sure you want to reset all settings to default?')) {
+      showToast('Settings reset to default', 'warning');
+    }
+  }
+
+  // =============================================================
+  // KEYBOARD SHORTCUTS
+  // =============================================================
+  document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      e.preventDefault();
+      saveCompany();
+    }
+  });
+
+  // =============================================================
+  // INIT
+  // =============================================================
+  console.log('🏢 Organization Setup Module Loaded Successfully');
+  console.log('📌 Company: Kunash Media Pvt. Ltd.');
+  console.log('📍 Location: Mumbai, Maharashtra (State Code: 27)');
+  console.log('🏷️ GSTIN: 27AABCU1234D1ZP');
+  console.log('🏢 Units: 3 (1 Head Office, 1 Branch, 1 Warehouse)');
+  console.log('🔧 Custom Fields: 4 active');
+  console.log('📧 Email Templates: Payment Confirmation (Enhancement #1)');
+
+</script>
+
 </body>
 </html>

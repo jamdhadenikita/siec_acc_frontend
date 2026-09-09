@@ -7,14 +7,9 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
 <link rel="manifest" href="/favicon_io/site.webmanifest">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Products</title>
+<title>Items / Products — Aquilon ERP</title>
 
-<!--
-  ANTI-FLICKER SCRIPT — must be the first thing in <head>, before any
-  stylesheet. It reads the saved collapse state synchronously and sets
-  it on <html> so the sidebar is the correct width on the very first
-  paint. Copy this exact block, unchanged, to the top of every admin page.
--->
+<!-- ANTI-FLICKER SCRIPT -->
 <script>
   (function () {
     try {
@@ -26,7 +21,7 @@
   })();
 </script>
 
-<!-- Tailwind (utility classes for page content) -->
+<!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -41,8 +36,192 @@
   };
 </script>
 
-<!-- Shell styling (sidebar / topbar / overlays) — source of truth, loads after Tailwind -->
+<!-- Shell styling -->
 <link rel="stylesheet" href="/assets/css/nav-sidebar.css" />
+
+<!-- Page-specific styles -->
+<style>
+  /* Form styles */
+  .form-input {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #fafafa;
+    color: #1a1a2e;
+  }
+  .form-input:focus {
+    border-color: #6da84c;
+    box-shadow: 0 0 0 3px rgba(109, 168, 76, 0.15);
+    background: #ffffff;
+  }
+  .form-label {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #374151;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .form-label .required { color: #ef4444; margin-left: 2px; }
+  .form-hint { font-size: 10.5px; color: #9ca3af; margin-top: 3px; }
+
+  /* Badge */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .badge-green { background: #dcfce7; color: #166534; }
+  .badge-amber { background: #fef3c7; color: #92400e; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+  .badge-gray { background: #f1f5f9; color: #475569; }
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .badge-dot-green { background: #22c55e; }
+  .badge-dot-amber { background: #f59e0b; }
+  .badge-dot-red { background: #ef4444; }
+  .badge-dot-gray { background: #94a3b8; }
+
+  /* Stats card */
+  .stat-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Table row hover */
+  .table-row-hover:hover {
+    background: #f8fafc;
+  }
+
+  /* Modal tabs */
+  .modal-tab-btn {
+    transition: all 0.2s ease;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    color: #6b7280;
+    cursor: pointer;
+    background: transparent;
+  }
+  .modal-tab-btn.active {
+    color: #6da84c;
+    border-bottom-color: #6da84c;
+  }
+  .modal-tab-btn:hover:not(.active) {
+    color: #1f2937;
+    border-bottom-color: #d1d5db;
+  }
+  .modal-tab-panel { display: none; }
+  .modal-tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.96) translateY(6px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .animate-modal { animation: modalIn 0.18s ease; }
+
+  /* Action buttons */
+  .btn-icon-action {
+    transition: all 0.15s ease;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-icon-action:hover {
+    background: #f1f5f9;
+    color: #6da84c;
+  }
+  .btn-icon-action.danger:hover {
+    background: #fee2e2;
+    color: #ef4444;
+  }
+
+  /* Vendor price row */
+  .vendor-price-row:hover {
+    background: #f8fafc;
+  }
+
+  /* Toast */
+  .toast {
+    animation: fadeIn 0.2s ease;
+  }
+  .toast-success { background: #16a34a; }
+  .toast-error { background: #dc2626; }
+  .toast-warning { background: #f59e0b; }
+  .toast-info { background: #6da84c; }
+
+  /* Scrollbar for modal */
+  .modal-scroll {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  .modal-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+  .modal-scroll::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+  }
+
+  /* Vendor price table in modal */
+  .vendor-price-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 13px;
+  }
+  .vendor-price-table th {
+    background: #f8fafc;
+    text-align: left;
+    padding: 6px 10px;
+    font-weight: 600;
+    color: #475569;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .vendor-price-table td {
+    padding: 4px 10px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .vendor-price-table .vendor-price-row td {
+    padding: 4px 10px;
+  }
+
+  /* Empty state */
+  .empty-icon-svg {
+    opacity: 0.2;
+    width: 48px;
+    height: 48px;
+    color: #94a3b8;
+  }
+</style>
 </head>
 
 <body class="bg-gray-50 text-gray-800 antialiased">
@@ -55,34 +234,1013 @@
       <!-- Top bar gets injected here -->
       <div id="topbar-root"></div>
 
-      <!-- ============= PAGE CONTENT STARTS HERE ============= -->
+      <!-- ========================================================== -->
+      <!-- ============= PAGE CONTENT STARTS HERE ==================== -->
+      <!-- ========================================================== -->
       <main class="p-4 sm:p-6 lg:p-8">
-        <div class="max-w-6xl mx-auto">
-          <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-            <h2 class="text-base font-semibold text-gray-800 mb-1">Products</h2>
-            <p class="text-sm text-gray-500">
-              Placeholder page template
-            </p>
+
+        <!-- Toast Container -->
+        <div id="toastWrap" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2 items-end"></div>
+
+        <!-- Modal Root -->
+        <div id="modalRoot"></div>
+
+        <div class="max-w-7xl mx-auto">
+
+          <!-- Page Header -->
+          <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
+            <div>
+              <div class="text-[11px] font-semibold tracking-wide uppercase text-primary">Masters</div>
+              <h1 class="text-[24px] sm:text-[28px] font-bold tracking-tight text-gray-900">Items / Products</h1>
+              <p class="text-[13px] text-gray-500 mt-1">Product and service master used across sales, purchase and inventory.</p>
+            </div>
+            <div class="flex gap-2.5 flex-wrap">
+              <!-- Filter Button -->
+              <div class="relative inline-block" data-dd-trigger>
+                <button onclick="toggleFilterDD()" class="inline-flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[13px] font-semibold px-4 py-2.5 rounded-lg transition">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 6h18M7 12h10M11 18h2"/>
+                  </svg>
+                  Filter
+                  <span id="filterBadge" class="hidden text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full">0</span>
+                </button>
+                <div id="filterDD" data-dd-menu class="hidden absolute top-full left-0 mt-2 w-60 bg-white border border-gray-200 rounded-xl shadow-lg p-3 z-50">
+                  <div class="mb-3">
+                    <label class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Category</label>
+                    <select id="filterCategory" onchange="filterItems()" class="form-input text-[12px]">
+                      <option value="all">All Categories</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Status</label>
+                    <select id="filterStatus" onchange="filterItems()" class="form-input text-[12px]">
+                      <option value="all">All Status</option>
+                      <option value="green">In Stock</option>
+                      <option value="amber">Low Stock</option>
+                      <option value="red">Reorder</option>
+                    </select>
+                  </div>
+                  <button onclick="clearFilters()" class="text-[12px] text-primary font-semibold hover:underline">Clear Filters</button>
+                </div>
+              </div>
+
+              <!-- Add Item Button with SVG Icon -->
+              <button onclick="openAddItem()" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-[13px] font-semibold px-4 py-2.5 rounded-lg transition shadow-sm">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M12 5v14M5 12h14"/>
+                </svg>
+                Add Item
+              </button>
+            </div>
           </div>
+
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-6">
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
+              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Items</div>
+              <div class="text-[22px] font-bold text-gray-900" id="totalItems">0</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
+              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Categories</div>
+              <div class="text-[22px] font-bold text-gray-900" id="totalCategories">0</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
+              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Low Stock</div>
+              <div class="text-[22px] font-bold text-amber-600" id="lowStockCount">0</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
+              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Stock Value</div>
+              <div class="text-[22px] font-bold text-primary" id="totalStockValue">₹0</div>
+            </div>
+          </div>
+
+          <!-- Items Table Panel -->
+          <div id="itemsPanel"></div>
+
         </div>
       </main>
-      <!-- ============= PAGE CONTENT ENDS HERE ============= -->
+      <!-- ========================================================== -->
+      <!-- ============= PAGE CONTENT ENDS HERE ====================== -->
+      <!-- ========================================================== -->
     </div>
   </div>
 
+  <!-- ========================================================== -->
+  <!-- SCRIPTS -->
+  <!-- ========================================================== -->
+
+  <!-- Shell JS -->
   <script src="/assets/js/nav-sidebar.js"></script>
+
+  <!-- Main Items JS (all logic) -->
   <script>
+    // =============================================================
+    // NAV-SIDEBAR INIT
+    // =============================================================
     NavSidebar.init({
       basePath: "",
       activePage: "products",
-      pageTitle: "Products",
+      pageTitle: "Items / Products",
       user: {
         name: "Admin",
         role: "Super Admin",
-        avatarUrl: "", // leave empty to show initials fallback
+        avatarUrl: "",
       },
     });
 
+    // =============================================================
+    // ITEMS MODULE — Complete Logic (No Emojis, Only SVG Icons)
+    // =============================================================
+
+    // ---------- SVG Icons (All icons as functions) ----------
+    function iconPlus() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>`;
+    }
+    function iconEdit() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
+    }
+    function iconTrash() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>`;
+    }
+    function iconEye() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+    }
+    function iconX() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
+    }
+    function iconFilter() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h2"/></svg>`;
+    }
+    function iconSave() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>`;
+    }
+    function iconBox() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>`;
+    }
+    function iconInfo() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>`;
+    }
+    function iconUser() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+    }
+    function iconTag() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V10M10 21V10M14 21V10M19 21V10"/><path d="M2 10l10-6 10 6"/></svg>`;
+    }
+    function iconGST() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>`;
+    }
+    function iconSettings() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>`;
+    }
+    function iconSearch() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>`;
+    }
+    function iconChevronDown() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>`;
+    }
+
+    // ---------- Toast System ----------
+    function showToast(message, kind) {
+      kind = kind || 'success';
+      var wrap = document.getElementById('toastWrap');
+      var colors = {
+        success: 'bg-green-600',
+        info: 'bg-primary',
+        warning: 'bg-amber-600',
+        error: 'bg-red-600'
+      };
+      var el = document.createElement('div');
+      el.className = 'toast ' + colors[kind] + ' text-white text-sm font-semibold px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 max-w-xs';
+      el.innerHTML = '<span>' + message + '</span>';
+      wrap.appendChild(el);
+      setTimeout(function() {
+        el.style.transition = 'opacity .3s';
+        el.style.opacity = '0';
+        setTimeout(function() { el.remove(); }, 300);
+      }, 2600);
+    }
+
+    // ---------- Modal System ----------
+    function openModal(innerHtml, opts) {
+      opts = opts || {};
+      var root = document.getElementById('modalRoot');
+      root.innerHTML = `
+        <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" id="modalOverlay">
+          <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]" id="modalBackdrop"></div>
+          <div class="relative bg-white rounded-2xl shadow-2xl w-full ${opts.width || 'max-w-3xl'} max-h-[92vh] overflow-hidden animate-modal">
+            ${innerHtml}
+          </div>
+        </div>`;
+      document.getElementById('modalBackdrop').addEventListener('click', closeModal);
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      var root = document.getElementById('modalRoot');
+      root.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    function modalHeader(title, subtitle) {
+      return `
+        <div class="flex items-start justify-between px-6 py-5 border-b border-gray-100 sticky top-0 bg-white z-10">
+          <div>
+            <h3 class="text-lg font-bold text-gray-900">${title}</h3>
+            ${subtitle ? '<p class="text-xs text-gray-500 mt-0.5">' + subtitle + '</p>' : ''}
+          </div>
+          <button onclick="closeModal()" class="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition">${iconX()}</button>
+        </div>`;
+    }
+
+    function modalFooter(saveLabel, onSaveAttr, extraBtns) {
+      return `
+        <div class="flex items-center justify-between gap-2 px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl sticky bottom-0">
+          <div>${extraBtns || ''}</div>
+          <div class="flex gap-2">
+            <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Cancel</button>
+            <button ${onSaveAttr} class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-primary hover:bg-primary-dark transition shadow-sm flex items-center gap-1.5">
+              ${iconSave()} ${saveLabel}
+            </button>
+          </div>
+        </div>`;
+    }
+
+    function fld(label, inputHtml, hint) {
+      return `
+        <div class="mb-3">
+          <label class="form-label">${label}</label>
+          ${inputHtml}
+          ${hint ? '<div class="form-hint">' + hint + '</div>' : ''}
+        </div>`;
+    }
+
+    function inputBase() { return "form-input"; }
+
+    // ---------- Dropdown ----------
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('[data-dd-trigger]')) {
+        document.querySelectorAll('[data-dd-menu]').forEach(function(m) { m.classList.add('hidden'); });
+      }
+    });
+
+    function toggleFilterDD() {
+      var menu = document.getElementById('filterDD');
+      var isHidden = menu.classList.contains('hidden');
+      document.querySelectorAll('[data-dd-menu]').forEach(function(m) { m.classList.add('hidden'); });
+      if (isHidden) menu.classList.remove('hidden');
+    }
+
+    // ---------- Helpers ----------
+    function money(n) { return '₹' + Number(n).toLocaleString('en-IN'); }
+
+    function badge(text, color) {
+      var map = { green: 'badge-green', amber: 'badge-amber', red: 'badge-red', gray: 'badge-gray' };
+      var dot = { green: 'badge-dot-green', amber: 'badge-dot-amber', red: 'badge-dot-red', gray: 'badge-dot-gray' };
+      return '<span class="badge ' + map[color] + '"><span class="badge-dot ' + dot[color] + '"></span>' + text + '</span>';
+    }
+
+    function rowActionsHtml(editFn, delFn, viewFn) {
+      var html = '<div class="flex gap-1">';
+      if (viewFn) {
+        html += '<button onclick="' + viewFn + '" class="btn-icon-action" title="View">' + iconEye() + '</button>';
+      }
+      html += '<button onclick="' + editFn + '" class="btn-icon-action" title="Edit">' + iconEdit() + '</button>';
+      html += '<button onclick="' + delFn + '" class="btn-icon-action danger" title="Delete">' + iconTrash() + '</button>';
+      html += '</div>';
+      return html;
+    }
+
+    function panelWrap(titleHtml, bodyHtml, extraHead) {
+      return `
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+          <div class="flex items-center justify-between gap-3 flex-wrap px-5 py-4 border-b border-gray-100">
+            <div class="font-bold text-[14.5px] text-gray-800 flex items-center gap-2">${titleHtml}</div>
+            ${extraHead || ''}
+          </div>
+          <div>${bodyHtml}</div>
+        </div>`;
+    }
+
+    function tableHtml(cols, rowsHtml) {
+      var colHeaders = cols.map(function(c) {
+        return '<th class="text-left text-[11px] font-bold uppercase tracking-wide text-gray-500 px-4 py-3 whitespace-nowrap">' + c + '</th>';
+      }).join('');
+      return `
+        <div class="overflow-x-auto">
+          <table class="w-full text-[13px]">
+            <thead>
+              <tr class="bg-gray-50 border-b border-gray-200">${colHeaders}</tr>
+            </thead>
+            <tbody id="tbody-anchor">${rowsHtml}</tbody>
+          </table>
+        </div>`;
+    }
+
+    // =============================================================
+    // DATA
+    // =============================================================
+
+    var categories = ['Electronics', 'Consumables', 'Filtration', 'Blowers', 'Piping', 'Equipment', 'Chemicals', 'Services'];
+
+    var warehouses = [
+      { id: 'WH-001', name: 'Main Warehouse - Mumbai' },
+      { id: 'WH-002', name: 'Branch Warehouse - Pune' },
+      { id: 'WH-003', name: 'Storage - Bhiwandi' },
+    ];
+
+    var units = ['Pcs', 'Kg', 'Ltr', 'Mtr', 'Box', 'Set', 'Nos', 'Hours'];
+
+    var vendors = [
+      { id: 'VEN-001', name: 'Global Imports Inc.' },
+      { id: 'VEN-002', name: 'Local Supplier Co.' },
+      { id: 'VEN-003', name: 'ABC Distributors' },
+    ];
+
+    var items = [{
+      id: 'ITM-1001',
+      name: 'Centrifugal Blower — 5HP',
+      sku: 'BLW-5HP-001',
+      category: 'Blowers',
+      hsn: '9503',
+      unit: 'Pcs',
+      sellingPrice: 42000,
+      purchasePrice: 35000,
+      gstRate: 18,
+      stock: 48,
+      reorderLevel: 10,
+      warehouse: 'WH-001',
+      serialBatch: false,
+      description: 'Heavy duty industrial blower',
+      status: 'green',
+      vendorPrices: [{ vendorId: 'VEN-001', price: 35000, currency: 'INR', date: '2026-01-15' }]
+    }, {
+      id: 'ITM-1002',
+      name: 'Dual Media Filter Vessel — 500L',
+      sku: 'FIL-500L-002',
+      category: 'Filtration',
+      hsn: '8421',
+      unit: 'Pcs',
+      sellingPrice: 118000,
+      purchasePrice: 95000,
+      gstRate: 18,
+      stock: 12,
+      reorderLevel: 5,
+      warehouse: 'WH-001',
+      serialBatch: true,
+      description: '500L capacity filtration vessel',
+      status: 'green',
+      vendorPrices: [{ vendorId: 'VEN-001', price: 95000, currency: 'INR', date: '2026-01-10' }]
+    }, {
+      id: 'ITM-1003',
+      name: 'Activated Carbon Media',
+      sku: 'AC-25KG-003',
+      category: 'Consumables',
+      hsn: '2803',
+      unit: 'Kg',
+      sellingPrice: 6500,
+      purchasePrice: 4800,
+      gstRate: 18,
+      stock: 6,
+      reorderLevel: 10,
+      warehouse: 'WH-002',
+      serialBatch: true,
+      description: 'High-grade activated carbon',
+      status: 'amber',
+      vendorPrices: [{ vendorId: 'VEN-002', price: 4800, currency: 'INR', date: '2026-01-12' }]
+    }, {
+      id: 'ITM-1004',
+      name: 'PVC Pressure Pipe — 6"',
+      sku: 'PVC-6IN-004',
+      category: 'Piping',
+      hsn: '3917',
+      unit: 'Mtr',
+      sellingPrice: 850,
+      purchasePrice: 620,
+      gstRate: 18,
+      stock: 210,
+      reorderLevel: 50,
+      warehouse: 'WH-003',
+      serialBatch: false,
+      description: '6 inch PVC pressure pipe',
+      status: 'green',
+      vendorPrices: [{ vendorId: 'VEN-001', price: 620, currency: 'INR', date: '2026-01-05' }]
+    }, {
+      id: 'ITM-1005',
+      name: 'Chemical Dosing Pump — 50LPH',
+      sku: 'DOSE-50-005',
+      category: 'Equipment',
+      hsn: '8413',
+      unit: 'Pcs',
+      sellingPrice: 28000,
+      purchasePrice: 21000,
+      gstRate: 18,
+      stock: 3,
+      reorderLevel: 5,
+      warehouse: 'WH-001',
+      serialBatch: true,
+      description: '50 LPH dosing pump',
+      status: 'red',
+      vendorPrices: [{ vendorId: 'VEN-003', price: 21000, currency: 'INR', date: '2026-01-08' }]
+    }, {
+      id: 'ITM-1006',
+      name: 'MS Pipe Fittings — Assorted',
+      sku: 'MS-FIT-006',
+      category: 'Piping',
+      hsn: '7307',
+      unit: 'Pcs',
+      sellingPrice: 120,
+      purchasePrice: 85,
+      gstRate: 18,
+      stock: 340,
+      reorderLevel: 100,
+      warehouse: 'WH-003',
+      serialBatch: false,
+      description: 'Assorted mild steel fittings',
+      status: 'green',
+      vendorPrices: [{ vendorId: 'VEN-002', price: 85, currency: 'INR', date: '2026-01-06' }]
+    }, {
+      id: 'ITM-1007',
+      name: 'Digital pH Meter — Industrial',
+      sku: 'PH-MTR-007',
+      category: 'Electronics',
+      hsn: '9027',
+      unit: 'Pcs',
+      sellingPrice: 12500,
+      purchasePrice: 9200,
+      gstRate: 18,
+      stock: 8,
+      reorderLevel: 5,
+      warehouse: 'WH-001',
+      serialBatch: true,
+      description: 'Industrial grade pH meter',
+      status: 'green',
+      vendorPrices: [{ vendorId: 'VEN-001', price: 9200, currency: 'INR', date: '2026-01-17' }]
+    }, {
+      id: 'ITM-1008',
+      name: 'Sodium Hypochlorite — 10% Solution',
+      sku: 'SH-10%-008',
+      category: 'Chemicals',
+      hsn: '2828',
+      unit: 'Ltr',
+      sellingPrice: 180,
+      purchasePrice: 120,
+      gstRate: 18,
+      stock: 0,
+      reorderLevel: 20,
+      warehouse: 'WH-002',
+      serialBatch: true,
+      description: '10% sodium hypochlorite solution',
+      status: 'red',
+      vendorPrices: [{ vendorId: 'VEN-002', price: 120, currency: 'INR', date: '2026-01-09' }]
+    }];
+
+    var nextItemNo = 1009;
+
+    // =============================================================
+    // FUNCTIONS
+    // =============================================================
+
+    function statusLabel(s) {
+      return s === 'green' ? 'In Stock' : s === 'amber' ? 'Low Stock' : 'Reorder';
+    }
+
+    function stockStatus(qty, reorder) {
+      return qty > 20 ? 'green' : qty > reorder ? 'amber' : 'red';
+    }
+
+    function getVendorName(id) {
+      var v = vendors.find(function(x) { return x.id === id; });
+      return v ? v.name : id;
+    }
+
+    function getWarehouseName(id) {
+      var w = warehouses.find(function(x) { return x.id === id; });
+      return w ? w.name : id;
+    }
+
+    function renderStats() {
+      document.getElementById('totalItems').textContent = items.length;
+      var uniqueCats = new Set(items.map(function(i) { return i.category; }));
+      document.getElementById('totalCategories').textContent = uniqueCats.size;
+      var lowStock = items.filter(function(i) { return i.status === 'amber' || i.status === 'red'; });
+      document.getElementById('lowStockCount').textContent = lowStock.length;
+      var totalVal = items.reduce(function(sum, i) { return sum + (i.stock * i.sellingPrice); }, 0);
+      document.getElementById('totalStockValue').textContent = money(totalVal);
+
+      var filterCat = document.getElementById('filterCategory');
+      var currentVal = filterCat.value;
+      filterCat.innerHTML = '<option value="all">All Categories</option>';
+      var sortedCats = Array.from(uniqueCats).sort();
+      sortedCats.forEach(function(c) {
+        filterCat.innerHTML += '<option value="' + c + '">' + c + '</option>';
+      });
+      filterCat.value = currentVal;
+    }
+
+    function getFilteredItems() {
+      var searchInput = document.getElementById('searchInput');
+      var q = searchInput ? searchInput.value.toLowerCase() : '';
+      var cat = document.getElementById('filterCategory').value || 'all';
+      var status = document.getElementById('filterStatus').value || 'all';
+
+      return items.filter(function(it) {
+        var matchSearch = it.name.toLowerCase().indexOf(q) !== -1 ||
+          it.sku.toLowerCase().indexOf(q) !== -1 ||
+          it.id.toLowerCase().indexOf(q) !== -1 ||
+          it.hsn.indexOf(q) !== -1;
+        var matchCat = cat === 'all' || it.category === cat;
+        var matchStatus = status === 'all' || it.status === status;
+        return matchSearch && matchCat && matchStatus;
+      });
+    }
+
+    function renderItems() {
+      var filtered = getFilteredItems();
+
+      var rowsHtml = '';
+      if (filtered.length === 0) {
+        rowsHtml = `
+          <tr>
+            <td colspan="8" class="text-center py-10 text-gray-400 text-sm">
+              <div class="flex justify-center mb-2 empty-icon-svg">${iconBox()}</div>
+              No items found. Try adjusting your filters or
+              <button onclick="openAddItem()" class="text-primary font-semibold hover:underline">add a new item</button>.
+            </td>
+          </tr>`;
+      } else {
+        rowsHtml = filtered.map(function(it) {
+          return `
+            <tr class="border-b border-gray-100 table-row-hover">
+              <td class="px-4 py-3">
+                <div class="font-semibold text-gray-800">${it.name}</div>
+                <div class="text-[11.5px] text-gray-400 font-mono">${it.id} · ${it.sku}</div>
+              </td>
+              <td class="px-4 py-3 text-gray-600">${it.category}</td>
+              <td class="px-4 py-3 font-mono font-semibold">${it.stock}</td>
+              <td class="px-4 py-3 text-[11px] text-gray-500">${getWarehouseName(it.warehouse)}</td>
+              <td class="px-4 py-3 font-mono font-semibold">${money(it.sellingPrice)}</td>
+              <td class="px-4 py-3 font-mono text-gray-500">${it.gstRate}%</td>
+              <td class="px-4 py-3">${badge(statusLabel(it.status), it.status)}</td>
+              <td class="px-4 py-3">${rowActionsHtml(
+                "editItem('"+it.id+"')",
+                "delItem('"+it.id+"')",
+                "viewItem('"+it.id+"')"
+              )}</td>
+            </tr>`;
+        }).join('');
+      }
+
+      var panelHtml = panelWrap(
+        'All Items <span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + filtered.length + '</span>',
+        tableHtml(['Item', 'Category', 'Stock', 'Warehouse', 'Price', 'GST', 'Status', 'Actions'], rowsHtml),
+        '<div class="flex items-center gap-2"><span class="text-[11px] text-gray-400">Show:</span><select id="pageSizeSelect" onchange="renderItems()" class="text-[12px] border border-gray-200 rounded-lg px-2 py-1 bg-white outline-none"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select></div>'
+      );
+
+      document.getElementById('itemsPanel').innerHTML = panelHtml;
+      renderStats();
+    }
+
+    function filterItems() { renderItems(); }
+
+    function clearFilters() {
+      document.getElementById('filterCategory').value = 'all';
+      document.getElementById('filterStatus').value = 'all';
+      var searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.value = '';
+      renderItems();
+      toggleFilterDD();
+    }
+
+    // =============================================================
+    // ADD / EDIT ITEM
+    // =============================================================
+
+    function openAddItem() { openItemModal(null); }
+
+    function editItem(id) {
+      var it = items.find(function(x) { return x.id === id; });
+      if (it) openItemModal(it);
+    }
+
+    function viewItem(id) {
+      var it = items.find(function(x) { return x.id === id; });
+      if (!it) return;
+
+      var vendorPriceHtml = '';
+      if (it.vendorPrices && it.vendorPrices.length > 0) {
+        vendorPriceHtml = it.vendorPrices.map(function(vp) {
+          return `
+            <tr class="border-b border-gray-100 vendor-price-row">
+              <td class="px-3 py-2 text-sm">${getVendorName(vp.vendorId)}</td>
+              <td class="px-3 py-2 text-sm font-mono font-semibold">${money(vp.price)}</td>
+              <td class="px-3 py-2 text-sm text-gray-500">${vp.currency}</td>
+              <td class="px-3 py-2 text-sm text-gray-500">${vp.date}</td>
+            </tr>`;
+        }).join('');
+      } else {
+        vendorPriceHtml = '<tr><td colspan="4" class="text-center py-3 text-gray-400 text-sm">No vendor prices recorded yet</td></tr>';
+      }
+
+      var modalContent = `
+        ${modalHeader('Item Details — ' + it.name, it.id + ' · ' + it.sku)}
+        <div class="px-6 py-4 modal-scroll">
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div><span class="text-gray-500">Category</span><br><span class="font-semibold">${it.category}</span></div>
+            <div><span class="text-gray-500">HSN/SAC</span><br><span class="font-mono font-semibold">${it.hsn}</span></div>
+            <div><span class="text-gray-500">Unit</span><br><span class="font-semibold">${it.unit}</span></div>
+            <div><span class="text-gray-500">Status</span><br>${badge(statusLabel(it.status), it.status)}</div>
+            <div><span class="text-gray-500">Stock</span><br><span class="font-semibold">${it.stock} ${it.unit}</span></div>
+            <div><span class="text-gray-500">Reorder Level</span><br><span class="font-semibold">${it.reorderLevel} ${it.unit}</span></div>
+            <div><span class="text-gray-500">Selling Price</span><br><span class="font-semibold text-primary">${money(it.sellingPrice)}</span></div>
+            <div><span class="text-gray-500">Purchase Price</span><br><span class="font-semibold">${money(it.purchasePrice)}</span></div>
+            <div><span class="text-gray-500">GST Rate</span><br><span class="font-semibold">${it.gstRate}%</span></div>
+            <div><span class="text-gray-500">Warehouse</span><br><span class="font-semibold">${getWarehouseName(it.warehouse)}</span></div>
+            <div class="col-span-2"><span class="text-gray-500">Serial/Batch Tracking</span><br><span class="font-semibold">${it.serialBatch ? 'Enabled' : 'Disabled'}</span></div>
+            ${it.description ? '<div class="col-span-2"><span class="text-gray-500">Description</span><br><span class="text-sm">' + it.description + '</span></div>' : ''}
+          </div>
+
+          <div class="mt-5 pt-4 border-t border-gray-100">
+            <h4 class="text-[13px] font-semibold text-gray-800 mb-2 flex items-center gap-2">
+              ${iconBox()}
+              Vendor-Wise Price List
+              <span class="text-[10px] font-normal text-gray-400">(Enhancement #4)</span>
+            </h4>
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+              <table class="w-full text-sm">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-3 py-2 text-left font-semibold text-gray-600">Vendor</th>
+                    <th class="px-3 py-2 text-left font-semibold text-gray-600">Price</th>
+                    <th class="px-3 py-2 text-left font-semibold text-gray-600">Currency</th>
+                    <th class="px-3 py-2 text-left font-semibold text-gray-600">Last Updated</th>
+                  </tr>
+                </thead>
+                <tbody>${vendorPriceHtml}</tbody>
+              </table>
+            </div>
+            <div class="text-[10.5px] text-gray-400 mt-1.5 flex items-center gap-1">
+              ${iconInfo()} Prices auto-updated from Purchase Bills
+            </div>
+          </div>
+        </div>
+        ${modalFooter('Close', 'onclick="closeModal()"')}
+      `;
+
+      openModal(modalContent, { width: 'max-w-2xl' });
+    }
+
+    function openItemModal(existing) {
+      var e = existing || {
+        name: '',
+        sku: '',
+        category: categories[0],
+        hsn: '',
+        unit: units[0],
+        sellingPrice: '',
+        purchasePrice: '',
+        gstRate: 18,
+        stock: '',
+        reorderLevel: '',
+        warehouse: warehouses[0].id,
+        serialBatch: false,
+        description: '',
+        vendorPrices: []
+      };
+      var isEdit = !!existing;
+
+      var vendorPriceHtml = '';
+      if (isEdit && e.vendorPrices && e.vendorPrices.length > 0) {
+        vendorPriceHtml = e.vendorPrices.map(function(vp, idx) {
+          var vendorOptions = vendors.map(function(v) {
+            return '<option ' + (v.id === vp.vendorId ? 'selected' : '') + ' value="' + v.id + '">' + v.name + '</option>';
+          }).join('');
+          return `
+            <tr class="border-b border-gray-100 vendor-price-row">
+              <td class="px-2 py-1.5">
+                <select class="form-input text-[12px] vendor-vendor" data-idx="${idx}">${vendorOptions}</select>
+              </td>
+              <td class="px-2 py-1.5">
+                <input type="number" class="form-input text-[12px] vendor-price" value="${vp.price}" data-idx="${idx}" placeholder="Price">
+              </td>
+              <td class="px-2 py-1.5">
+                <select class="form-input text-[12px] vendor-currency" data-idx="${idx}">
+                  <option ${vp.currency === 'INR' ? 'selected' : ''}>INR</option>
+                  <option ${vp.currency === 'USD' ? 'selected' : ''}>USD</option>
+                  <option ${vp.currency === 'EUR' ? 'selected' : ''}>EUR</option>
+                </select>
+              </td>
+              <td class="px-2 py-1.5">
+                <input type="date" class="form-input text-[12px] vendor-date" value="${vp.date}" data-idx="${idx}">
+              </td>
+              <td class="px-2 py-1.5 text-center">
+                <button onclick="removeVendorPriceRow(this)" class="text-red-500 hover:text-red-700 transition">
+                  ${iconX()}
+                </button>
+              </td>
+            </tr>`;
+        }).join('');
+      }
+
+      var modalContent = `
+        ${modalHeader(isEdit ? 'Edit Item' : 'Add New Item', isEdit ? e.id : 'Create a new product/service master record')}
+        <div class="px-6 py-4 modal-scroll">
+          <div class="flex border-b border-gray-200 mb-4 gap-1" id="modalTabs">
+            <button class="modal-tab-btn active" data-tab="tab-basic">
+              ${iconUser()} Basic Info
+            </button>
+            <button class="modal-tab-btn" data-tab="tab-pricing">
+              ${iconTag()} Pricing & Tax
+            </button>
+            <button class="modal-tab-btn" data-tab="tab-inventory">
+              ${iconBox()} Inventory
+            </button>
+            <button class="modal-tab-btn" data-tab="tab-vendors">
+              ${iconUser()} Vendor Prices
+            </button>
+            <button class="modal-tab-btn" data-tab="tab-advanced">
+              ${iconSettings()} Advanced
+            </button>
+          </div>
+
+          <div id="tab-basic" class="modal-tab-panel active">
+            <div class="grid grid-cols-2 gap-3">
+              ${fld('Item Name *', '<input id="f_name" value="' + e.name + '" placeholder="e.g. Centrifugal Blower — 5HP" class="' + inputBase() + '">')}
+              ${fld('SKU / Code *', '<input id="f_sku" value="' + e.sku + '" placeholder="e.g. BLW-5HP-001" class="' + inputBase() + '">')}
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              ${fld('Category', '<select id="f_category" class="' + inputBase() + '">' + categories.map(function(c) { return '<option ' + (c === e.category ? 'selected' : '') + '>' + c + '</option>'; }).join('') + '</select>')}
+              ${fld('HSN / SAC Code *', '<input id="f_hsn" value="' + e.hsn + '" placeholder="e.g. 9503" class="' + inputBase() + '">')}
+            </div>
+            ${fld('Description', '<textarea id="f_description" rows="2" class="' + inputBase() + '" placeholder="Brief description">' + (e.description || '') + '</textarea>')}
+            ${fld('Unit *', '<select id="f_unit" class="' + inputBase() + '">' + units.map(function(u) { return '<option ' + (u === e.unit ? 'selected' : '') + '>' + u + '</option>'; }).join('') + '</select>')}
+          </div>
+
+          <div id="tab-pricing" class="modal-tab-panel">
+            <div class="grid grid-cols-2 gap-3">
+              ${fld('Selling Price (₹) *', '<input id="f_selling" type="number" value="' + e.sellingPrice + '" class="' + inputBase() + '">')}
+              ${fld('Purchase Price (₹) *', '<input id="f_purchase" type="number" value="' + e.purchasePrice + '" class="' + inputBase() + '">')}
+            </div>
+            ${fld('GST Rate (%) *', '<select id="f_gst" class="' + inputBase() + '"><option ' + (e.gstRate == 0 ? 'selected' : '') + '>0 (Nil/Exempt)</option><option ' + (e.gstRate == 5 ? 'selected' : '') + '>5</option><option ' + (e.gstRate == 12 ? 'selected' : '') + '>12</option><option ' + (e.gstRate == 18 ? 'selected' : '') + '>18</option><option ' + (e.gstRate == 28 ? 'selected' : '') + '>28</option></select>', 'GST rate as per HSN/SAC classification')}
+          </div>
+
+          <div id="tab-inventory" class="modal-tab-panel">
+            <div class="grid grid-cols-2 gap-3">
+              ${fld('Opening Stock *', '<input id="f_stock" type="number" value="' + e.stock + '" class="' + inputBase() + '">')}
+              ${fld('Reorder Level *', '<input id="f_reorder" type="number" value="' + e.reorderLevel + '" class="' + inputBase() + '">', 'Alert when stock falls below this level')}
+            </div>
+            ${fld('Warehouse', '<select id="f_warehouse" class="' + inputBase() + '">' + warehouses.map(function(w) { return '<option ' + (w.id === e.warehouse ? 'selected' : '') + ' value="' + w.id + '">' + w.name + '</option>'; }).join('') + '</select>')}
+            ${fld('Serial / Batch Tracking', '<div class="flex items-center gap-4 mt-1"><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="serialBatch" value="true" ' + (e.serialBatch ? 'checked' : '') + '> <span class="font-medium">Enabled</span></label><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="serialBatch" value="false" ' + (!e.serialBatch ? 'checked' : '') + '> <span class="font-medium">Disabled</span></label></div>', 'Enable to track individual serial numbers or batch numbers')}
+          </div>
+
+          <div id="tab-vendors" class="modal-tab-panel">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[12px] text-gray-500">Vendor-wise purchase prices auto-saved from Purchase Bills</span>
+              <button onclick="addVendorPriceRow()" class="text-[12px] font-semibold text-primary hover:underline flex items-center gap-1">
+                ${iconPlus()} Add Price
+              </button>
+            </div>
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+              <table class="vendor-price-table" id="vendorPriceTable">
+                <thead>
+                  <tr>
+                    <th>Vendor</th>
+                    <th>Price</th>
+                    <th>Currency</th>
+                    <th>Date</th>
+                    <th style="text-align:center;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="vendorPriceBody">
+                  ${vendorPriceHtml || '<tr><td colspan="5" class="text-center py-3 text-gray-400 text-sm">No vendor prices added yet</td></tr>'}
+                </tbody>
+              </table>
+            </div>
+            <div class="text-[10.5px] text-gray-400 mt-2 flex items-center gap-1">
+              ${iconInfo()} These prices auto-populate in Purchase Orders when vendor is selected
+            </div>
+          </div>
+
+          <div id="tab-advanced" class="modal-tab-panel">
+            ${fld('Item Type', '<select id="f_itemType" class="' + inputBase() + '"><option selected>Goods</option><option>Service</option></select>')}
+            ${fld('Status', '<div class="flex items-center gap-4 mt-1"><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="itemStatus" value="active" checked> <span class="font-medium">Active</span></label><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="itemStatus" value="inactive"> <span class="font-medium">Inactive</span></label></div>')}
+          </div>
+        </div>
+        ${modalFooter(isEdit ? 'Update Item' : 'Save Item', 'onclick="saveItem(\'' + (isEdit ? e.id : '') + '\')"')}
+      `;
+
+      openModal(modalContent, { width: 'max-w-2xl' });
+
+      // Tab switching
+      setTimeout(function() {
+        var tabs = document.querySelectorAll('.modal-tab-btn');
+        tabs.forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            tabs.forEach(function(b) { b.classList.remove('active'); });
+            this.classList.add('active');
+            var panels = document.querySelectorAll('.modal-tab-panel');
+            panels.forEach(function(p) { p.classList.remove('active'); });
+            document.getElementById(this.dataset.tab).classList.add('active');
+          });
+        });
+      }, 50);
+    }
+
+    // =============================================================
+    // VENDOR PRICE ROW FUNCTIONS
+    // =============================================================
+
+    function addVendorPriceRow() {
+      var tbody = document.getElementById('vendorPriceBody');
+      if (!tbody) return;
+      var emptyRow = tbody.querySelector('tr td[colspan]');
+      if (emptyRow) tbody.innerHTML = '';
+
+      var vendorOptions = vendors.map(function(v) {
+        return '<option value="' + v.id + '">' + v.name + '</option>';
+      }).join('');
+
+      var row = document.createElement('tr');
+      row.className = 'border-b border-gray-100 vendor-price-row';
+      row.innerHTML = `
+        <td class="px-2 py-1.5">
+          <select class="form-input text-[12px] vendor-vendor">${vendorOptions}</select>
+        </td>
+        <td class="px-2 py-1.5">
+          <input type="number" class="form-input text-[12px] vendor-price" placeholder="Price">
+        </td>
+        <td class="px-2 py-1.5">
+          <select class="form-input text-[12px] vendor-currency"><option>INR</option><option>USD</option><option>EUR</option></select>
+        </td>
+        <td class="px-2 py-1.5">
+          <input type="date" class="form-input text-[12px] vendor-date">
+        </td>
+        <td class="px-2 py-1.5 text-center">
+          <button onclick="removeVendorPriceRow(this)" class="text-red-500 hover:text-red-700 transition">
+            ${iconX()}
+          </button>
+        </td>
+      `;
+      tbody.appendChild(row);
+    }
+
+    function removeVendorPriceRow(btn) {
+      var row = btn.closest('tr');
+      if (row) row.remove();
+      var tbody = document.getElementById('vendorPriceBody');
+      if (tbody && tbody.children.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center py-3 text-gray-400 text-sm">No vendor prices added yet</td></tr>';
+      }
+    }
+
+    function collectVendorPrices() {
+      var prices = [];
+      var rows = document.querySelectorAll('#vendorPriceBody .vendor-price-row');
+      rows.forEach(function(row) {
+        var vendor = row.querySelector('.vendor-vendor') ? row.querySelector('.vendor-vendor').value : null;
+        var price = row.querySelector('.vendor-price') ? parseFloat(row.querySelector('.vendor-price').value) : null;
+        var currency = row.querySelector('.vendor-currency') ? row.querySelector('.vendor-currency').value || 'INR' : 'INR';
+        var date = row.querySelector('.vendor-date') ? row.querySelector('.vendor-date').value || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+        if (vendor && price) {
+          prices.push({ vendorId: vendor, price: price, currency: currency, date: date });
+        }
+      });
+      return prices;
+    }
+
+    // =============================================================
+    // SAVE / DELETE ITEM
+    // =============================================================
+
+    function saveItem(existingId) {
+      var name = document.getElementById('f_name') ? document.getElementById('f_name').value.trim() : '';
+      var sku = document.getElementById('f_sku') ? document.getElementById('f_sku').value.trim() : '';
+      var category = document.getElementById('f_category') ? document.getElementById('f_category').value || 'General' : 'General';
+      var hsn = document.getElementById('f_hsn') ? document.getElementById('f_hsn').value.trim() : '';
+      var unit = document.getElementById('f_unit') ? document.getElementById('f_unit').value || 'Pcs' : 'Pcs';
+      var sellingPrice = document.getElementById('f_selling') ? parseFloat(document.getElementById('f_selling').value) || 0 : 0;
+      var purchasePrice = document.getElementById('f_purchase') ? parseFloat(document.getElementById('f_purchase').value) || 0 : 0;
+      var gstRate = document.getElementById('f_gst') ? parseInt(document.getElementById('f_gst').value) || 18 : 18;
+      var stock = document.getElementById('f_stock') ? parseInt(document.getElementById('f_stock').value) || 0 : 0;
+      var reorderLevel = document.getElementById('f_reorder') ? parseInt(document.getElementById('f_reorder').value) || 5 : 5;
+      var warehouse = document.getElementById('f_warehouse') ? document.getElementById('f_warehouse').value || 'WH-001' : 'WH-001';
+      var description = document.getElementById('f_description') ? document.getElementById('f_description').value || '' : '';
+      var serialBatchRadio = document.querySelector('input[name="serialBatch"]:checked');
+      var serialBatch = serialBatchRadio ? serialBatchRadio.value === 'true' : false;
+      var vendorPrices = collectVendorPrices();
+
+      if (!name || !sku || !hsn) {
+        showToast('Please fill all required fields (Name, SKU, HSN)', 'error');
+        return;
+      }
+
+      if (existingId) {
+        var it = items.find(function(x) { return x.id === existingId; });
+        if (it) {
+          it.name = name;
+          it.sku = sku;
+          it.category = category;
+          it.hsn = hsn;
+          it.unit = unit;
+          it.sellingPrice = sellingPrice;
+          it.purchasePrice = purchasePrice;
+          it.gstRate = gstRate;
+          it.stock = stock;
+          it.reorderLevel = reorderLevel;
+          it.warehouse = warehouse;
+          it.description = description;
+          it.serialBatch = serialBatch;
+          it.vendorPrices = vendorPrices;
+          it.status = stockStatus(stock, reorderLevel);
+          showToast('Item updated successfully', 'success');
+        }
+      } else {
+        var newItem = {
+          id: 'ITM-' + (nextItemNo++),
+          name: name,
+          sku: sku,
+          category: category,
+          hsn: hsn,
+          unit: unit,
+          sellingPrice: sellingPrice,
+          purchasePrice: purchasePrice,
+          gstRate: gstRate,
+          stock: stock,
+          reorderLevel: reorderLevel,
+          warehouse: warehouse,
+          description: description,
+          serialBatch: serialBatch,
+          vendorPrices: vendorPrices,
+          status: stockStatus(stock, reorderLevel)
+        };
+        items.unshift(newItem);
+        showToast('Item added successfully', 'success');
+      }
+
+      closeModal();
+      renderItems();
+    }
+
+    function delItem(id) {
+      var it = items.find(function(x) { return x.id === id; });
+      if (!it) return;
+
+      var modalContent = `
+        ${modalHeader('Delete Item', it.name)}
+        <div class="px-6 py-4 text-sm text-gray-600">
+          <p>Are you sure you want to permanently delete <b class="text-gray-800">${it.name}</b>?</p>
+          <p class="text-gray-400 text-[12px] mt-1">This action cannot be undone. All associated transactions will be affected.</p>
+        </div>
+        ${modalFooter('Delete', 'onclick="confirmDeleteItem(\'' + id + '\')"', '')}
+      `;
+      openModal(modalContent, { width: 'max-w-md' });
+    }
+
+    function confirmDeleteItem(id) {
+      items = items.filter(function(x) { return x.id !== id; });
+      closeModal();
+      renderItems();
+      showToast('Item deleted successfully', 'warning');
+    }
+
+    // =============================================================
+    // SEARCH
+    // =============================================================
+
+    // Add search input to top bar
+    (function addSearchToTopbar() {
+      var searchContainer = document.querySelector('.app-main header');
+      if (searchContainer) {
+        var searchHtml = `
+          <div class="hidden sm:flex flex-1 max-w-[420px] relative ml-4">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">${iconSearch()}</span>
+            <input type="text" id="searchInput" placeholder="Search items by name, SKU, HSN…"
+              onkeyup="filterItems()"
+              class="w-full border border-gray-200 bg-gray-50 focus:bg-white rounded-lg pl-9 pr-3 py-2 text-[13px] outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition placeholder:text-gray-400">
+          </div>
+        `;
+        var headerContent = searchContainer.innerHTML;
+        var hamburgerIndex = headerContent.indexOf('lg:hidden');
+        if (hamburgerIndex !== -1) {
+          var firstDivEnd = headerContent.indexOf('</div>', hamburgerIndex) + 6;
+          var before = headerContent.substring(0, firstDivEnd);
+          var after = headerContent.substring(firstDivEnd);
+          searchContainer.innerHTML = before + searchHtml + after;
+        }
+      }
+    })();
+
+    // =============================================================
+    // INIT
+    // =============================================================
+
+    renderItems();
+
+    console.log('Items Module Loaded Successfully — No Emojis, Only SVG Icons');
+    console.log('Total Items:', items.length);
+    console.log('Categories:', categories);
+    console.log('Vendor Price List (Enhancement #4) active');
+
   </script>
+
 </body>
 </html>

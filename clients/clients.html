@@ -7,8 +7,9 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
 <link rel="manifest" href="/favicon_io/site.webmanifest">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Clients</title>
+<title>Clients / Customers — Aquilon ERP</title>
 
+<!-- ANTI-FLICKER SCRIPT -->
 <script>
   (function () {
     try {
@@ -20,6 +21,7 @@
   })();
 </script>
 
+<!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -34,42 +36,1134 @@
   };
 </script>
 
+<!-- Shell styling -->
 <link rel="stylesheet" href="/assets/css/nav-sidebar.css" />
+
+<!-- Page-specific styles -->
+<style>
+  .form-input {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #fafafa;
+    color: #1a1a2e;
+  }
+  .form-input:focus {
+    border-color: #6da84c;
+    box-shadow: 0 0 0 3px rgba(109, 168, 76, 0.15);
+    background: #ffffff;
+  }
+  .form-input:disabled {
+    background: #f3f4f6;
+    cursor: not-allowed;
+  }
+  .form-label {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #374151;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .form-label .required { color: #ef4444; margin-left: 2px; }
+  .form-hint { font-size: 10.5px; color: #9ca3af; margin-top: 3px; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .badge-green { background: #dcfce7; color: #166534; }
+  .badge-amber { background: #fef3c7; color: #92400e; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+  .badge-gray { background: #f1f5f9; color: #475569; }
+  .badge-blue { background: #dbeafe; color: #1e40af; }
+  .badge-purple { background: #ede9fe; color: #5b21b6; }
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .badge-dot-green { background: #22c55e; }
+  .badge-dot-amber { background: #f59e0b; }
+  .badge-dot-red { background: #ef4444; }
+  .badge-dot-gray { background: #94a3b8; }
+  .badge-dot-blue { background: #3b82f6; }
+  .badge-dot-purple { background: #8b5cf6; }
+
+  .stat-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  .table-row-hover:hover {
+    background: #f8fafc;
+  }
+
+  .modal-tab-btn {
+    transition: all 0.2s ease;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    color: #6b7280;
+    cursor: pointer;
+    background: transparent;
+  }
+  .modal-tab-btn.active {
+    color: #6da84c;
+    border-bottom-color: #6da84c;
+  }
+  .modal-tab-btn:hover:not(.active) {
+    color: #1f2937;
+    border-bottom-color: #d1d5db;
+  }
+  .modal-tab-panel { display: none; }
+  .modal-tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.96) translateY(6px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .animate-modal { animation: modalIn 0.18s ease; }
+
+  .btn-icon-action {
+    transition: all 0.15s ease;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-icon-action:hover {
+    background: #f1f5f9;
+    color: #6da84c;
+  }
+  .btn-icon-action.danger:hover {
+    background: #fee2e2;
+    color: #ef4444;
+  }
+
+  .toast {
+    animation: fadeIn 0.2s ease;
+  }
+  .toast-success { background: #16a34a; }
+  .toast-error { background: #dc2626; }
+  .toast-warning { background: #f59e0b; }
+  .toast-info { background: #6da84c; }
+
+  .modal-scroll {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  .modal-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+  .modal-scroll::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+  }
+
+  .empty-icon-svg {
+    opacity: 0.2;
+    width: 48px;
+    height: 48px;
+    color: #94a3b8;
+  }
+
+  .customer-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+</style>
 </head>
 
 <body class="bg-gray-50 text-gray-800 antialiased">
 
   <div class="flex min-h-screen">
+    <!-- Sidebar gets injected here by nav-sidebar.js -->
     <div id="sidebar-root"></div>
 
     <div class="app-main flex-1 flex flex-col min-w-0">
+      <!-- Top bar gets injected here -->
       <div id="topbar-root"></div>
 
+      <!-- ========================================================== -->
+      <!-- ============= PAGE CONTENT STARTS HERE ==================== -->
+      <!-- ========================================================== -->
       <main class="p-4 sm:p-6 lg:p-8">
-        <div class="max-w-6xl mx-auto">
-          <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-            <h2 class="text-base font-semibold text-gray-800 mb-1">Clients</h2>
-            <p class="text-sm text-gray-500">
-              Placeholder page template
-            </p>
+
+        <!-- Toast Container -->
+        <div id="toastWrap" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2 items-end"></div>
+
+        <!-- Modal Root -->
+        <div id="modalRoot"></div>
+
+        <div class="max-w-7xl mx-auto">
+
+          <!-- Page Header -->
+          <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
+            <div>
+              <div class="text-[11px] font-semibold tracking-wide uppercase text-primary">Masters</div>
+              <h1 class="text-[24px] sm:text-[28px] font-bold tracking-tight text-gray-900">Clients / Customers</h1>
+              <p class="text-[13px] text-gray-500 mt-1">Customer master with GST details, addresses, credit limits, transactions and statements.</p>
+            </div>
+            <div class="flex gap-2.5 flex-wrap">
+              <!-- Filter Button -->
+              <div class="relative inline-block" data-dd-trigger>
+                <button onclick="toggleFilterDD()" class="inline-flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[13px] font-semibold px-4 py-2.5 rounded-lg transition">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 6h18M7 12h10M11 18h2"/>
+                  </svg>
+                  Filter
+                  <span id="filterBadge" class="hidden text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full">0</span>
+                </button>
+                <div id="filterDD" data-dd-menu class="hidden absolute top-full left-0 mt-2 w-60 bg-white border border-gray-200 rounded-xl shadow-lg p-3 z-50">
+                  <div class="mb-3">
+                    <label class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Status</label>
+                    <select id="filterStatus" onchange="filterCustomers()" class="form-input text-[12px]">
+                      <option value="all">All Status</option>
+                      <option value="active">Active</option>
+                      <option value="inactive">Inactive</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">GST Registered</label>
+                    <select id="filterGST" onchange="filterCustomers()" class="form-input text-[12px]">
+                      <option value="all">All</option>
+                      <option value="yes">Registered</option>
+                      <option value="no">Unregistered</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Customer Type</label>
+                    <select id="filterType" onchange="filterCustomers()" class="form-input text-[12px]">
+                      <option value="all">All Types</option>
+                      <option value="business">Business</option>
+                      <option value="individual">Individual</option>
+                      <option value="government">Government</option>
+                    </select>
+                  </div>
+                  <button onclick="clearFilters()" class="text-[12px] text-primary font-semibold hover:underline">Clear Filters</button>
+                </div>
+              </div>
+
+              <!-- Add Customer Button -->
+              <button onclick="openAddCustomer()" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-[13px] font-semibold px-4 py-2.5 rounded-lg transition shadow-sm">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M12 5v14M5 12h14"/>
+                </svg>
+                Add Client
+              </button>
+            </div>
           </div>
+
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-6">
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
+              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Clients</div>
+              <div class="text-[22px] font-bold text-gray-900" id="totalCustomers">0</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
+              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Active</div>
+              <div class="text-[22px] font-bold text-green-600" id="activeCustomers">0</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
+              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">GST Registered</div>
+              <div class="text-[22px] font-bold text-blue-600" id="gstCustomers">0</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
+              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Receivable</div>
+              <div class="text-[22px] font-bold text-amber-600" id="totalReceivable">₹0</div>
+            </div>
+          </div>
+
+          <!-- Customers Table Panel -->
+          <div id="customersPanel"></div>
+
         </div>
       </main>
+      <!-- ========================================================== -->
+      <!-- ============= PAGE CONTENT ENDS HERE ====================== -->
+      <!-- ========================================================== -->
     </div>
   </div>
 
+  <!-- ========================================================== -->
+  <!-- SCRIPTS -->
+  <!-- ========================================================== -->
+
+  <!-- Shell JS -->
   <script src="/assets/js/nav-sidebar.js"></script>
+
+  <!-- Main Customers JS (all logic) -->
   <script>
+    // =============================================================
+    // NAV-SIDEBAR INIT — activePage: "clients"
+    // =============================================================
     NavSidebar.init({
       basePath: "",
       activePage: "clients",
-      pageTitle: "Clients",
+      pageTitle: "Clients / Customers",
       user: {
         name: "Admin",
         role: "Super Admin",
         avatarUrl: "",
       },
     });
+
+    // =============================================================
+    // CUSTOMERS MODULE — Complete Logic (No Emojis, Only SVG Icons)
+    // =============================================================
+
+    // ---------- SVG Icons ----------
+    function iconPlus() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>`;
+    }
+    function iconEdit() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
+    }
+    function iconTrash() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>`;
+    }
+    function iconEye() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+    }
+    function iconX() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
+    }
+    function iconFilter() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h2"/></svg>`;
+    }
+    function iconSave() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>`;
+    }
+    function iconInfo() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>`;
+    }
+    function iconUser() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+    }
+    function iconBuilding() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V10M10 21V10M14 21V10M19 21V10"/><path d="M2 10l10-6 10 6"/></svg>`;
+    }
+    function iconGST() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>`;
+    }
+    function iconSearch() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>`;
+    }
+    function iconPhone() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>`;
+    }
+    function iconMail() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>`;
+    }
+    function iconChevronDown() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>`;
+    }
+    function iconLocation() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
+    }
+    function iconCredit() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`;
+    }
+
+    // ---------- Toast System ----------
+    function showToast(message, kind) {
+      kind = kind || 'success';
+      var wrap = document.getElementById('toastWrap');
+      var colors = {
+        success: 'bg-green-600',
+        info: 'bg-primary',
+        warning: 'bg-amber-600',
+        error: 'bg-red-600'
+      };
+      var el = document.createElement('div');
+      el.className = 'toast ' + colors[kind] + ' text-white text-sm font-semibold px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 max-w-xs';
+      el.innerHTML = '<span>' + message + '</span>';
+      wrap.appendChild(el);
+      setTimeout(function() {
+        el.style.transition = 'opacity .3s';
+        el.style.opacity = '0';
+        setTimeout(function() { el.remove(); }, 300);
+      }, 2600);
+    }
+
+    // ---------- Modal System ----------
+    function openModal(innerHtml, opts) {
+      opts = opts || {};
+      var root = document.getElementById('modalRoot');
+      root.innerHTML = `
+        <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" id="modalOverlay">
+          <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]" id="modalBackdrop"></div>
+          <div class="relative bg-white rounded-2xl shadow-2xl w-full ${opts.width || 'max-w-3xl'} max-h-[92vh] overflow-hidden animate-modal">
+            ${innerHtml}
+          </div>
+        </div>`;
+      document.getElementById('modalBackdrop').addEventListener('click', closeModal);
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      var root = document.getElementById('modalRoot');
+      root.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    function modalHeader(title, subtitle) {
+      return `
+        <div class="flex items-start justify-between px-6 py-5 border-b border-gray-100 sticky top-0 bg-white z-10">
+          <div>
+            <h3 class="text-lg font-bold text-gray-900">${title}</h3>
+            ${subtitle ? '<p class="text-xs text-gray-500 mt-0.5">' + subtitle + '</p>' : ''}
+          </div>
+          <button onclick="closeModal()" class="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition">${iconX()}</button>
+        </div>`;
+    }
+
+    function modalFooter(saveLabel, onSaveAttr, extraBtns) {
+      return `
+        <div class="flex items-center justify-between gap-2 px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl sticky bottom-0">
+          <div>${extraBtns || ''}</div>
+          <div class="flex gap-2">
+            <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Cancel</button>
+            <button ${onSaveAttr} class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-primary hover:bg-primary-dark transition shadow-sm flex items-center gap-1.5">
+              ${iconSave()} ${saveLabel}
+            </button>
+          </div>
+        </div>`;
+    }
+
+    function fld(label, inputHtml, hint) {
+      return `
+        <div class="mb-3">
+          <label class="form-label">${label}</label>
+          ${inputHtml}
+          ${hint ? '<div class="form-hint">' + hint + '</div>' : ''}
+        </div>`;
+    }
+
+    function inputBase() { return "form-input"; }
+
+    // ---------- Dropdown ----------
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('[data-dd-trigger]')) {
+        document.querySelectorAll('[data-dd-menu]').forEach(function(m) { m.classList.add('hidden'); });
+      }
+    });
+
+    function toggleFilterDD() {
+      var menu = document.getElementById('filterDD');
+      var isHidden = menu.classList.contains('hidden');
+      document.querySelectorAll('[data-dd-menu]').forEach(function(m) { m.classList.add('hidden'); });
+      if (isHidden) menu.classList.remove('hidden');
+    }
+
+    // ---------- Helpers ----------
+    function money(n) { return '₹' + Number(n).toLocaleString('en-IN'); }
+
+    function badge(text, color) {
+      var map = { green: 'badge-green', amber: 'badge-amber', red: 'badge-red', gray: 'badge-gray', blue: 'badge-blue', purple: 'badge-purple' };
+      var dot = { green: 'badge-dot-green', amber: 'badge-dot-amber', red: 'badge-dot-red', gray: 'badge-dot-gray', blue: 'badge-dot-blue', purple: 'badge-dot-purple' };
+      return '<span class="badge ' + map[color] + '"><span class="badge-dot ' + dot[color] + '"></span>' + text + '</span>';
+    }
+
+    function rowActionsHtml(editFn, delFn, viewFn) {
+      var html = '<div class="flex gap-1">';
+      if (viewFn) {
+        html += '<button onclick="' + viewFn + '" class="btn-icon-action" title="View">' + iconEye() + '</button>';
+      }
+      html += '<button onclick="' + editFn + '" class="btn-icon-action" title="Edit">' + iconEdit() + '</button>';
+      html += '<button onclick="' + delFn + '" class="btn-icon-action danger" title="Delete">' + iconTrash() + '</button>';
+      html += '</div>';
+      return html;
+    }
+
+    function panelWrap(titleHtml, bodyHtml, extraHead) {
+      return `
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+          <div class="flex items-center justify-between gap-3 flex-wrap px-5 py-4 border-b border-gray-100">
+            <div class="font-bold text-[14.5px] text-gray-800 flex items-center gap-2">${titleHtml}</div>
+            ${extraHead || ''}
+          </div>
+          <div>${bodyHtml}</div>
+        </div>`;
+    }
+
+    function tableHtml(cols, rowsHtml) {
+      var colHeaders = cols.map(function(c) {
+        return '<th class="text-left text-[11px] font-bold uppercase tracking-wide text-gray-500 px-4 py-3 whitespace-nowrap">' + c + '</th>';
+      }).join('');
+      return `
+        <div class="overflow-x-auto">
+          <table class="w-full text-[13px]">
+            <thead>
+              <tr class="bg-gray-50 border-b border-gray-200">${colHeaders}</tr>
+            </thead>
+            <tbody id="tbody-anchor">${rowsHtml}</tbody>
+          </table>
+        </div>`;
+    }
+
+    // =============================================================
+    // DATA
+    // =============================================================
+
+    var customerColors = ['#6da84c', '#1985bf', '#d97706', '#7c3aed', '#dc2626', '#0891b2', '#4f46e5', '#e11d48', '#0d9488'];
+
+    var customers = [{
+      id: 'CUS-001',
+      name: 'XYZ Retail Store',
+      companyName: 'XYZ Retail Private Limited',
+      customerType: 'business',
+      gstin: '07BXYXZ1234F1ZP',
+      pan: 'BXYXZ1234F',
+      email: 'contact@xyzretail.com',
+      phone: '+91-9876543210',
+      billingAddress: 'A-12, Connaught Place',
+      shippingAddress: 'A-12, Connaught Place, New Delhi',
+      city: 'New Delhi',
+      state: 'Delhi',
+      stateCode: '07',
+      pincode: '110001',
+      paymentTerms: 'Net 15 days',
+      creditLimit: 100000,
+      gstRegistered: true,
+      status: 'active',
+      receivable: 82600,
+      createdAt: '2025-01-10',
+      color: customerColors[0]
+    }, {
+      id: 'CUS-002',
+      name: 'ABC Enterprises',
+      companyName: 'ABC Enterprises LLP',
+      customerType: 'business',
+      gstin: '27ABCXY1234E1ZP',
+      pan: 'ABCXY1234E',
+      email: 'info@abcenterprises.com',
+      phone: '+91-9876543211',
+      billingAddress: '45, Industrial Estate, Pune',
+      shippingAddress: '45, Industrial Estate, Pune',
+      city: 'Pune',
+      state: 'Maharashtra',
+      stateCode: '27',
+      pincode: '411001',
+      paymentTerms: 'Net 30 days',
+      creditLimit: 200000,
+      gstRegistered: true,
+      status: 'active',
+      receivable: 45000,
+      createdAt: '2025-02-15',
+      color: customerColors[1]
+    }, {
+      id: 'CUS-003',
+      name: 'Rahul Sharma',
+      companyName: '',
+      customerType: 'individual',
+      gstin: '',
+      pan: 'SHAR1234G',
+      email: 'rahul.sharma@gmail.com',
+      phone: '+91-9876543212',
+      billingAddress: '12, Green Park, Mumbai',
+      shippingAddress: '12, Green Park, Mumbai',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      stateCode: '27',
+      pincode: '400001',
+      paymentTerms: 'Advance Payment',
+      creditLimit: 0,
+      gstRegistered: false,
+      status: 'active',
+      receivable: 12500,
+      createdAt: '2025-03-01',
+      color: customerColors[2]
+    }, {
+      id: 'CUS-004',
+      name: 'Tech Solutions Inc.',
+      companyName: 'Tech Solutions Incorporated',
+      customerType: 'business',
+      gstin: '29TECH1234H1ZP',
+      pan: 'TECH1234H',
+      email: 'sales@techsolutions.com',
+      phone: '+91-9876543213',
+      billingAddress: '88, Electronics City, Bengaluru',
+      shippingAddress: '88, Electronics City, Bengaluru',
+      city: 'Bengaluru',
+      state: 'Karnataka',
+      stateCode: '29',
+      pincode: '560100',
+      paymentTerms: 'Net 45 days',
+      creditLimit: 300000,
+      gstRegistered: true,
+      status: 'inactive',
+      receivable: 0,
+      createdAt: '2025-04-05',
+      color: customerColors[3]
+    }, {
+      id: 'CUS-005',
+      name: 'Priya Patel',
+      companyName: '',
+      customerType: 'individual',
+      gstin: '',
+      pan: 'PATE1234I',
+      email: 'priya.patel@yahoo.com',
+      phone: '+91-9876543214',
+      billingAddress: '22, Lake View, Surat',
+      shippingAddress: '22, Lake View, Surat',
+      city: 'Surat',
+      state: 'Gujarat',
+      stateCode: '24',
+      pincode: '395001',
+      paymentTerms: 'Cash on Delivery',
+      creditLimit: 0,
+      gstRegistered: false,
+      status: 'active',
+      receivable: 3200,
+      createdAt: '2025-05-20',
+      color: customerColors[4]
+    }, {
+      id: 'CUS-006',
+      name: 'Government of India - PWD',
+      companyName: 'Public Works Department',
+      customerType: 'government',
+      gstin: '19GOV1234J1ZP',
+      pan: 'GOV1234J',
+      email: 'procurement@pwd.gov.in',
+      phone: '+91-9876543215',
+      billingAddress: '56, PWD Office, Kochi',
+      shippingAddress: '56, PWD Office, Kochi',
+      city: 'Kochi',
+      state: 'Kerala',
+      stateCode: '32',
+      pincode: '682001',
+      paymentTerms: 'Net 60 days',
+      creditLimit: 500000,
+      gstRegistered: true,
+      status: 'active',
+      receivable: 185000,
+      createdAt: '2025-06-12',
+      color: customerColors[5]
+    }, {
+      id: 'CUS-007',
+      name: 'Global Exports Ltd.',
+      companyName: 'Global Exports Limited',
+      customerType: 'business',
+      gstin: '07GLOB1234K1ZP',
+      pan: 'GLOB1234K',
+      email: 'info@globalexports.com',
+      phone: '+91-9876543216',
+      billingAddress: '101, Trade Tower, Delhi',
+      shippingAddress: '101, Trade Tower, Delhi',
+      city: 'New Delhi',
+      state: 'Delhi',
+      stateCode: '07',
+      pincode: '110002',
+      paymentTerms: 'Net 15 days',
+      creditLimit: 150000,
+      gstRegistered: true,
+      status: 'active',
+      receivable: 95000,
+      createdAt: '2025-07-01',
+      color: customerColors[6]
+    }, {
+      id: 'CUS-008',
+      name: 'Sunil Kumar',
+      companyName: '',
+      customerType: 'individual',
+      gstin: '',
+      pan: 'KUMR1234L',
+      email: 'sunil.kumar@rediffmail.com',
+      phone: '+91-9876543217',
+      billingAddress: '34, Raj Nagar, Jaipur',
+      shippingAddress: '34, Raj Nagar, Jaipur',
+      city: 'Jaipur',
+      state: 'Rajasthan',
+      stateCode: '08',
+      pincode: '302001',
+      paymentTerms: 'Net 7 days',
+      creditLimit: 0,
+      gstRegistered: false,
+      status: 'inactive',
+      receivable: 0,
+      createdAt: '2025-08-15',
+      color: customerColors[7]
+    }];
+
+    var nextCustomerNo = 9;
+
+    // =============================================================
+    // FUNCTIONS
+    // =============================================================
+
+    function getInitials(name) {
+      if (!name) return 'C';
+      var parts = name.split(' ');
+      if (parts.length === 1) return name.substring(0, 2).toUpperCase();
+      return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    }
+
+    function renderStats() {
+      document.getElementById('totalCustomers').textContent = customers.length;
+      var active = customers.filter(function(c) { return c.status === 'active'; });
+      document.getElementById('activeCustomers').textContent = active.length;
+      var gst = customers.filter(function(c) { return c.gstRegistered; });
+      document.getElementById('gstCustomers').textContent = gst.length;
+      var total = customers.reduce(function(sum, c) { return sum + c.receivable; }, 0);
+      document.getElementById('totalReceivable').textContent = money(total);
+    }
+
+    function getFilteredCustomers() {
+      var searchInput = document.getElementById('searchInput');
+      var q = searchInput ? searchInput.value.toLowerCase() : '';
+      var status = document.getElementById('filterStatus').value || 'all';
+      var gst = document.getElementById('filterGST').value || 'all';
+      var type = document.getElementById('filterType').value || 'all';
+
+      return customers.filter(function(c) {
+        var matchSearch = c.name.toLowerCase().indexOf(q) !== -1 ||
+          c.companyName.toLowerCase().indexOf(q) !== -1 ||
+          c.id.toLowerCase().indexOf(q) !== -1 ||
+          c.phone.indexOf(q) !== -1 ||
+          c.email.toLowerCase().indexOf(q) !== -1;
+        var matchStatus = status === 'all' || c.status === status;
+        var matchGST = gst === 'all' || (gst === 'yes' ? c.gstRegistered : !c.gstRegistered);
+        var matchType = type === 'all' || c.customerType === type;
+        return matchSearch && matchStatus && matchGST && matchType;
+      });
+    }
+
+    function renderCustomers() {
+      var filtered = getFilteredCustomers();
+
+      var rowsHtml = '';
+      if (filtered.length === 0) {
+        rowsHtml = `
+          <tr>
+            <td colspan="8" class="text-center py-10 text-gray-400 text-sm">
+              <div class="flex justify-center mb-2 empty-icon-svg">${iconUser()}</div>
+              No clients found. Try adjusting your filters or
+              <button onclick="openAddCustomer()" class="text-primary font-semibold hover:underline">add a new client</button>.
+            </td>
+          </tr>`;
+      } else {
+        rowsHtml = filtered.map(function(c) {
+          var statusBadge = c.status === 'active' ? badge('Active', 'green') : badge('Inactive', 'gray');
+          var gstBadge = c.gstRegistered ? badge('GST Registered', 'blue') : badge('Unregistered', 'amber');
+          var typeBadge = c.customerType === 'business' ? badge('Business', 'purple') :
+                          c.customerType === 'government' ? badge('Government', 'blue') :
+                          badge('Individual', 'gray');
+          var statusColor = c.status === 'active' ? '#22c55e' : '#94a3b8';
+          return `
+            <tr class="border-b border-gray-100 table-row-hover">
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-3">
+                  <div class="customer-avatar" style="background:${c.color}">${getInitials(c.name)}</div>
+                  <div>
+                    <div class="font-semibold text-gray-800">${c.name}</div>
+                    <div class="text-[11.5px] text-gray-400 font-mono">${c.id}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-gray-600">${c.companyName || '—'}</td>
+              <td class="px-4 py-3">${typeBadge}</td>
+              <td class="px-4 py-3 font-mono text-[12px] text-gray-500">${c.gstin || '—'}</td>
+              <td class="px-4 py-3">${gstBadge}</td>
+              <td class="px-4 py-3 font-mono font-semibold text-amber-600">${money(c.receivable)}</td>
+              <td class="px-4 py-3">${statusBadge}</td>
+              <td class="px-4 py-3">${rowActionsHtml(
+                "editCustomer('"+c.id+"')",
+                "delCustomer('"+c.id+"')",
+                "viewCustomer('"+c.id+"')"
+              )}</td>
+            </tr>`;
+        }).join('');
+      }
+
+      var panelHtml = panelWrap(
+        'All Clients <span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + filtered.length + '</span>',
+        tableHtml(['Client', 'Company', 'Type', 'GSTIN', 'GST Status', 'Receivable', 'Status', 'Actions'], rowsHtml),
+        '<div class="flex items-center gap-2"><span class="text-[11px] text-gray-400">Show:</span><select id="pageSizeSelect" onchange="renderCustomers()" class="text-[12px] border border-gray-200 rounded-lg px-2 py-1 bg-white outline-none"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select></div>'
+      );
+
+      document.getElementById('customersPanel').innerHTML = panelHtml;
+      renderStats();
+    }
+
+    function filterCustomers() { renderCustomers(); }
+
+    function clearFilters() {
+      document.getElementById('filterStatus').value = 'all';
+      document.getElementById('filterGST').value = 'all';
+      document.getElementById('filterType').value = 'all';
+      var searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.value = '';
+      renderCustomers();
+      toggleFilterDD();
+    }
+
+    // =============================================================
+    // ADD / EDIT CUSTOMER
+    // =============================================================
+
+    function openAddCustomer() { openCustomerModal(null); }
+
+    function editCustomer(id) {
+      var c = customers.find(function(x) { return x.id === id; });
+      if (c) openCustomerModal(c);
+    }
+
+    function viewCustomer(id) {
+      var c = customers.find(function(x) { return x.id === id; });
+      if (!c) return;
+
+      var modalContent = `
+        ${modalHeader('Client Details — ' + c.name, c.id)}
+        <div class="px-6 py-4 modal-scroll">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="customer-avatar" style="background:${c.color}; width:48px; height:48px; font-size:18px;">${getInitials(c.name)}</div>
+            <div>
+              <div class="text-lg font-semibold">${c.name}</div>
+              <div class="text-sm text-gray-500">${c.companyName || 'Individual Client'}</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 text-sm border-t border-gray-100 pt-4">
+            <div><span class="text-gray-500">Client ID</span><br><span class="font-mono font-semibold">${c.id}</span></div>
+            <div><span class="text-gray-500">Status</span><br>${c.status === 'active' ? badge('Active', 'green') : badge('Inactive', 'gray')}</div>
+            <div><span class="text-gray-500">Client Type</span><br>${c.customerType === 'business' ? badge('Business', 'purple') : c.customerType === 'government' ? badge('Government', 'blue') : badge('Individual', 'gray')}</div>
+            <div><span class="text-gray-500">GSTIN</span><br><span class="font-mono">${c.gstin || '—'}</span></div>
+            <div><span class="text-gray-500">PAN</span><br><span class="font-mono">${c.pan || '—'}</span></div>
+            <div><span class="text-gray-500">GST Status</span><br>${c.gstRegistered ? badge('Registered', 'blue') : badge('Unregistered', 'amber')}</div>
+            <div><span class="text-gray-500">Email</span><br><span class="text-gray-700">${c.email}</span></div>
+            <div><span class="text-gray-500">Phone</span><br><span class="text-gray-700">${c.phone}</span></div>
+            <div class="col-span-2"><span class="text-gray-500">Billing Address</span><br><span class="text-gray-700">${c.billingAddress}, ${c.city}, ${c.state} - ${c.pincode}</span></div>
+            ${c.shippingAddress && c.shippingAddress !== c.billingAddress ? '<div class="col-span-2"><span class="text-gray-500">Shipping Address</span><br><span class="text-gray-700">' + c.shippingAddress + ', ' + c.city + ', ' + c.state + ' - ' + c.pincode + '</span></div>' : ''}
+            <div><span class="text-gray-500">Payment Terms</span><br><span class="font-semibold">${c.paymentTerms}</span></div>
+            <div><span class="text-gray-500">Credit Limit</span><br><span class="font-semibold">${c.creditLimit > 0 ? money(c.creditLimit) : '—'}</span></div>
+            <div><span class="text-gray-500">Total Receivable</span><br><span class="font-semibold text-amber-600">${money(c.receivable)}</span></div>
+          </div>
+
+          <div class="mt-3 text-[11px] text-gray-400 flex items-center gap-1">
+            ${iconInfo()} Created on ${c.createdAt}
+          </div>
+        </div>
+        ${modalFooter('Close', 'onclick="closeModal()"')}
+      `;
+
+      openModal(modalContent, { width: 'max-w-2xl' });
+    }
+
+    function openCustomerModal(existing) {
+      var e = existing || {
+        name: '',
+        companyName: '',
+        customerType: 'business',
+        gstin: '',
+        pan: '',
+        email: '',
+        phone: '',
+        billingAddress: '',
+        shippingAddress: '',
+        city: '',
+        state: 'Maharashtra',
+        stateCode: '27',
+        pincode: '',
+        paymentTerms: 'Net 15 days',
+        creditLimit: '',
+        gstRegistered: false,
+        status: 'active',
+        color: customerColors[Math.floor(Math.random() * customerColors.length)]
+      };
+      var isEdit = !!existing;
+
+      var stateOptions = ['Maharashtra', 'Delhi', 'Karnataka', 'Tamil Nadu', 'Gujarat', 'Uttar Pradesh', 'Rajasthan', 'Kerala', 'Telangana', 'West Bengal', 'Andhra Pradesh', 'Bihar', 'Chhattisgarh', 'Goa', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Madhya Pradesh', 'Odisha', 'Punjab', 'Uttarakhand'];
+
+      var modalContent = `
+        ${modalHeader(isEdit ? 'Edit Client' : 'Add New Client', isEdit ? e.id : 'Create a new client master record')}
+        <div class="px-6 py-4 modal-scroll">
+          <div class="flex border-b border-gray-200 mb-4 gap-1" id="modalTabs">
+            <button class="modal-tab-btn active" data-tab="tab-basic">
+              ${iconUser()} Basic Info
+            </button>
+            <button class="modal-tab-btn" data-tab="tab-address">
+              ${iconLocation()} Address
+            </button>
+            <button class="modal-tab-btn" data-tab="tab-tax">
+              ${iconGST()} Tax & GST
+            </button>
+            <button class="modal-tab-btn" data-tab="tab-payment">
+              ${iconCredit()} Payment & Credit
+            </button>
+          </div>
+
+          <div id="tab-basic" class="modal-tab-panel active">
+            <div class="grid grid-cols-2 gap-3">
+              ${fld('Client Name *', '<input id="f_name" value="' + e.name + '" placeholder="e.g. XYZ Retail Store" class="' + inputBase() + '">')}
+              ${fld('Company Name', '<input id="f_company" value="' + (e.companyName || '') + '" placeholder="Company legal name" class="' + inputBase() + '">')}
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              ${fld('Client Type', '<select id="f_type" class="' + inputBase() + '"><option ' + (e.customerType === 'business' ? 'selected' : '') + ' value="business">Business</option><option ' + (e.customerType === 'individual' ? 'selected' : '') + ' value="individual">Individual</option><option ' + (e.customerType === 'government' ? 'selected' : '') + ' value="government">Government</option></select>')}
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              ${fld('Email *', '<input id="f_email" type="email" value="' + e.email + '" placeholder="client@domain.com" class="' + inputBase() + '">')}
+              ${fld('Phone *', '<input id="f_phone" value="' + e.phone + '" placeholder="+91-XXXXXXXXXX" class="' + inputBase() + '">')}
+            </div>
+          </div>
+
+          <div id="tab-address" class="modal-tab-panel">
+            <div>
+              ${fld('Billing Address *', '<textarea id="f_billingAddress" rows="2" class="' + inputBase() + '" placeholder="Street address">' + (e.billingAddress || '') + '</textarea>')}
+            </div>
+            <div>
+              ${fld('Shipping Address', '<textarea id="f_shippingAddress" rows="2" class="' + inputBase() + '" placeholder="Shipping address (if different)">' + (e.shippingAddress || '') + '</textarea>')}
+            </div>
+            <div class="grid grid-cols-3 gap-3">
+              ${fld('City', '<input id="f_city" value="' + (e.city || '') + '" placeholder="City" class="' + inputBase() + '">')}
+              ${fld('State', '<select id="f_state" class="' + inputBase() + '" onchange="updateCustomerStateCode()">' + stateOptions.map(function(s) { return '<option ' + (s === e.state ? 'selected' : '') + '>' + s + '</option>'; }).join('') + '</select>')}
+              ${fld('State Code', '<input id="f_stateCode" value="' + (e.stateCode || '27') + '" class="' + inputBase() + '" disabled>')}
+            </div>
+            ${fld('Pincode', '<input id="f_pincode" value="' + (e.pincode || '') + '" placeholder="6-digit PIN" class="' + inputBase() + '">')}
+          </div>
+
+          <div id="tab-tax" class="modal-tab-panel">
+            <div class="grid grid-cols-2 gap-3">
+              ${fld('GSTIN', '<input id="f_gstin" value="' + (e.gstin || '') + '" placeholder="15-digit GSTIN" class="' + inputBase() + '">', 'Format: 2-digit state code + 10-digit PAN + 3-digit entity code')}
+              ${fld('PAN', '<input id="f_pan" value="' + (e.pan || '') + '" placeholder="10-digit PAN" class="' + inputBase() + '">')}
+            </div>
+            ${fld('GST Registered?', '<div class="flex items-center gap-4 mt-1"><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="gstReg" value="true" ' + (e.gstRegistered ? 'checked' : '') + '> <span class="font-medium">Yes</span></label><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="gstReg" value="false" ' + (!e.gstRegistered ? 'checked' : '') + '> <span class="font-medium">No</span></label></div>')}
+          </div>
+
+          <div id="tab-payment" class="modal-tab-panel">
+            ${fld('Payment Terms *', '<select id="f_paymentTerms" class="' + inputBase() + '"><option ' + (e.paymentTerms === 'Net 7 days' ? 'selected' : '') + '>Net 7 days</option><option ' + (e.paymentTerms === 'Net 15 days' ? 'selected' : '') + '>Net 15 days</option><option ' + (e.paymentTerms === 'Net 30 days' ? 'selected' : '') + '>Net 30 days</option><option ' + (e.paymentTerms === 'Net 45 days' ? 'selected' : '') + '>Net 45 days</option><option ' + (e.paymentTerms === 'Net 60 days' ? 'selected' : '') + '>Net 60 days</option><option ' + (e.paymentTerms === 'Advance Payment' ? 'selected' : '') + '>Advance Payment</option><option ' + (e.paymentTerms === 'Cash on Delivery' ? 'selected' : '') + '>Cash on Delivery</option></select>')}
+            ${fld('Credit Limit (₹)', '<input id="f_creditLimit" type="number" value="' + (e.creditLimit || '') + '" placeholder="e.g. 100000" class="' + inputBase() + '">', 'Set 0 for no credit limit')}
+            ${fld('Status', '<div class="flex items-center gap-4 mt-1"><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="customerStatus" value="active" ' + (e.status === 'active' ? 'checked' : '') + '> <span class="font-medium">Active</span></label><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="customerStatus" value="inactive" ' + (e.status === 'inactive' ? 'checked' : '') + '> <span class="font-medium">Inactive</span></label></div>')}
+          </div>
+        </div>
+        ${modalFooter(isEdit ? 'Update Client' : 'Save Client', 'onclick="saveCustomer(\'' + (isEdit ? e.id : '') + '\')"')}
+      `;
+
+      openModal(modalContent, { width: 'max-w-2xl' });
+
+      // Tab switching
+      setTimeout(function() {
+        var tabs = document.querySelectorAll('.modal-tab-btn');
+        tabs.forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            tabs.forEach(function(b) { b.classList.remove('active'); });
+            this.classList.add('active');
+            var panels = document.querySelectorAll('.modal-tab-panel');
+            panels.forEach(function(p) { p.classList.remove('active'); });
+            document.getElementById(this.dataset.tab).classList.add('active');
+          });
+        });
+      }, 50);
+    }
+
+    // State code updater
+    function updateCustomerStateCode() {
+      var state = document.getElementById('f_state').value;
+      var stateCodeMap = {
+        'Maharashtra': '27',
+        'Delhi': '07',
+        'Karnataka': '29',
+        'Tamil Nadu': '33',
+        'Gujarat': '24',
+        'Uttar Pradesh': '09',
+        'Rajasthan': '08',
+        'Kerala': '32',
+        'Telangana': '36',
+        'West Bengal': '19',
+        'Andhra Pradesh': '28',
+        'Bihar': '10',
+        'Chhattisgarh': '22',
+        'Goa': '30',
+        'Haryana': '06',
+        'Himachal Pradesh': '02',
+        'Jharkhand': '20',
+        'Madhya Pradesh': '23',
+        'Odisha': '21',
+        'Punjab': '03',
+        'Uttarakhand': '05'
+      };
+      document.getElementById('f_stateCode').value = stateCodeMap[state] || '';
+    }
+
+    // =============================================================
+    // SAVE / DELETE CUSTOMER
+    // =============================================================
+
+    function saveCustomer(existingId) {
+      var name = document.getElementById('f_name') ? document.getElementById('f_name').value.trim() : '';
+      var companyName = document.getElementById('f_company') ? document.getElementById('f_company').value.trim() : '';
+      var customerType = document.getElementById('f_type') ? document.getElementById('f_type').value : 'business';
+      var email = document.getElementById('f_email') ? document.getElementById('f_email').value.trim() : '';
+      var phone = document.getElementById('f_phone') ? document.getElementById('f_phone').value.trim() : '';
+      var billingAddress = document.getElementById('f_billingAddress') ? document.getElementById('f_billingAddress').value.trim() : '';
+      var shippingAddress = document.getElementById('f_shippingAddress') ? document.getElementById('f_shippingAddress').value.trim() : '';
+      var city = document.getElementById('f_city') ? document.getElementById('f_city').value.trim() : '';
+      var state = document.getElementById('f_state') ? document.getElementById('f_state').value : 'Maharashtra';
+      var stateCode = document.getElementById('f_stateCode') ? document.getElementById('f_stateCode').value : '27';
+      var pincode = document.getElementById('f_pincode') ? document.getElementById('f_pincode').value.trim() : '';
+      var gstin = document.getElementById('f_gstin') ? document.getElementById('f_gstin').value.trim().toUpperCase() : '';
+      var pan = document.getElementById('f_pan') ? document.getElementById('f_pan').value.trim().toUpperCase() : '';
+      var paymentTerms = document.getElementById('f_paymentTerms') ? document.getElementById('f_paymentTerms').value : 'Net 15 days';
+      var creditLimit = document.getElementById('f_creditLimit') ? parseFloat(document.getElementById('f_creditLimit').value) || 0 : 0;
+      var gstRegRadio = document.querySelector('input[name="gstReg"]:checked');
+      var gstRegistered = gstRegRadio ? gstRegRadio.value === 'true' : false;
+      var statusRadio = document.querySelector('input[name="customerStatus"]:checked');
+      var status = statusRadio ? statusRadio.value : 'active';
+
+      if (!name || !email || !phone) {
+        showToast('Please fill all required fields (Name, Email, Phone)', 'error');
+        return;
+      }
+
+      var color = customerColors[Math.floor(Math.random() * customerColors.length)];
+
+      if (existingId) {
+        var c = customers.find(function(x) { return x.id === existingId; });
+        if (c) {
+          c.name = name;
+          c.companyName = companyName;
+          c.customerType = customerType;
+          c.email = email;
+          c.phone = phone;
+          c.billingAddress = billingAddress;
+          c.shippingAddress = shippingAddress || billingAddress;
+          c.city = city;
+          c.state = state;
+          c.stateCode = stateCode;
+          c.pincode = pincode;
+          c.gstin = gstin;
+          c.pan = pan;
+          c.paymentTerms = paymentTerms;
+          c.creditLimit = creditLimit;
+          c.gstRegistered = gstRegistered;
+          c.status = status;
+          showToast('Client updated successfully', 'success');
+        }
+      } else {
+        var newCustomer = {
+          id: 'CUS-' + String(nextCustomerNo++).padStart(3, '0'),
+          name: name,
+          companyName: companyName,
+          customerType: customerType,
+          email: email,
+          phone: phone,
+          billingAddress: billingAddress,
+          shippingAddress: shippingAddress || billingAddress,
+          city: city,
+          state: state,
+          stateCode: stateCode,
+          pincode: pincode,
+          gstin: gstin,
+          pan: pan,
+          paymentTerms: paymentTerms,
+          creditLimit: creditLimit,
+          gstRegistered: gstRegistered,
+          status: status,
+          receivable: 0,
+          createdAt: new Date().toISOString().split('T')[0],
+          color: color
+        };
+        customers.unshift(newCustomer);
+        showToast('Client added successfully', 'success');
+      }
+
+      closeModal();
+      renderCustomers();
+    }
+
+    function delCustomer(id) {
+      var c = customers.find(function(x) { return x.id === id; });
+      if (!c) return;
+
+      var modalContent = `
+        ${modalHeader('Delete Client', c.name)}
+        <div class="px-6 py-4 text-sm text-gray-600">
+          <p>Are you sure you want to permanently delete <b class="text-gray-800">${c.name}</b>?</p>
+          <p class="text-gray-400 text-[12px] mt-1">This action cannot be undone. All associated transactions will be affected.</p>
+          ${c.receivable > 0 ? '<p class="text-amber-600 text-[12px] mt-2">⚠️ This client has outstanding receivable of ' + money(c.receivable) + '</p>' : ''}
+        </div>
+        ${modalFooter('Delete', 'onclick="confirmDeleteCustomer(\'' + id + '\')"', '')}
+      `;
+      openModal(modalContent, { width: 'max-w-md' });
+    }
+
+    function confirmDeleteCustomer(id) {
+      customers = customers.filter(function(x) { return x.id !== id; });
+      closeModal();
+      renderCustomers();
+      showToast('Client deleted successfully', 'warning');
+    }
+
+    // =============================================================
+    // SEARCH
+    // =============================================================
+
+    (function addSearchToTopbar() {
+      var searchContainer = document.querySelector('.app-main header');
+      if (searchContainer) {
+        var searchHtml = `
+          <div class="hidden sm:flex flex-1 max-w-[420px] relative ml-4">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">${iconSearch()}</span>
+            <input type="text" id="searchInput" placeholder="Search clients by name, company, phone…"
+              onkeyup="filterCustomers()"
+              class="w-full border border-gray-200 bg-gray-50 focus:bg-white rounded-lg pl-9 pr-3 py-2 text-[13px] outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition placeholder:text-gray-400">
+          </div>
+        `;
+        var headerContent = searchContainer.innerHTML;
+        var hamburgerIndex = headerContent.indexOf('lg:hidden');
+        if (hamburgerIndex !== -1) {
+          var firstDivEnd = headerContent.indexOf('</div>', hamburgerIndex) + 6;
+          var before = headerContent.substring(0, firstDivEnd);
+          var after = headerContent.substring(firstDivEnd);
+          searchContainer.innerHTML = before + searchHtml + after;
+        }
+      }
+    })();
+
+    // =============================================================
+    // INIT
+    // =============================================================
+
+    renderCustomers();
+
+    console.log('👥 Clients Module Loaded Successfully');
+    console.log('📊 Total Clients:', customers.length);
+    console.log('✅ Active Clients:', customers.filter(function(c) { return c.status === 'active'; }).length);
+    console.log('💰 Total Receivable:', customers.reduce(function(sum, c) { return sum + c.receivable; }, 0));
+
   </script>
+
 </body>
 </html>
