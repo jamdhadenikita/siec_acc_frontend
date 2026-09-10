@@ -179,6 +179,8 @@
     '  </div>',
     '  <nav class="sidebar-nav" aria-label="Primary">',
     '    <ul class="sidebar-nav-list">',
+
+    /* ============ OVERVIEW ============ */
     '      <li class="sidebar-nav-item">',
     '        <a href="/dashboard/dashboard.html" class="sidebar-nav-link" data-page="dashboard">',
     '          <span class="sidebar-nav-icon"><i class="fa-solid fa-gauge"></i></span>',
@@ -187,6 +189,7 @@
     '        </a>',
     '      </li>',
 
+    /* ============ TOOLS ============ */
     '      <li class="sidebar-nav-divider" role="separator"></li>',
     '      <li class="sidebar-nav-heading"><span>Tools</span></li>',
     '      <li class="sidebar-nav-item">',
@@ -213,19 +216,15 @@
     '        </a>',
     '      </li>',
 
+    /* ============ SALES ============ */
+    '      <li class="sidebar-nav-divider" role="separator"></li>',
+    '      <li class="sidebar-nav-heading"><span>Sales</span></li>',
+
     '      <li class="sidebar-nav-item">',
     '        <a href="/quotations/quotations.html" class="sidebar-nav-link" data-page="quotations">',
     '          <span class="sidebar-nav-icon"><i class="fa-solid fa-file-lines"></i></span>',
     '          <span class="sidebar-nav-label">Quotation</span>',
     '          <span class="sidebar-tooltip">Quotation</span>',
-    '        </a>',
-    '      </li>',
-
-    '      <li class="sidebar-nav-item">',
-    '        <a href="/invoices/invoices.html" class="sidebar-nav-link" data-page="invoices">',
-    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-file-invoice"></i></span>',
-    '          <span class="sidebar-nav-label">Invoices</span>',
-    '          <span class="sidebar-tooltip">Invoices</span>',
     '        </a>',
     '      </li>',
 
@@ -238,7 +237,7 @@
     '      </li>',
 
     '      <li class="sidebar-nav-item">',
-    '        <a href="/deliveryChallan/deliveryChallan.html" class="sidebar-nav-link" data-page="deliveryChallan">',
+    '        <a href="/delivery-challan/delivery-challan.html" class="sidebar-nav-link" data-page="delivery-challan">',
     '          <span class="sidebar-nav-icon"><i class="fa-solid fa-truck"></i></span>',
     '          <span class="sidebar-nav-label">Delivery Challan</span>',
     '          <span class="sidebar-tooltip">Delivery Challan</span>',
@@ -246,23 +245,62 @@
     '      </li>',
 
     '      <li class="sidebar-nav-item">',
-    '        <a href="/purchaseOrders/purchaseOrders.html" class="sidebar-nav-link" data-page="purchaseOrders">',
+    '        <a href="/invoices/invoices.html" class="sidebar-nav-link" data-page="invoices">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-file-invoice"></i></span>',
+    '          <span class="sidebar-nav-label">Invoices</span>',
+    '          <span class="sidebar-tooltip">Invoices</span>',
+    '        </a>',
+    '      </li>',
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/customer-payments/customer-payments.html" class="sidebar-nav-link" data-page="customer-payments">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-hand-holding-dollar"></i></span>',
+    '          <span class="sidebar-nav-label">Customer Payments</span>',
+    '          <span class="sidebar-tooltip">Customer Payments</span>',
+    '        </a>',
+    '      </li>',
+
+    /* ============ PURCHASE ============ */
+    '      <li class="sidebar-nav-divider" role="separator"></li>',
+    '      <li class="sidebar-nav-heading"><span>Purchase</span></li>',
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/purchase-orders/purchase-orders.html" class="sidebar-nav-link" data-page="purchase-orders">',
     '          <span class="sidebar-nav-icon"><i class="fa-solid fa-truck-fast"></i></span>',
     '          <span class="sidebar-nav-label">Purchase Orders</span>',
     '          <span class="sidebar-tooltip">Purchase Orders</span>',
     '        </a>',
     '      </li>',
 
-    
     '      <li class="sidebar-nav-item">',
-    '        <a href="/purchaseBills/purchaseBills.html" class="sidebar-nav-link" data-page="purchaseBills">',
+    '        <a href="/goods-receipt/goods-receipt.html" class="sidebar-nav-link" data-page="goods-receipt">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-clipboard-check"></i></span>',
+    '          <span class="sidebar-nav-label">Goods Receipt</span>',
+    '          <span class="sidebar-tooltip">Goods Receipt</span>',
+    '        </a>',
+    '      </li>',
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/purchase-bills/purchase-bills.html" class="sidebar-nav-link" data-page="purchase-bills">',
     '          <span class="sidebar-nav-icon"><i class="fa-solid fa-file-invoice-dollar"></i></span>',
     '          <span class="sidebar-nav-label">Purchase Bills</span>',
     '          <span class="sidebar-tooltip">Purchase Bills</span>',
     '        </a>',
     '      </li>',
 
-    '    <li class="sidebar-nav-item">',
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/vendor-payments/vendor-payments.html" class="sidebar-nav-link" data-page="vendor-payments">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-money-check-dollar"></i></span>',
+    '          <span class="sidebar-nav-label">Vendor Payments</span>',
+    '          <span class="sidebar-tooltip">Vendor Payments</span>',
+    '        </a>',
+    '      </li>',
+
+    /* ============ OPERATIONS ============ */
+    '      <li class="sidebar-nav-divider" role="separator"></li>',
+    '      <li class="sidebar-nav-heading"><span>Operations</span></li>',
+
+    '      <li class="sidebar-nav-item">',
     '        <a href="/inventory/inventory.html" class="sidebar-nav-link" data-page="inventory">',
     '          <span class="sidebar-nav-icon"><i class="fa-solid fa-boxes-stacked"></i></span>',
     '          <span class="sidebar-nav-label">Inventory</span>',
@@ -270,11 +308,100 @@
     '        </a>',
     '      </li>',
 
-    '     <li class="sidebar-nav-item">',
+    '      <li class="sidebar-nav-item">',
     '        <a href="/expenses/expenses.html" class="sidebar-nav-link" data-page="expenses">',
     '          <span class="sidebar-nav-icon"><i class="fa-solid fa-money-bill-wave"></i></span>',
     '          <span class="sidebar-nav-label">Expenses</span>',
     '          <span class="sidebar-tooltip">Expenses</span>',
+    '        </a>',
+    '      </li>',
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/projects/projects.html" class="sidebar-nav-link" data-page="projects">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-folder"></i></span>',
+    '          <span class="sidebar-nav-label">Projects</span>',
+    '          <span class="sidebar-tooltip">Projects</span>',
+    '        </a>',
+    '      </li>',
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/timetracking/timesheet.html" class="sidebar-nav-link" data-page="timetracking">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-clock"></i></span>',
+    '          <span class="sidebar-nav-label">Time Tracking</span>',
+    '          <span class="sidebar-tooltip">Time Tracking</span>',
+    '        </a>',
+    '      </li>',
+
+    /* ============ FINANCE ============ */
+    '      <li class="sidebar-nav-divider" role="separator"></li>',
+    '      <li class="sidebar-nav-heading"><span>Finance</span></li>',
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/gst-tax/gst-tax.html" class="sidebar-nav-link" data-page="gsttax">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-shield-halved"></i></span>',
+    '          <span class="sidebar-nav-label">GST / Tax</span>',
+    '          <span class="sidebar-tooltip">GST / Tax</span>',
+    '        </a>',
+    '      </li>',
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/banking/banking.html" class="sidebar-nav-link" data-page="banking">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-money-check"></i></span>',
+    '          <span class="sidebar-nav-label">Banking</span>',
+    '          <span class="sidebar-tooltip">Banking</span>',
+    '        </a>',
+    '      </li>',
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/accounts/accounts.html" class="sidebar-nav-link" data-page="accounts">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-book"></i></span>',
+    '          <span class="sidebar-nav-label">Accounting</span>',
+    '          <span class="sidebar-tooltip">Accounting</span>',
+    '        </a>',
+    '      </li>',
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/reports/reports.html" class="sidebar-nav-link" data-page="reports">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-chart-line"></i></span>',
+    '          <span class="sidebar-nav-label">Reports</span>',
+    '          <span class="sidebar-tooltip">Reports</span>',
+    '        </a>',
+    '      </li>',
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/documents/documents.html" class="sidebar-nav-link" data-page="documents">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-folder-open"></i></span>',
+    '          <span class="sidebar-nav-label">Documents</span>',
+    '          <span class="sidebar-tooltip">Documents</span>',
+    '        </a>',
+    '      </li>',
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/filing-&-compliance/filing-&-compliance.html" class="sidebar-nav-link" data-page="filing">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-file-shield"></i></span>',
+    '          <span class="sidebar-nav-label">Filing &amp; Compliance</span>',
+    '          <span class="sidebar-tooltip">Filing &amp; Compliance</span>',
+    '        </a>',
+    '      </li>',
+
+    /* ============ SYSTEM ============ */
+    '      <li class="sidebar-nav-divider" role="separator"></li>',
+    '      <li class="sidebar-nav-heading"><span>System</span></li>',
+
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/users-&-roles/users.html" class="sidebar-nav-link" data-page="users">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-users-gear"></i></span>',
+    '          <span class="sidebar-nav-label">Users &amp; Roles</span>',
+    '          <span class="sidebar-tooltip">Users &amp; Roles</span>',
+    '        </a>',
+    '      </li>',
+
+    '      <li class="sidebar-nav-item">',
+    '        <a href="/notifications/notifications.html" class="sidebar-nav-link" data-page="notifications">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-bell"></i></span>',
+    '          <span class="sidebar-nav-label">Notifications</span>',
+    '          <span class="sidebar-tooltip">Notifications</span>',
     '        </a>',
     '      </li>',
 
@@ -287,7 +414,6 @@
     '      </li>',
 
     '    </ul>',
-
     '  </nav>',
     '  <hr>',
     '    <div class="text-sm m-4 text-gray-600">© 2026 Kunash Media Solutions</div>',
@@ -306,7 +432,6 @@
     '    <h1 id="topbar-page-title" class="topbar-page-title">Dashboard</h1>',
     '  </div>',
     '  <div class="topbar-right">',
-
     '    <div id="profile-menu" class="profile-menu">',
     '      <button type="button" id="profile-trigger" class="profile-trigger" aria-haspopup="true" aria-expanded="false">',
     '        <span class="profile-avatar">',
@@ -349,7 +474,7 @@
     '    </div>',
     '  </div>',
     '</div>'
-      ].join("\n");
+  ].join("\n");
 
   var NavSidebar = {
     _config: null,

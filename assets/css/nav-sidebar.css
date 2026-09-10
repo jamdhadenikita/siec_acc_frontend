@@ -163,13 +163,13 @@ html.sidebar-collapsed .sidebar-collapse-btn { display: none; }
 .sidebar-nav-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
 
 .sidebar-nav-divider { height: 1px; background: var(--color-border); margin: 10px 6px; }
-.sidebar-nav-heading { padding: 8px 12px 4px; }
+.sidebar-nav-heading { padding: 8px 12px 4px;  }
 .sidebar-nav-heading span {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+   color:#5c9140;
 }
 html.sidebar-collapsed .sidebar-nav-heading { display: none; }
 
