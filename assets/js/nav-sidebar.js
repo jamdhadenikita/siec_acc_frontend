@@ -353,7 +353,7 @@
     '      </li>',
 
     '      <li class="sidebar-nav-item">',
-    '        <a href="/accounts/accounts.html" class="sidebar-nav-link" data-page="accounts">',
+    '        <a href="/accounting/accounting.html" class="sidebar-nav-link" data-page="accounting">',
     '          <span class="sidebar-nav-icon"><i class="fa-solid fa-book"></i></span>',
     '          <span class="sidebar-nav-label">Accounting</span>',
     '          <span class="sidebar-tooltip">Accounting</span>',
