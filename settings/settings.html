@@ -510,18 +510,8 @@
                       <option>Inclusive (Tax included in price)</option>
                     </select>
                   </div>
-                  <div>
-                    <label class="form-label">HSN/SAC Applicability</label>
-                    <div class="flex items-center gap-4 mt-1.5">
-                      <label class="flex items-center gap-2 text-[13px]">
-                        <input type="radio" name="hsn" value="enabled" checked> <span class="font-medium">Enabled</span>
-                      </label>
-                      <label class="flex items-center gap-2 text-[13px]">
-                        <input type="radio" name="hsn" value="disabled"> <span class="font-medium">Disabled</span>
-                      </label>
-                    </div>
-                  </div>
-                  <div>
+                  <!-- Branches, Offices & Warehouses -->
+                  <!-- <div>
                     <label class="form-label">Reverse Charge (RCM) Applicable</label>
                     <div class="flex items-center gap-4 mt-1.5">
                       <label class="flex items-center gap-2 text-[13px]">
@@ -531,7 +521,7 @@
                         <input type="radio" name="rcm" value="no" checked> <span class="font-medium">No</span>
                       </label>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
 
                 <!-- Tax Rates Configuration -->
@@ -569,10 +559,10 @@
               <!-- ========================================================== -->
               <div id="tab-units" class="page-tab-panel">
                 <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
-                  <div>
+                  <!-- <div>
                     <h4 class="text-[14px] font-semibold text-gray-800">Branches, Offices &amp; Warehouses</h4>
                     <p class="text-[12px] text-gray-500">Manage all physical locations of your business</p>
-                  </div>
+                  </div> -->
                   <button onclick="openUnitModal()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[12px] font-semibold px-3.5 py-2 rounded-lg transition shadow-sm">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
                     Add New Unit
@@ -802,7 +792,7 @@
             <div class="flex items-start justify-between px-6 py-5 border-b border-gray-100">
               <div>
                 <h3 class="font-display text-lg font-semibold text-gray-900">${isEdit ? 'Edit Unit' : 'Add New Unit'}</h3>
-                <p class="text-xs text-gray-500 mt-0.5">${isEdit ? 'Update unit name' : 'Create a new office / branch / warehouse'}</p>
+                <p class="text-xs text-gray-500 mt-0.5">${isEdit ? 'Update unit name' : ''}</p>
               </div>
               <button onclick="closeUnitModal()" class="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition">${iconX()}</button>
             </div>

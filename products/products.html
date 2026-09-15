@@ -96,11 +96,21 @@
 
   /* Stats card */
   .stat-card {
+    border: 1px solid #7dc057;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
   .stat-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  }
+  .stat-icon-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
   }
 
   /* Table row hover */
@@ -118,6 +128,8 @@
     color: #6b7280;
     cursor: pointer;
     background: transparent;
+    display: flex;
+    gap: 6px;
   }
   .modal-tab-btn.active {
     color: #6da84c;
@@ -163,11 +175,6 @@
     color: #ef4444;
   }
 
-  /* Vendor price row */
-  .vendor-price-row:hover {
-    background: #f8fafc;
-  }
-
   /* Toast */
   .toast {
     animation: fadeIn 0.2s ease;
@@ -188,31 +195,6 @@
   .modal-scroll::-webkit-scrollbar-thumb {
     background: #d1d5db;
     border-radius: 4px;
-  }
-
-  /* Vendor price table in modal */
-  .vendor-price-table {
-    border-collapse: collapse;
-    width: 100%;
-    font-size: 13px;
-  }
-  .vendor-price-table th {
-    background: #f8fafc;
-    text-align: left;
-    padding: 6px 10px;
-    font-weight: 600;
-    color: #475569;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    border-bottom: 1px solid #e5e7eb;
-  }
-  .vendor-price-table td {
-    padding: 4px 10px;
-    border-bottom: 1px solid #f1f5f9;
-  }
-  .vendor-price-table .vendor-price-row td {
-    padding: 4px 10px;
   }
 
   /* Empty state */
@@ -259,9 +241,7 @@
               <!-- Filter Button -->
               <div class="relative inline-block" data-dd-trigger>
                 <button onclick="toggleFilterDD()" class="inline-flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[13px] font-semibold px-4 py-2.5 rounded-lg transition">
-                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 6h18M7 12h10M11 18h2"/>
-                  </svg>
+                  <i class="fa-solid fa-filter"></i>
                   Filter
                   <span id="filterBadge" class="hidden text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full">0</span>
                 </button>
@@ -285,11 +265,15 @@
                 </div>
               </div>
 
-              <!-- Add Item Button with SVG Icon -->
+              <!-- Vendor Purchase Button -->
+              <button onclick="openVendorPurchase()" class="inline-flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[13px] font-semibold px-4 py-2.5 rounded-lg transition shadow-sm">
+                <i class="fa-solid fa-truck-fast"></i>
+                Vendor Purchase
+              </button>
+
+              <!-- Add Item Button -->
               <button onclick="openAddItem()" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-[13px] font-semibold px-4 py-2.5 rounded-lg transition shadow-sm">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M12 5v14M5 12h14"/>
-                </svg>
+                <i class="fa-solid fa-plus"></i>
                 Add Item
               </button>
             </div>
@@ -297,21 +281,33 @@
 
           <!-- Stats Cards -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-6">
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
-              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Items</div>
-              <div class="text-[22px] font-bold text-gray-900" id="totalItems">0</div>
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-primary-soft text-primary"><i class="fa-solid fa-boxes-stacked"></i></div>
+              <div>
+                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Items</div>
+                <div class="text-[22px] font-bold text-gray-900" id="totalItems">0</div>
+              </div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
-              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Categories</div>
-              <div class="text-[22px] font-bold text-gray-900" id="totalCategories">0</div>
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-secondary-soft text-secondary"><i class="fa-solid fa-layer-group"></i></div>
+              <div>
+                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Categories</div>
+                <div class="text-[22px] font-bold text-gray-900" id="totalCategories">0</div>
+              </div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
-              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Low Stock</div>
-              <div class="text-[22px] font-bold text-amber-600" id="lowStockCount">0</div>
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-amber-50 text-amber-600"><i class="fa-solid fa-triangle-exclamation"></i></div>
+              <div>
+                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Low Stock</div>
+                <div class="text-[22px] font-bold text-amber-600" id="lowStockCount">0</div>
+              </div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
-              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Stock Value</div>
-              <div class="text-[22px] font-bold text-primary" id="totalStockValue">₹0</div>
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-primary-soft text-primary"><i class="fa-solid fa-sack-dollar"></i></div>
+              <div>
+                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Stock Value</div>
+                <div class="text-[22px] font-bold text-primary" id="totalStockValue">₹0</div>
+              </div>
             </div>
           </div>
 
@@ -350,13 +346,10 @@
     });
 
     // =============================================================
-    // ITEMS MODULE — Complete Logic (No Emojis, Only SVG Icons)
+    // ITEMS MODULE — Complete Logic
     // =============================================================
 
-    // ---------- SVG Icons (All icons as functions) ----------
-    function iconPlus() {
-      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>`;
-    }
+    // ---------- SVG Icons (used inside modals/table rows) ----------
     function iconEdit() {
       return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
     }
@@ -369,17 +362,11 @@
     function iconX() {
       return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
     }
-    function iconFilter() {
-      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h2"/></svg>`;
-    }
     function iconSave() {
       return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>`;
     }
     function iconBox() {
       return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>`;
-    }
-    function iconInfo() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>`;
     }
     function iconUser() {
       return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
@@ -387,17 +374,8 @@
     function iconTag() {
       return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V10M10 21V10M14 21V10M19 21V10"/><path d="M2 10l10-6 10 6"/></svg>`;
     }
-    function iconGST() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>`;
-    }
-    function iconSettings() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>`;
-    }
     function iconSearch() {
       return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>`;
-    }
-    function iconChevronDown() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>`;
     }
 
     // ---------- Toast System ----------
@@ -492,7 +470,7 @@
     }
 
     // ---------- Helpers ----------
-    function money(n) { return '₹' + Number(n).toLocaleString('en-IN'); }
+    function money(n) { return '₹' + Number(n || 0).toLocaleString('en-IN'); }
 
     function badge(text, color) {
       var map = { green: 'badge-green', amber: 'badge-amber', red: 'badge-red', gray: 'badge-gray' };
@@ -513,7 +491,7 @@
 
     function panelWrap(titleHtml, bodyHtml, extraHead) {
       return `
-        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+        <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm overflow-hidden">
           <div class="flex items-center justify-between gap-3 flex-wrap px-5 py-4 border-b border-gray-100">
             <div class="font-bold text-[14.5px] text-gray-800 flex items-center gap-2">${titleHtml}</div>
             ${extraHead || ''}
@@ -527,9 +505,9 @@
         return '<th class="text-left text-[11px] font-bold uppercase tracking-wide text-gray-500 px-4 py-3 whitespace-nowrap">' + c + '</th>';
       }).join('');
       return `
-        <div class="overflow-x-auto">
+        <div class="overflow-auto h-[370px]">
           <table class="w-full text-[13px]">
-            <thead>
+            <thead class="sticky top-0">
               <tr class="bg-gray-50 border-b border-gray-200">${colHeaders}</tr>
             </thead>
             <tbody id="tbody-anchor">${rowsHtml}</tbody>
@@ -538,10 +516,8 @@
     }
 
     // =============================================================
-    // DATA
+    // DATA (only 2 dummy items retained)
     // =============================================================
-
-    var categories = ['Electronics', 'Consumables', 'Filtration', 'Blowers', 'Piping', 'Equipment', 'Chemicals', 'Services'];
 
     var warehouses = [
       { id: 'WH-001', name: 'Main Warehouse - Mumbai' },
@@ -549,12 +525,10 @@
       { id: 'WH-003', name: 'Storage - Bhiwandi' },
     ];
 
-    var units = ['Pcs', 'Kg', 'Ltr', 'Mtr', 'Box', 'Set', 'Nos', 'Hours'];
-
+    // Fallback dummy vendors — replace with live API data (see fetchVendorList below)
     var vendors = [
       { id: 'VEN-001', name: 'Global Imports Inc.' },
       { id: 'VEN-002', name: 'Local Supplier Co.' },
-      { id: 'VEN-003', name: 'ABC Distributors' },
     ];
 
     var items = [{
@@ -562,140 +536,44 @@
       name: 'Centrifugal Blower — 5HP',
       sku: 'BLW-5HP-001',
       category: 'Blowers',
+      subCategory: 'Industrial Blowers',
       hsn: '9503',
       unit: 'Pcs',
       sellingPrice: 42000,
-      purchasePrice: 35000,
-      gstRate: 18,
+      mrpPrice: 45000,
+      gstRate: '18',
       stock: 48,
-      reorderLevel: 10,
       warehouse: 'WH-001',
-      serialBatch: false,
       description: 'Heavy duty industrial blower',
-      status: 'green',
-      vendorPrices: [{ vendorId: 'VEN-001', price: 35000, currency: 'INR', date: '2026-01-15' }]
+      status: 'green'
     }, {
       id: 'ITM-1002',
       name: 'Dual Media Filter Vessel — 500L',
       sku: 'FIL-500L-002',
       category: 'Filtration',
+      subCategory: 'Filter Vessels',
       hsn: '8421',
       unit: 'Pcs',
       sellingPrice: 118000,
-      purchasePrice: 95000,
-      gstRate: 18,
-      stock: 12,
-      reorderLevel: 5,
-      warehouse: 'WH-001',
-      serialBatch: true,
-      description: '500L capacity filtration vessel',
-      status: 'green',
-      vendorPrices: [{ vendorId: 'VEN-001', price: 95000, currency: 'INR', date: '2026-01-10' }]
-    }, {
-      id: 'ITM-1003',
-      name: 'Activated Carbon Media',
-      sku: 'AC-25KG-003',
-      category: 'Consumables',
-      hsn: '2803',
-      unit: 'Kg',
-      sellingPrice: 6500,
-      purchasePrice: 4800,
-      gstRate: 18,
+      mrpPrice: 125000,
+      gstRate: '18',
       stock: 6,
-      reorderLevel: 10,
-      warehouse: 'WH-002',
-      serialBatch: true,
-      description: 'High-grade activated carbon',
-      status: 'amber',
-      vendorPrices: [{ vendorId: 'VEN-002', price: 4800, currency: 'INR', date: '2026-01-12' }]
-    }, {
-      id: 'ITM-1004',
-      name: 'PVC Pressure Pipe — 6"',
-      sku: 'PVC-6IN-004',
-      category: 'Piping',
-      hsn: '3917',
-      unit: 'Mtr',
-      sellingPrice: 850,
-      purchasePrice: 620,
-      gstRate: 18,
-      stock: 210,
-      reorderLevel: 50,
-      warehouse: 'WH-003',
-      serialBatch: false,
-      description: '6 inch PVC pressure pipe',
-      status: 'green',
-      vendorPrices: [{ vendorId: 'VEN-001', price: 620, currency: 'INR', date: '2026-01-05' }]
-    }, {
-      id: 'ITM-1005',
-      name: 'Chemical Dosing Pump — 50LPH',
-      sku: 'DOSE-50-005',
-      category: 'Equipment',
-      hsn: '8413',
-      unit: 'Pcs',
-      sellingPrice: 28000,
-      purchasePrice: 21000,
-      gstRate: 18,
-      stock: 3,
-      reorderLevel: 5,
       warehouse: 'WH-001',
-      serialBatch: true,
-      description: '50 LPH dosing pump',
-      status: 'red',
-      vendorPrices: [{ vendorId: 'VEN-003', price: 21000, currency: 'INR', date: '2026-01-08' }]
-    }, {
-      id: 'ITM-1006',
-      name: 'MS Pipe Fittings — Assorted',
-      sku: 'MS-FIT-006',
-      category: 'Piping',
-      hsn: '7307',
-      unit: 'Pcs',
-      sellingPrice: 120,
-      purchasePrice: 85,
-      gstRate: 18,
-      stock: 340,
-      reorderLevel: 100,
-      warehouse: 'WH-003',
-      serialBatch: false,
-      description: 'Assorted mild steel fittings',
-      status: 'green',
-      vendorPrices: [{ vendorId: 'VEN-002', price: 85, currency: 'INR', date: '2026-01-06' }]
-    }, {
-      id: 'ITM-1007',
-      name: 'Digital pH Meter — Industrial',
-      sku: 'PH-MTR-007',
-      category: 'Electronics',
-      hsn: '9027',
-      unit: 'Pcs',
-      sellingPrice: 12500,
-      purchasePrice: 9200,
-      gstRate: 18,
-      stock: 8,
-      reorderLevel: 5,
-      warehouse: 'WH-001',
-      serialBatch: true,
-      description: 'Industrial grade pH meter',
-      status: 'green',
-      vendorPrices: [{ vendorId: 'VEN-001', price: 9200, currency: 'INR', date: '2026-01-17' }]
-    }, {
-      id: 'ITM-1008',
-      name: 'Sodium Hypochlorite — 10% Solution',
-      sku: 'SH-10%-008',
-      category: 'Chemicals',
-      hsn: '2828',
-      unit: 'Ltr',
-      sellingPrice: 180,
-      purchasePrice: 120,
-      gstRate: 18,
-      stock: 0,
-      reorderLevel: 20,
-      warehouse: 'WH-002',
-      serialBatch: true,
-      description: '10% sodium hypochlorite solution',
-      status: 'red',
-      vendorPrices: [{ vendorId: 'VEN-002', price: 120, currency: 'INR', date: '2026-01-09' }]
+      description: '500L capacity filtration vessel',
+      status: 'amber'
     }];
 
-    var nextItemNo = 1009;
+    // Variant field id -> label map (also reused for the product's own extra spec fields)
+    var variantSpecFields = [
+      { id: 'height', label: 'Height' },
+      { id: 'width', label: 'Width' },
+      { id: 'length', label: 'Length' },
+      { id: 'materialType', label: 'Material Type' },
+      { id: 'size', label: 'Size' },
+      { id: 'productNumber', label: 'Product Number' }
+    ];
+
+    var nextItemNo = 1003;
 
     // =============================================================
     // FUNCTIONS
@@ -705,13 +583,10 @@
       return s === 'green' ? 'In Stock' : s === 'amber' ? 'Low Stock' : 'Reorder';
     }
 
-    function stockStatus(qty, reorder) {
-      return qty > 20 ? 'green' : qty > reorder ? 'amber' : 'red';
-    }
-
-    function getVendorName(id) {
-      var v = vendors.find(function(x) { return x.id === id; });
-      return v ? v.name : id;
+    // No reorder-level field anymore — derive status purely from stock quantity
+    function stockStatus(qty) {
+      qty = Number(qty) || 0;
+      return qty > 20 ? 'green' : qty > 5 ? 'amber' : 'red';
     }
 
     function getWarehouseName(id) {
@@ -721,7 +596,7 @@
 
     function renderStats() {
       document.getElementById('totalItems').textContent = items.length;
-      var uniqueCats = new Set(items.map(function(i) { return i.category; }));
+      var uniqueCats = new Set(items.map(function(i) { return (i.category || '').trim().toLowerCase(); }).filter(Boolean));
       document.getElementById('totalCategories').textContent = uniqueCats.size;
       var lowStock = items.filter(function(i) { return i.status === 'amber' || i.status === 'red'; });
       document.getElementById('lowStockCount').textContent = lowStock.length;
@@ -730,9 +605,9 @@
 
       var filterCat = document.getElementById('filterCategory');
       var currentVal = filterCat.value;
+      var distinctCats = Array.from(new Set(items.map(function(i) { return i.category; }).filter(Boolean))).sort();
       filterCat.innerHTML = '<option value="all">All Categories</option>';
-      var sortedCats = Array.from(uniqueCats).sort();
-      sortedCats.forEach(function(c) {
+      distinctCats.forEach(function(c) {
         filterCat.innerHTML += '<option value="' + c + '">' + c + '</option>';
       });
       filterCat.value = currentVal;
@@ -740,15 +615,17 @@
 
     function getFilteredItems() {
       var searchInput = document.getElementById('searchInput');
-      var q = searchInput ? searchInput.value.toLowerCase() : '';
+      var q = searchInput ? searchInput.value.trim().toLowerCase() : '';
       var cat = document.getElementById('filterCategory').value || 'all';
       var status = document.getElementById('filterStatus').value || 'all';
 
       return items.filter(function(it) {
-        var matchSearch = it.name.toLowerCase().indexOf(q) !== -1 ||
+        var matchSearch = q.length < 2 ? true : (
+          it.name.toLowerCase().indexOf(q) !== -1 ||
           it.sku.toLowerCase().indexOf(q) !== -1 ||
           it.id.toLowerCase().indexOf(q) !== -1 ||
-          it.hsn.indexOf(q) !== -1;
+          it.hsn.indexOf(q) !== -1
+        );
         var matchCat = cat === 'all' || it.category === cat;
         var matchStatus = status === 'all' || it.status === status;
         return matchSearch && matchCat && matchStatus;
@@ -776,7 +653,7 @@
                 <div class="font-semibold text-gray-800">${it.name}</div>
                 <div class="text-[11.5px] text-gray-400 font-mono">${it.id} · ${it.sku}</div>
               </td>
-              <td class="px-4 py-3 text-gray-600">${it.category}</td>
+              <td class="px-4 py-3 text-gray-600">${it.category}${it.subCategory ? '<div class="text-[11px] text-gray-400">' + it.subCategory + '</div>' : ''}</td>
               <td class="px-4 py-3 font-mono font-semibold">${it.stock}</td>
               <td class="px-4 py-3 text-[11px] text-gray-500">${getWarehouseName(it.warehouse)}</td>
               <td class="px-4 py-3 font-mono font-semibold">${money(it.sellingPrice)}</td>
@@ -794,7 +671,7 @@
       var panelHtml = panelWrap(
         'All Items <span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + filtered.length + '</span>',
         tableHtml(['Item', 'Category', 'Stock', 'Warehouse', 'Price', 'GST', 'Status', 'Actions'], rowsHtml),
-        '<div class="flex items-center gap-2"><span class="text-[11px] text-gray-400">Show:</span><select id="pageSizeSelect" onchange="renderItems()" class="text-[12px] border border-gray-200 rounded-lg px-2 py-1 bg-white outline-none"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select></div>'
+        '<div class="flex items-center gap-2"><span class="text-[11px] text-gray-400">Show:</span><select id="pageSizeSelect" onchange="renderItems()" class="text-[12px] border border-[#6da84c] rounded-lg px-2 py-1 bg-white outline-none"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select></div>'
       );
 
       document.getElementById('itemsPanel').innerHTML = panelHtml;
@@ -813,7 +690,7 @@
     }
 
     // =============================================================
-    // ADD / EDIT ITEM
+    // ADD / EDIT ITEM  (Basic Info · Pricing & Tax · Inventory only)
     // =============================================================
 
     function openAddItem() { openItemModal(null); }
@@ -827,62 +704,38 @@
       var it = items.find(function(x) { return x.id === id; });
       if (!it) return;
 
-      var vendorPriceHtml = '';
-      if (it.vendorPrices && it.vendorPrices.length > 0) {
-        vendorPriceHtml = it.vendorPrices.map(function(vp) {
-          return `
-            <tr class="border-b border-gray-100 vendor-price-row">
-              <td class="px-3 py-2 text-sm">${getVendorName(vp.vendorId)}</td>
-              <td class="px-3 py-2 text-sm font-mono font-semibold">${money(vp.price)}</td>
-              <td class="px-3 py-2 text-sm text-gray-500">${vp.currency}</td>
-              <td class="px-3 py-2 text-sm text-gray-500">${vp.date}</td>
-            </tr>`;
-        }).join('');
-      } else {
-        vendorPriceHtml = '<tr><td colspan="4" class="text-center py-3 text-gray-400 text-sm">No vendor prices recorded yet</td></tr>';
-      }
-
       var modalContent = `
         ${modalHeader('Item Details — ' + it.name, it.id + ' · ' + it.sku)}
         <div class="px-6 py-4 modal-scroll">
           <div class="grid grid-cols-2 gap-4 text-sm">
             <div><span class="text-gray-500">Category</span><br><span class="font-semibold">${it.category}</span></div>
+            <div><span class="text-gray-500">Sub Category</span><br><span class="font-semibold">${it.subCategory || '—'}</span></div>
             <div><span class="text-gray-500">HSN/SAC</span><br><span class="font-mono font-semibold">${it.hsn}</span></div>
             <div><span class="text-gray-500">Unit</span><br><span class="font-semibold">${it.unit}</span></div>
             <div><span class="text-gray-500">Status</span><br>${badge(statusLabel(it.status), it.status)}</div>
-            <div><span class="text-gray-500">Stock</span><br><span class="font-semibold">${it.stock} ${it.unit}</span></div>
-            <div><span class="text-gray-500">Reorder Level</span><br><span class="font-semibold">${it.reorderLevel} ${it.unit}</span></div>
+            <div><span class="text-gray-500">Total Stock</span><br><span class="font-semibold">${it.stock} ${it.unit}</span></div>
             <div><span class="text-gray-500">Selling Price</span><br><span class="font-semibold text-primary">${money(it.sellingPrice)}</span></div>
-            <div><span class="text-gray-500">Purchase Price</span><br><span class="font-semibold">${money(it.purchasePrice)}</span></div>
+            <div><span class="text-gray-500">MRP Price</span><br><span class="font-semibold">${money(it.mrpPrice)}</span></div>
             <div><span class="text-gray-500">GST Rate</span><br><span class="font-semibold">${it.gstRate}%</span></div>
             <div><span class="text-gray-500">Warehouse</span><br><span class="font-semibold">${getWarehouseName(it.warehouse)}</span></div>
-            <div class="col-span-2"><span class="text-gray-500">Serial/Batch Tracking</span><br><span class="font-semibold">${it.serialBatch ? 'Enabled' : 'Disabled'}</span></div>
+            <div><span class="text-gray-500">Height</span><br><span class="font-semibold">${it.height || '—'}</span></div>
+            <div><span class="text-gray-500">Width</span><br><span class="font-semibold">${it.width || '—'}</span></div>
+            <div><span class="text-gray-500">Length</span><br><span class="font-semibold">${it.length || '—'}</span></div>
+            <div><span class="text-gray-500">Material Type</span><br><span class="font-semibold">${it.materialType || '—'}</span></div>
+            <div><span class="text-gray-500">Size</span><br><span class="font-semibold">${it.size || '—'}</span></div>
+            <div><span class="text-gray-500">Product Number</span><br><span class="font-semibold">${it.productNumber || '—'}</span></div>
             ${it.description ? '<div class="col-span-2"><span class="text-gray-500">Description</span><br><span class="text-sm">' + it.description + '</span></div>' : ''}
           </div>
 
+          ${it.variants && it.variants.length ? `
           <div class="mt-5 pt-4 border-t border-gray-100">
-            <h4 class="text-[13px] font-semibold text-gray-800 mb-2 flex items-center gap-2">
-              ${iconBox()}
-              Vendor-Wise Price List
-              <span class="text-[10px] font-normal text-gray-400">(Enhancement #4)</span>
-            </h4>
-            <div class="border border-gray-200 rounded-lg overflow-hidden">
-              <table class="w-full text-sm">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th class="px-3 py-2 text-left font-semibold text-gray-600">Vendor</th>
-                    <th class="px-3 py-2 text-left font-semibold text-gray-600">Price</th>
-                    <th class="px-3 py-2 text-left font-semibold text-gray-600">Currency</th>
-                    <th class="px-3 py-2 text-left font-semibold text-gray-600">Last Updated</th>
-                  </tr>
-                </thead>
-                <tbody>${vendorPriceHtml}</tbody>
-              </table>
+            <h4 class="text-[13px] font-semibold text-gray-800 mb-2">Variants (${it.variants.length})</h4>
+            <div class="border border-gray-200 rounded-lg divide-y divide-gray-100">
+              ${it.variants.map(function(v) {
+                return '<div class="px-3 py-2 text-sm flex items-center justify-between"><span class="font-semibold">' + (v.variantName || 'Unnamed Variant') + '</span><span class="text-gray-400 text-[11px] font-mono">' + (v.sku || '') + '</span></div>';
+              }).join('')}
             </div>
-            <div class="text-[10.5px] text-gray-400 mt-1.5 flex items-center gap-1">
-              ${iconInfo()} Prices auto-updated from Purchase Bills
-            </div>
-          </div>
+          </div>` : ''}
         </div>
         ${modalFooter('Close', 'onclick="closeModal()"')}
       `;
@@ -890,62 +743,43 @@
       openModal(modalContent, { width: 'max-w-2xl' });
     }
 
+    // Tracks which product row is selected inside the "Add Variant" tab for the currently open modal
+    var variantSelectedProductId = null;
+
+    function fldErr(id) {
+      // Inline required-field error message, hidden by default
+      return '<div id="err_' + id + '" class="hidden text-[10.5px] text-red-500 mt-1">This field is required</div>';
+    }
+
     function openItemModal(existing) {
       var e = existing || {
         name: '',
         sku: '',
-        category: categories[0],
+        category: '',
+        subCategory: '',
         hsn: '',
-        unit: units[0],
+        unit: '',
         sellingPrice: '',
-        purchasePrice: '',
-        gstRate: 18,
+        mrpPrice: '',
+        gstRate: '',
         stock: '',
-        reorderLevel: '',
         warehouse: warehouses[0].id,
-        serialBatch: false,
         description: '',
-        vendorPrices: []
+        height: '',
+        width: '',
+        length: '',
+        materialType: '',
+        size: '',
+        productNumber: '',
+        variants: []
       };
       var isEdit = !!existing;
-
-      var vendorPriceHtml = '';
-      if (isEdit && e.vendorPrices && e.vendorPrices.length > 0) {
-        vendorPriceHtml = e.vendorPrices.map(function(vp, idx) {
-          var vendorOptions = vendors.map(function(v) {
-            return '<option ' + (v.id === vp.vendorId ? 'selected' : '') + ' value="' + v.id + '">' + v.name + '</option>';
-          }).join('');
-          return `
-            <tr class="border-b border-gray-100 vendor-price-row">
-              <td class="px-2 py-1.5">
-                <select class="form-input text-[12px] vendor-vendor" data-idx="${idx}">${vendorOptions}</select>
-              </td>
-              <td class="px-2 py-1.5">
-                <input type="number" class="form-input text-[12px] vendor-price" value="${vp.price}" data-idx="${idx}" placeholder="Price">
-              </td>
-              <td class="px-2 py-1.5">
-                <select class="form-input text-[12px] vendor-currency" data-idx="${idx}">
-                  <option ${vp.currency === 'INR' ? 'selected' : ''}>INR</option>
-                  <option ${vp.currency === 'USD' ? 'selected' : ''}>USD</option>
-                  <option ${vp.currency === 'EUR' ? 'selected' : ''}>EUR</option>
-                </select>
-              </td>
-              <td class="px-2 py-1.5">
-                <input type="date" class="form-input text-[12px] vendor-date" value="${vp.date}" data-idx="${idx}">
-              </td>
-              <td class="px-2 py-1.5 text-center">
-                <button onclick="removeVendorPriceRow(this)" class="text-red-500 hover:text-red-700 transition">
-                  ${iconX()}
-                </button>
-              </td>
-            </tr>`;
-        }).join('');
-      }
+      variantSelectedProductId = null;
 
       var modalContent = `
         ${modalHeader(isEdit ? 'Edit Item' : 'Add New Item', isEdit ? e.id : 'Create a new product/service master record')}
         <div class="px-6 py-4 modal-scroll">
-          <div class="flex border-b border-gray-200 mb-4 gap-1" id="modalTabs">
+          <div class="flex border-b border-gray-200 mb-4 gap-1 flex-wrap" id="modalTabs">
             <button class="modal-tab-btn active" data-tab="tab-basic">
               ${iconUser()} Basic Info
             </button>
@@ -955,75 +789,100 @@
             <button class="modal-tab-btn" data-tab="tab-inventory">
               ${iconBox()} Inventory
             </button>
-            <button class="modal-tab-btn" data-tab="tab-vendors">
-              ${iconUser()} Vendor Prices
-            </button>
-            <button class="modal-tab-btn" data-tab="tab-advanced">
-              ${iconSettings()} Advanced
+            <button class="modal-tab-btn" data-tab="tab-variant">
+              ${iconTag()} Add Variant
             </button>
           </div>
 
           <div id="tab-basic" class="modal-tab-panel active">
             <div class="grid grid-cols-2 gap-3">
-              ${fld('Item Name *', '<input id="f_name" value="' + e.name + '" placeholder="e.g. Centrifugal Blower — 5HP" class="' + inputBase() + '">')}
-              ${fld('SKU / Code *', '<input id="f_sku" value="' + e.sku + '" placeholder="e.g. BLW-5HP-001" class="' + inputBase() + '">')}
+              <div class="mb-3">
+                <label class="form-label">Item Name <span class="required">*</span></label>
+                <input id="f_name" value="${e.name}" placeholder="e.g. Centrifugal Blower — 5HP" class="${inputBase()}">
+                ${fldErr('f_name')}
+              </div>
+              ${fld('SKU / Code', '<input id="f_sku" value="' + e.sku + '" placeholder="e.g. BLW-5HP-001" class="' + inputBase() + '">')}
             </div>
             <div class="grid grid-cols-2 gap-3">
-              ${fld('Category', '<select id="f_category" class="' + inputBase() + '">' + categories.map(function(c) { return '<option ' + (c === e.category ? 'selected' : '') + '>' + c + '</option>'; }).join('') + '</select>')}
-              ${fld('HSN / SAC Code *', '<input id="f_hsn" value="' + e.hsn + '" placeholder="e.g. 9503" class="' + inputBase() + '">')}
+              ${fld('Category', '<input id="f_category" value="' + e.category + '" placeholder="e.g. Blowers" class="' + inputBase() + '">')}
+              ${fld('Sub Category', '<input id="f_subcategory" value="' + (e.subCategory || '') + '" placeholder="e.g. Industrial Blowers" class="' + inputBase() + '">')}
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              ${fld('HSN / SAC Code', '<input id="f_hsn" value="' + e.hsn + '" placeholder="e.g. 9503" class="' + inputBase() + '">')}
+              ${fld('Unit', '<input id="f_unit" value="' + e.unit + '" placeholder="e.g. Pcs / Kg / Ltr" class="' + inputBase() + '">')}
+            </div>
+            <div class="grid grid-cols-3 gap-3">
+              ${fld('Height', '<input id="f_height" value="' + (e.height || '') + '" placeholder="e.g. 45 cm" class="' + inputBase() + '">')}
+              ${fld('Width', '<input id="f_width" value="' + (e.width || '') + '" placeholder="e.g. 30 cm" class="' + inputBase() + '">')}
+              ${fld('Length', '<input id="f_length" value="' + (e.length || '') + '" placeholder="e.g. 60 cm" class="' + inputBase() + '">')}
+            </div>
+            <div class="grid grid-cols-3 gap-3">
+              ${fld('Material Type', '<input id="f_materialType" value="' + (e.materialType || '') + '" placeholder="e.g. Stainless Steel" class="' + inputBase() + '">')}
+              ${fld('Size', '<input id="f_size" value="' + (e.size || '') + '" placeholder="e.g. Medium" class="' + inputBase() + '">')}
+              ${fld('Product Number', '<input id="f_productNumber" value="' + (e.productNumber || '') + '" placeholder="e.g. PN-1024" class="' + inputBase() + '">')}
             </div>
             ${fld('Description', '<textarea id="f_description" rows="2" class="' + inputBase() + '" placeholder="Brief description">' + (e.description || '') + '</textarea>')}
-            ${fld('Unit *', '<select id="f_unit" class="' + inputBase() + '">' + units.map(function(u) { return '<option ' + (u === e.unit ? 'selected' : '') + '>' + u + '</option>'; }).join('') + '</select>')}
           </div>
 
           <div id="tab-pricing" class="modal-tab-panel">
             <div class="grid grid-cols-2 gap-3">
-              ${fld('Selling Price (₹) *', '<input id="f_selling" type="number" value="' + e.sellingPrice + '" class="' + inputBase() + '">')}
-              ${fld('Purchase Price (₹) *', '<input id="f_purchase" type="number" value="' + e.purchasePrice + '" class="' + inputBase() + '">')}
+              ${fld('Selling Price (₹)', '<input id="f_selling" type="number" value="' + e.sellingPrice + '" class="' + inputBase() + '">')}
+              ${fld('MRP Price (₹)', '<input id="f_mrp" type="number" value="' + e.mrpPrice + '" class="' + inputBase() + '">')}
             </div>
-            ${fld('GST Rate (%) *', '<select id="f_gst" class="' + inputBase() + '"><option ' + (e.gstRate == 0 ? 'selected' : '') + '>0 (Nil/Exempt)</option><option ' + (e.gstRate == 5 ? 'selected' : '') + '>5</option><option ' + (e.gstRate == 12 ? 'selected' : '') + '>12</option><option ' + (e.gstRate == 18 ? 'selected' : '') + '>18</option><option ' + (e.gstRate == 28 ? 'selected' : '') + '>28</option></select>', 'GST rate as per HSN/SAC classification')}
+            ${fld('GST Rate (%)', '<input id="f_gst" type="text" value="' + e.gstRate + '" placeholder="e.g. 18" class="' + inputBase() + '">', 'GST rate as per HSN/SAC classification')}
           </div>
 
           <div id="tab-inventory" class="modal-tab-panel">
             <div class="grid grid-cols-2 gap-3">
-              ${fld('Opening Stock *', '<input id="f_stock" type="number" value="' + e.stock + '" class="' + inputBase() + '">')}
-              ${fld('Reorder Level *', '<input id="f_reorder" type="number" value="' + e.reorderLevel + '" class="' + inputBase() + '">', 'Alert when stock falls below this level')}
+              <div class="mb-3">
+                <label class="form-label">Total Stock <span class="required">*</span></label>
+                <input id="f_stock" type="number" value="${e.stock}" class="${inputBase()}">
+                ${fldErr('f_stock')}
+              </div>
+              ${fld('Warehouse', '<select id="f_warehouse" class="' + inputBase() + '">' + warehouses.map(function(w) { return '<option ' + (w.id === e.warehouse ? 'selected' : '') + ' value="' + w.id + '">' + w.name + '</option>'; }).join('') + '</select>')}
             </div>
-            ${fld('Warehouse', '<select id="f_warehouse" class="' + inputBase() + '">' + warehouses.map(function(w) { return '<option ' + (w.id === e.warehouse ? 'selected' : '') + ' value="' + w.id + '">' + w.name + '</option>'; }).join('') + '</select>')}
-            ${fld('Serial / Batch Tracking', '<div class="flex items-center gap-4 mt-1"><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="serialBatch" value="true" ' + (e.serialBatch ? 'checked' : '') + '> <span class="font-medium">Enabled</span></label><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="serialBatch" value="false" ' + (!e.serialBatch ? 'checked' : '') + '> <span class="font-medium">Disabled</span></label></div>', 'Enable to track individual serial numbers or batch numbers')}
           </div>
 
-          <div id="tab-vendors" class="modal-tab-panel">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-[12px] text-gray-500">Vendor-wise purchase prices auto-saved from Purchase Bills</span>
-              <button onclick="addVendorPriceRow()" class="text-[12px] font-semibold text-primary hover:underline flex items-center gap-1">
-                ${iconPlus()} Add Price
+          <div id="tab-variant" class="modal-tab-panel">
+            <div class="mb-3">
+              <label class="form-label">Search Product</label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">${iconSearch()}</span>
+                <input id="variantProductSearch" oninput="renderVariantProductList()" placeholder="Search existing products by name or SKU…" class="${inputBase()}" style="padding-left:34px;">
+              </div>
+            </div>
+            <div id="variantProductList" class="border border-gray-200 rounded-lg divide-y divide-gray-100 max-h-40 overflow-y-auto"></div>
+
+            <div id="variantFormWrap" class="hidden mt-4 pt-4 border-t border-gray-100">
+              <div class="flex items-center justify-between mb-3">
+                <div class="text-[12.5px] font-semibold text-gray-700">Adding variant for: <span id="variantForProductName" class="text-primary"></span></div>
+                <button onclick="clearVariantSelection()" class="text-[11px] text-gray-400 hover:text-gray-600">${iconX()} Change product</button>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                ${fld('Variant Name', '<input id="v_variantName" placeholder="e.g. Red / Large" class="' + inputBase() + '">')}
+                ${fld('SKU', '<input id="v_sku" placeholder="e.g. BLW-5HP-001-RED-L" class="' + inputBase() + '">')}
+              </div>
+              <div class="grid grid-cols-3 gap-3">
+                ${fld('Height', '<input id="v_height" class="' + inputBase() + '">')}
+                ${fld('Width', '<input id="v_width" class="' + inputBase() + '">')}
+                ${fld('Length', '<input id="v_length" class="' + inputBase() + '">')}
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                ${fld('Unit', '<input id="v_unit" placeholder="e.g. Pcs" class="' + inputBase() + '">')}
+                ${fld('Material Type', '<input id="v_materialType" class="' + inputBase() + '">')}
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                ${fld('Size', '<input id="v_size" class="' + inputBase() + '">')}
+                ${fld('Product Number', '<input id="v_productNumber" class="' + inputBase() + '">')}
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                ${fld('Variant Category', '<input id="v_variantCategory" class="' + inputBase() + '">')}
+                ${fld('Variant Sub Category', '<input id="v_variantSubCategory" class="' + inputBase() + '">')}
+              </div>
+              <button onclick="saveVariant()" class="mt-1 inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[12.5px] font-semibold px-4 py-2 rounded-lg transition">
+                ${iconSave()} Add Variant
               </button>
             </div>
-            <div class="border border-gray-200 rounded-lg overflow-hidden">
-              <table class="vendor-price-table" id="vendorPriceTable">
-                <thead>
-                  <tr>
-                    <th>Vendor</th>
-                    <th>Price</th>
-                    <th>Currency</th>
-                    <th>Date</th>
-                    <th style="text-align:center;">Action</th>
-                  </tr>
-                </thead>
-                <tbody id="vendorPriceBody">
-                  ${vendorPriceHtml || '<tr><td colspan="5" class="text-center py-3 text-gray-400 text-sm">No vendor prices added yet</td></tr>'}
-                </tbody>
-              </table>
-            </div>
-            <div class="text-[10.5px] text-gray-400 mt-2 flex items-center gap-1">
-              ${iconInfo()} These prices auto-populate in Purchase Orders when vendor is selected
-            </div>
-          </div>
-
-          <div id="tab-advanced" class="modal-tab-panel">
-            ${fld('Item Type', '<select id="f_itemType" class="' + inputBase() + '"><option selected>Goods</option><option>Service</option></select>')}
-            ${fld('Status', '<div class="flex items-center gap-4 mt-1"><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="itemStatus" value="active" checked> <span class="font-medium">Active</span></label><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="itemStatus" value="inactive"> <span class="font-medium">Inactive</span></label></div>')}
           </div>
         </div>
         ${modalFooter(isEdit ? 'Update Item' : 'Save Item', 'onclick="saveItem(\'' + (isEdit ? e.id : '') + '\')"')}
@@ -1041,96 +900,127 @@
             var panels = document.querySelectorAll('.modal-tab-panel');
             panels.forEach(function(p) { p.classList.remove('active'); });
             document.getElementById(this.dataset.tab).classList.add('active');
+            if (btn.dataset.tab === 'tab-variant') renderVariantProductList();
           });
         });
       }, 50);
     }
 
-    // =============================================================
-    // VENDOR PRICE ROW FUNCTIONS
-    // =============================================================
-
-    function addVendorPriceRow() {
-      var tbody = document.getElementById('vendorPriceBody');
-      if (!tbody) return;
-      var emptyRow = tbody.querySelector('tr td[colspan]');
-      if (emptyRow) tbody.innerHTML = '';
-
-      var vendorOptions = vendors.map(function(v) {
-        return '<option value="' + v.id + '">' + v.name + '</option>';
-      }).join('');
-
-      var row = document.createElement('tr');
-      row.className = 'border-b border-gray-100 vendor-price-row';
-      row.innerHTML = `
-        <td class="px-2 py-1.5">
-          <select class="form-input text-[12px] vendor-vendor">${vendorOptions}</select>
-        </td>
-        <td class="px-2 py-1.5">
-          <input type="number" class="form-input text-[12px] vendor-price" placeholder="Price">
-        </td>
-        <td class="px-2 py-1.5">
-          <select class="form-input text-[12px] vendor-currency"><option>INR</option><option>USD</option><option>EUR</option></select>
-        </td>
-        <td class="px-2 py-1.5">
-          <input type="date" class="form-input text-[12px] vendor-date">
-        </td>
-        <td class="px-2 py-1.5 text-center">
-          <button onclick="removeVendorPriceRow(this)" class="text-red-500 hover:text-red-700 transition">
-            ${iconX()}
-          </button>
-        </td>
-      `;
-      tbody.appendChild(row);
-    }
-
-    function removeVendorPriceRow(btn) {
-      var row = btn.closest('tr');
-      if (row) row.remove();
-      var tbody = document.getElementById('vendorPriceBody');
-      if (tbody && tbody.children.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="text-center py-3 text-gray-400 text-sm">No vendor prices added yet</td></tr>';
-      }
-    }
-
-    function collectVendorPrices() {
-      var prices = [];
-      var rows = document.querySelectorAll('#vendorPriceBody .vendor-price-row');
-      rows.forEach(function(row) {
-        var vendor = row.querySelector('.vendor-vendor') ? row.querySelector('.vendor-vendor').value : null;
-        var price = row.querySelector('.vendor-price') ? parseFloat(row.querySelector('.vendor-price').value) : null;
-        var currency = row.querySelector('.vendor-currency') ? row.querySelector('.vendor-currency').value || 'INR' : 'INR';
-        var date = row.querySelector('.vendor-date') ? row.querySelector('.vendor-date').value || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
-        if (vendor && price) {
-          prices.push({ vendorId: vendor, price: price, currency: currency, date: date });
-        }
+    // ---------- Add Variant tab helpers ----------
+    function renderVariantProductList() {
+      var wrap = document.getElementById('variantProductList');
+      if (!wrap) return;
+      var q = (document.getElementById('variantProductSearch') || {}).value || '';
+      q = q.trim().toLowerCase();
+      var matches = items.filter(function(it) {
+        return q.length === 0 ||
+          it.name.toLowerCase().indexOf(q) !== -1 ||
+          it.sku.toLowerCase().indexOf(q) !== -1;
       });
-      return prices;
+      if (matches.length === 0) {
+        wrap.innerHTML = '<div class="text-center py-4 text-gray-400 text-[12.5px]">No matching products</div>';
+        return;
+      }
+      wrap.innerHTML = matches.map(function(it) {
+        var isSel = it.id === variantSelectedProductId;
+        return '<div onclick="selectVariantProduct(\'' + it.id + '\')" class="px-3 py-2 text-[12.5px] cursor-pointer flex items-center justify-between ' + (isSel ? 'bg-primary-soft' : 'hover:bg-gray-50') + '">' +
+          '<span class="font-semibold text-gray-700">' + it.name + '</span>' +
+          '<span class="text-gray-400 font-mono">' + it.sku + '</span></div>';
+      }).join('');
+    }
+
+    function selectVariantProduct(itemId) {
+      variantSelectedProductId = itemId;
+      var it = items.find(function(x) { return x.id === itemId; });
+      renderVariantProductList();
+      var formWrap = document.getElementById('variantFormWrap');
+      if (!it || !formWrap) return;
+      formWrap.classList.remove('hidden');
+      document.getElementById('variantForProductName').textContent = it.name + ' (' + it.sku + ')';
+    }
+
+    function clearVariantSelection() {
+      variantSelectedProductId = null;
+      var formWrap = document.getElementById('variantFormWrap');
+      if (formWrap) formWrap.classList.add('hidden');
+      renderVariantProductList();
+    }
+
+    function saveVariant() {
+      if (!variantSelectedProductId) {
+        showToast('Please select a product first', 'error');
+        return;
+      }
+      var it = items.find(function(x) { return x.id === variantSelectedProductId; });
+      if (!it) return;
+
+      var variant = {
+        variantName: (document.getElementById('v_variantName') || {}).value || '',
+        sku: (document.getElementById('v_sku') || {}).value || '',
+        height: (document.getElementById('v_height') || {}).value || '',
+        width: (document.getElementById('v_width') || {}).value || '',
+        length: (document.getElementById('v_length') || {}).value || '',
+        unit: (document.getElementById('v_unit') || {}).value || '',
+        materialType: (document.getElementById('v_materialType') || {}).value || '',
+        size: (document.getElementById('v_size') || {}).value || '',
+        productNumber: (document.getElementById('v_productNumber') || {}).value || '',
+        variantCategory: (document.getElementById('v_variantCategory') || {}).value || '',
+        variantSubCategory: (document.getElementById('v_variantSubCategory') || {}).value || ''
+      };
+
+      it.variants = it.variants || [];
+      it.variants.push(variant);
+
+      showToast('Variant added to ' + it.name, 'success');
+
+      // reset the variant form for the next entry
+      ['v_variantName','v_sku','v_height','v_width','v_length','v_unit','v_materialType','v_size','v_productNumber','v_variantCategory','v_variantSubCategory'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.value = '';
+      });
     }
 
     // =============================================================
     // SAVE / DELETE ITEM
     // =============================================================
 
+    // Toggles the red border + inline message for a required field
+    function setFieldError(id, hasError) {
+      var el = document.getElementById(id);
+      var err = document.getElementById('err_' + id);
+      if (el) el.classList.toggle('border-red-500', !!hasError);
+      if (err) err.classList.toggle('hidden', !hasError);
+    }
+
     function saveItem(existingId) {
       var name = document.getElementById('f_name') ? document.getElementById('f_name').value.trim() : '';
       var sku = document.getElementById('f_sku') ? document.getElementById('f_sku').value.trim() : '';
-      var category = document.getElementById('f_category') ? document.getElementById('f_category').value || 'General' : 'General';
+      var category = document.getElementById('f_category') ? document.getElementById('f_category').value.trim() : '';
+      var subCategory = document.getElementById('f_subcategory') ? document.getElementById('f_subcategory').value.trim() : '';
       var hsn = document.getElementById('f_hsn') ? document.getElementById('f_hsn').value.trim() : '';
-      var unit = document.getElementById('f_unit') ? document.getElementById('f_unit').value || 'Pcs' : 'Pcs';
+      var unit = document.getElementById('f_unit') ? document.getElementById('f_unit').value.trim() : '';
+      var height = document.getElementById('f_height') ? document.getElementById('f_height').value.trim() : '';
+      var width = document.getElementById('f_width') ? document.getElementById('f_width').value.trim() : '';
+      var length = document.getElementById('f_length') ? document.getElementById('f_length').value.trim() : '';
+      var materialType = document.getElementById('f_materialType') ? document.getElementById('f_materialType').value.trim() : '';
+      var size = document.getElementById('f_size') ? document.getElementById('f_size').value.trim() : '';
+      var productNumber = document.getElementById('f_productNumber') ? document.getElementById('f_productNumber').value.trim() : '';
       var sellingPrice = document.getElementById('f_selling') ? parseFloat(document.getElementById('f_selling').value) || 0 : 0;
-      var purchasePrice = document.getElementById('f_purchase') ? parseFloat(document.getElementById('f_purchase').value) || 0 : 0;
-      var gstRate = document.getElementById('f_gst') ? parseInt(document.getElementById('f_gst').value) || 18 : 18;
-      var stock = document.getElementById('f_stock') ? parseInt(document.getElementById('f_stock').value) || 0 : 0;
-      var reorderLevel = document.getElementById('f_reorder') ? parseInt(document.getElementById('f_reorder').value) || 5 : 5;
+      var mrpPrice = document.getElementById('f_mrp') ? parseFloat(document.getElementById('f_mrp').value) || 0 : 0;
+      var gstRate = document.getElementById('f_gst') ? document.getElementById('f_gst').value.trim() : '';
+      var stockRaw = document.getElementById('f_stock') ? document.getElementById('f_stock').value.trim() : '';
+      var stock = stockRaw === '' ? '' : (parseInt(stockRaw) || 0);
       var warehouse = document.getElementById('f_warehouse') ? document.getElementById('f_warehouse').value || 'WH-001' : 'WH-001';
       var description = document.getElementById('f_description') ? document.getElementById('f_description').value || '' : '';
-      var serialBatchRadio = document.querySelector('input[name="serialBatch"]:checked');
-      var serialBatch = serialBatchRadio ? serialBatchRadio.value === 'true' : false;
-      var vendorPrices = collectVendorPrices();
 
-      if (!name || !sku || !hsn) {
-        showToast('Please fill all required fields (Name, SKU, HSN)', 'error');
+      // Only Item Name and Total Stock are mandatory
+      var nameMissing = !name;
+      var stockMissing = stockRaw === '';
+      setFieldError('f_name', nameMissing);
+      setFieldError('f_stock', stockMissing);
+
+      if (nameMissing || stockMissing) {
+        showToast('Please fill the required fields', 'error');
         return;
       }
 
@@ -1140,18 +1030,22 @@
           it.name = name;
           it.sku = sku;
           it.category = category;
+          it.subCategory = subCategory;
           it.hsn = hsn;
           it.unit = unit;
+          it.height = height;
+          it.width = width;
+          it.length = length;
+          it.materialType = materialType;
+          it.size = size;
+          it.productNumber = productNumber;
           it.sellingPrice = sellingPrice;
-          it.purchasePrice = purchasePrice;
+          it.mrpPrice = mrpPrice;
           it.gstRate = gstRate;
           it.stock = stock;
-          it.reorderLevel = reorderLevel;
           it.warehouse = warehouse;
           it.description = description;
-          it.serialBatch = serialBatch;
-          it.vendorPrices = vendorPrices;
-          it.status = stockStatus(stock, reorderLevel);
+          it.status = stockStatus(stock);
           showToast('Item updated successfully', 'success');
         }
       } else {
@@ -1160,18 +1054,23 @@
           name: name,
           sku: sku,
           category: category,
+          subCategory: subCategory,
           hsn: hsn,
           unit: unit,
+          height: height,
+          width: width,
+          length: length,
+          materialType: materialType,
+          size: size,
+          productNumber: productNumber,
           sellingPrice: sellingPrice,
-          purchasePrice: purchasePrice,
+          mrpPrice: mrpPrice,
           gstRate: gstRate,
           stock: stock,
-          reorderLevel: reorderLevel,
           warehouse: warehouse,
           description: description,
-          serialBatch: serialBatch,
-          vendorPrices: vendorPrices,
-          status: stockStatus(stock, reorderLevel)
+          variants: [],
+          status: stockStatus(stock)
         };
         items.unshift(newItem);
         showToast('Item added successfully', 'success');
@@ -1204,8 +1103,120 @@
     }
 
     // =============================================================
-    // SEARCH
+    // VENDOR PURCHASE (select vendor overlay)
     // =============================================================
+
+    // TODO: replace fallback with live API once backend endpoint is ready.
+    async function fetchVendorList() {
+      try {
+        // const res = await fetch('/api/vendors'); // <-- enable this when the vendors API is live
+        // if (!res.ok) throw new Error('Vendor API failed');
+        // const data = await res.json();
+        // return data;
+        throw new Error('Vendor API not wired up yet — using fallback list');
+      } catch (err) {
+        console.warn(err.message);
+        return vendors; // dummy fallback (1-2 entries)
+      }
+    }
+
+    async function openVendorPurchase() {
+      var loadingContent = `
+        ${modalHeader('Vendor Purchase', 'Select a vendor to start a purchase')}
+        <div class="px-6 py-10 text-center text-sm text-gray-400">Loading vendors…</div>
+        ${modalFooter('Proceed', 'disabled class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gray-300 cursor-not-allowed flex items-center gap-1.5"')}
+      `;
+      openModal(loadingContent, { width: 'max-w-md' });
+
+      var vendorList = await fetchVendorList();
+      renderVendorPurchaseModal(vendorList);
+    }
+
+    function renderVendorPurchaseModal(vendorList, selectVendorId) {
+      var vendorOptions = vendorList.map(function(v) {
+        return '<option ' + (v.id === selectVendorId ? 'selected' : '') + ' value="' + v.id + '">' + v.name + '</option>';
+      }).join('');
+
+      var modalContent = `
+        ${modalHeader('Vendor Purchase', 'Select a vendor to start a purchase')}
+        <div class="px-6 py-5">
+          <div class="flex items-end gap-2">
+            <div class="flex-1">
+              ${fld('Vendor', '<select id="f_vendorPurchase" class="' + inputBase() + '">' + vendorOptions + '</select>', vendorList.length ? '' : 'No vendors found')}
+            </div>
+            <button onclick="toggleAddVendorForm()" class="mb-3 inline-flex items-center gap-1.5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[12px] font-semibold px-3 py-2 rounded-lg transition whitespace-nowrap">
+              ${iconUser()} Add New Vendor
+            </button>
+          </div>
+
+          <div id="addVendorFormWrap" class="hidden mt-2 pt-4 border-t border-gray-100">
+            <div class="text-[12.5px] font-semibold text-gray-700 mb-2">New Vendor</div>
+            ${fld('Vendor Name', '<input id="nv_vendorName" placeholder="e.g. Rajesh Kumar" class="' + inputBase() + '">')}
+            ${fld('Company Name', '<input id="nv_companyName" placeholder="e.g. Global Imports Inc." class="' + inputBase() + '">')}
+            ${fld('Phone', '<input id="nv_phone" type="tel" placeholder="e.g. 9876543210" class="' + inputBase() + '">')}
+            <button onclick="saveNewVendor()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[12.5px] font-semibold px-4 py-2 rounded-lg transition">
+              ${iconSave()} Save Vendor
+            </button>
+          </div>
+        </div>
+        ${modalFooter('Proceed', 'onclick="proceedVendorPurchase()"')}
+      `;
+      openModal(modalContent, { width: 'max-w-md' });
+    }
+
+    function toggleAddVendorForm() {
+      var wrap = document.getElementById('addVendorFormWrap');
+      if (wrap) wrap.classList.toggle('hidden');
+    }
+
+    function saveNewVendor() {
+      var vendorName = (document.getElementById('nv_vendorName') || {}).value || '';
+      var companyName = (document.getElementById('nv_companyName') || {}).value || '';
+      var phone = (document.getElementById('nv_phone') || {}).value || '';
+
+      vendorName = vendorName.trim();
+      companyName = companyName.trim();
+      phone = phone.trim();
+
+      // TODO: POST this to the vendors API once available; for now push into the local dummy list.
+      var newVendor = {
+        id: 'VEN-' + (100 + vendors.length + 1),
+        name: companyName ? (vendorName || companyName) + ' — ' + companyName : (vendorName || 'New Vendor'),
+        contactName: vendorName,
+        companyName: companyName,
+        phone: phone
+      };
+      vendors.push(newVendor);
+
+      showToast('Vendor added', 'success');
+      renderVendorPurchaseModal(vendors, newVendor.id);
+    }
+
+    function proceedVendorPurchase() {
+      var sel = document.getElementById('f_vendorPurchase');
+      var vendorId = sel ? sel.value : null;
+      var vendorName = sel && sel.selectedIndex >= 0 ? sel.options[sel.selectedIndex].text : '';
+      if (!vendorId) {
+        showToast('Please select a vendor', 'error');
+        return;
+      }
+      closeModal();
+      showToast('Starting purchase for ' + vendorName, 'info');
+      // Hook up navigation to the Purchase Bill screen here once available.
+    }
+
+    // =============================================================
+    // SEARCH (debounced, min 2 characters)
+    // =============================================================
+
+    var searchDebounceTimer = null;
+
+    function onSearchInput() {
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(function() {
+        renderItems();
+      }, 300);
+    }
 
     // Add search input to top bar
     (function addSearchToTopbar() {
@@ -1214,8 +1225,8 @@
         var searchHtml = `
           <div class="hidden sm:flex flex-1 max-w-[420px] relative ml-4">
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">${iconSearch()}</span>
-            <input type="text" id="searchInput" placeholder="Search items by name, SKU, HSN…"
-              onkeyup="filterItems()"
+            <input type="text" id="searchInput" placeholder="Search items by name, SKU, HSN… (min 2 letters)"
+              oninput="onSearchInput()"
               class="w-full border border-gray-200 bg-gray-50 focus:bg-white rounded-lg pl-9 pr-3 py-2 text-[13px] outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition placeholder:text-gray-400">
           </div>
         `;
@@ -1236,10 +1247,8 @@
 
     renderItems();
 
-    console.log('Items Module Loaded Successfully — No Emojis, Only SVG Icons');
+    console.log('Items Module Loaded Successfully');
     console.log('Total Items:', items.length);
-    console.log('Categories:', categories);
-    console.log('Vendor Price List (Enhancement #4) active');
 
   </script>
 
