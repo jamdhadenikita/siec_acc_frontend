@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <title>Projects — Aquilon ERP</title>
 
+<!-- ANTI-FLICKER SCRIPT -->
 <script>
   (function () {
     try {
@@ -21,6 +22,7 @@
   })();
 </script>
 
+<!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -35,20 +37,18 @@
   };
 </script>
 
+<!-- Shell styling -->
 <link rel="stylesheet" href="/assets/css/nav-sidebar.css" />
 
+<!-- Page-specific styles (EXACTLY Products page patterns) -->
 <style>
-  body {
-    font-size: 12px;
-    background: #f3f4f6;
-  }
-
+  /* Form styles */
   .form-input {
     width: 100%;
     border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    padding: 5px 10px;
-    font-size: 11px;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
     background: #fafafa;
@@ -56,34 +56,32 @@
   }
   .form-input:focus {
     border-color: #6da84c;
-    box-shadow: 0 0 0 3px rgba(109, 168, 76, 0.12);
+    box-shadow: 0 0 0 3px rgba(109, 168, 76, 0.15);
     background: #ffffff;
   }
   .form-input:disabled {
     background: #f3f4f6;
     cursor: not-allowed;
   }
-
   .form-label {
-    font-size: 10px;
+    font-size: 11.5px;
     font-weight: 600;
     color: #374151;
     display: block;
-    margin-bottom: 3px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    margin-bottom: 4px;
   }
   .form-label .required { color: #ef4444; margin-left: 2px; }
-  .form-hint { font-size: 9.5px; color: #9ca3af; margin-top: 2px; }
+  .form-hint { font-size: 10.5px; color: #9ca3af; margin-top: 3px; }
 
+  /* Badge */
   .badge {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 12px;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
   }
   .badge-green { background: #dcfce7; color: #166534; }
   .badge-amber { background: #fef3c7; color: #92400e; }
@@ -92,8 +90,8 @@
   .badge-blue { background: #dbeafe; color: #1e40af; }
   .badge-purple { background: #ede9fe; color: #5b21b6; }
   .badge-dot {
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     display: inline-block;
   }
@@ -104,152 +102,59 @@
   .badge-dot-blue { background: #3b82f6; }
   .badge-dot-purple { background: #8b5cf6; }
 
+  /* Stat card */
   .stat-card {
+    border: 1px solid #7dc057;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
-    padding: 10px 14px !important;
   }
   .stat-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   }
-  .stat-card .stat-label {
-    font-size: 9px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #6b7280;
-  }
-  .stat-card .stat-value {
-    font-size: 17px;
-    font-weight: 700;
-    color: #1a1a2e;
-    margin-top: 2px;
+  .stat-icon-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
   }
 
+  /* Table row hover */
   .table-row-hover:hover {
     background: #f8fafc;
   }
 
-  .btn-icon-action {
-    transition: all 0.15s ease;
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #94a3b8;
-    background: transparent;
-    border: none;
+  /* Modal tabs */
+  .modal-tab-btn {
+    transition: all 0.2s ease;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    color: #6b7280;
     cursor: pointer;
+    background: transparent;
+    display: flex;
+    gap: 6px;
   }
-  .btn-icon-action:hover {
-    background: #f1f5f9;
+  .modal-tab-btn.active {
     color: #6da84c;
+    border-bottom-color: #6da84c;
   }
-  .btn-icon-action.danger:hover {
-    background: #fee2e2;
-    color: #ef4444;
+  .modal-tab-btn:hover:not(.active) {
+    color: #1f2937;
+    border-bottom-color: #d1d5db;
   }
-  .btn-icon-action.primary:hover {
-    background: #eef5e8;
-    color: #6da84c;
-  }
-
-  .toast {
-    animation: fadeIn 0.2s ease;
-    font-size: 12px;
-  }
-  .toast-success { background: #16a34a; }
-  .toast-error { background: #dc2626; }
-  .toast-warning { background: #f59e0b; }
-  .toast-info { background: #6da84c; }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes modalIn {
-    from { opacity: 0; transform: scale(0.96) translateY(6px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-  }
-  .animate-modal { animation: modalIn 0.18s ease; }
-
-  .modal-scroll {
-    max-height: 55vh;
-    overflow-y: auto;
-  }
-  .modal-scroll::-webkit-scrollbar {
-    width: 4px;
-  }
-  .modal-scroll::-webkit-scrollbar-thumb {
-    background: #d1d5db;
-    border-radius: 4px;
-  }
-
-  .empty-icon-svg {
-    opacity: 0.2;
-    width: 40px;
-    height: 40px;
-    color: #94a3b8;
-  }
-
-  .page-title {
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  .page-subtitle {
-    font-size: 12px;
-    color: #6b7280;
-  }
-  .page-breadcrumb {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #6da84c;
-  }
-
-  table th {
-    font-size: 9.5px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #6b7280;
-    padding: 8px 12px;
-  }
-  table td {
-    font-size: 12px;
-    padding: 8px 12px;
-  }
-  table td .font-mono {
-    font-size: 11px;
-  }
-
-  .modal-title {
-    font-size: 16px;
-    font-weight: 700;
-  }
-  .modal-subtitle {
-    font-size: 11px;
-    color: #6b7280;
-  }
-
-  .filter-btn {
-    font-size: 11px;
-    padding: 5px 12px;
-  }
-  .filter-btn svg {
-    width: 14px;
-    height: 14px;
-  }
+  .modal-tab-panel { display: none; }
+  .modal-tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
 
   /* Page tabs */
   .page-tab-btn {
     transition: all 0.2s ease;
-    padding: 8px 14px;
-    font-size: 11px;
+    padding: 10px 18px;
+    font-size: 13px;
     font-weight: 500;
     border-bottom: 2px solid transparent;
     color: #6b7280;
@@ -267,7 +172,70 @@
     border-bottom-color: #d1d5db;
   }
   .page-tab-panel { display: none; }
-  .page-tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
+  .page-tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.96) translateY(6px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .animate-modal { animation: modalIn 0.18s ease; }
+
+  /* Action buttons */
+  .btn-icon-action {
+    transition: all 0.15s ease;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-icon-action:hover {
+    background: #f1f5f9;
+    color: #6da84c;
+  }
+  .btn-icon-action.danger:hover {
+    background: #fee2e2;
+    color: #ef4444;
+  }
+
+  /* Toast */
+  .toast {
+    animation: fadeIn 0.2s ease;
+  }
+  .toast-success { background: #16a34a; }
+  .toast-error { background: #dc2626; }
+  .toast-warning { background: #f59e0b; }
+  .toast-info { background: #6da84c; }
+
+  /* Scrollbar for modal */
+  .modal-scroll {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  .modal-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+  .modal-scroll::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+  }
+
+  /* Empty state */
+  .empty-icon-svg {
+    opacity: 0.2;
+    width: 48px;
+    height: 48px;
+    color: #94a3b8;
+  }
 
   /* Project card */
   .project-card {
@@ -282,6 +250,11 @@
     border-color: #6da84c;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     transform: translateY(-1px);
+  }
+  .project-card.selected {
+    border-color: #6da84c;
+    background: #f8fdf5;
+    box-shadow: 0 0 0 3px rgba(109, 168, 76, 0.15);
   }
   .project-card .proj-name {
     font-size: 13px;
@@ -298,7 +271,7 @@
     color: #6da84c;
   }
 
-  /* Project progress bar */
+  /* Progress bar */
   .progress-bar {
     height: 6px;
     border-radius: 3px;
@@ -351,17 +324,17 @@
     color: #6b7280;
   }
 
-  /* Report table */
+  /* Report table (for Overview & Budget) */
   .report-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 12px;
+    font-size: 13px;
   }
   .report-table th {
     background: #f8fafc;
     text-align: left;
     padding: 8px 10px;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -369,11 +342,10 @@
     border-bottom: 2px solid #e5e7eb;
   }
   .report-table td {
-    padding: 6px 10px;
+    padding: 8px 10px;
     border-bottom: 1px solid #f1f5f9;
   }
   .report-table .text-right { text-align: right; }
-  .report-table .text-center { text-align: center; }
   .report-table .total-row {
     border-top: 2px solid #e5e7eb;
     border-bottom: 2px solid #e5e7eb;
@@ -388,138 +360,127 @@
 </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800 antialiased text-sm">
+<body class="bg-gray-50 text-gray-800 antialiased">
 
   <div class="flex min-h-screen">
+    <!-- Sidebar gets injected here by nav-sidebar.js -->
     <div id="sidebar-root"></div>
 
     <div class="app-main flex-1 flex flex-col min-w-0">
+      <!-- Top bar gets injected here -->
       <div id="topbar-root"></div>
 
-      <main class="p-3 sm:p-4 lg:p-5">
+      <!-- ========================================================== -->
+      <!-- ============= PAGE CONTENT STARTS HERE ==================== -->
+      <!-- ========================================================== -->
+      <main class="p-4 sm:p-6 lg:p-8">
 
+        <!-- Toast Container -->
         <div id="toastWrap" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2 items-end"></div>
+
+        <!-- Modal Root -->
         <div id="modalRoot"></div>
 
         <div class="max-w-7xl mx-auto">
 
-          <!-- ===== PAGE HEADER ===== -->
-          <div class="flex flex-wrap items-start justify-between gap-3 mb-4">
+          <!-- ===== PAGE HEADER (Products-style) ===== -->
+          <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
             <div>
-              <div class="page-breadcrumb">Operations</div>
-              <h1 class="page-title text-gray-900">Project Management</h1>
-              <p class="page-subtitle mt-0.5">Project overview, sales, purchases, expenses, timesheets, budgets and documents.</p>
+              <div class="text-[11px] font-semibold tracking-wide uppercase text-primary">Operations</div>
+              <h1 class="text-[24px] sm:text-[28px] font-bold tracking-tight text-gray-900">Project Management</h1>
+              <p class="text-[13px] text-gray-500 mt-1">Project overview, sales, purchases, expenses, timesheets, budgets and documents.</p>
             </div>
-            <div class="flex gap-2 flex-wrap">
-              <button onclick="openAddProject()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[11px] font-semibold px-3 py-2 rounded-lg transition shadow-sm">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M12 5v14M5 12h14"/>
-                </svg>
-                New Project
-              </button>
-              <button onclick="exportProjectReport()" class="inline-flex items-center gap-1.5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[11px] font-semibold px-3 py-2 rounded-lg transition">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                  <path d="M7 10l5 5 5-5"/>
-                  <path d="M12 15V3"/>
-                </svg>
+            <div class="flex gap-2.5 flex-wrap">
+              <button onclick="exportProjectReport()" class="inline-flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[13px] font-semibold px-4 py-2.5 rounded-lg transition shadow-sm">
+                <i class="fa-solid fa-download"></i>
                 Export
               </button>
+              <button onclick="openAddProject()" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-[13px] font-semibold px-4 py-2.5 rounded-lg transition shadow-sm">
+                <i class="fa-solid fa-plus"></i>
+                New Project
+              </button>
             </div>
           </div>
 
-          <!-- ===== STATS CARDS ===== -->
-          <div class="grid grid-cols-2 md:grid-cols-5 gap-2.5 mb-4">
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Total Projects</div>
-              <div class="stat-value" id="totalProjects">0</div>
+          <!-- ===== STATS CARDS (Products-style, green border) ===== -->
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-3.5 mb-6">
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-primary-soft text-primary"><i class="fa-solid fa-folder-tree"></i></div>
+              <div>
+                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Projects</div>
+                <div class="text-[22px] font-bold text-gray-900" id="totalProjects">0</div>
+              </div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Active</div>
-              <div class="stat-value text-blue-600" id="activeProjects">0</div>
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-blue-50 text-blue-600"><i class="fa-solid fa-play"></i></div>
+              <div>
+                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Active</div>
+                <div class="text-[22px] font-bold text-blue-600" id="activeProjects">0</div>
+              </div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Completed</div>
-              <div class="stat-value text-green-600" id="completedProjects">0</div>
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-green-50 text-green-600"><i class="fa-solid fa-check-circle"></i></div>
+              <div>
+                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Completed</div>
+                <div class="text-[22px] font-bold text-green-600" id="completedProjects">0</div>
+              </div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Total Budget</div>
-              <div class="stat-value text-primary" id="totalBudget">₹0</div>
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-primary-soft text-primary"><i class="fa-solid fa-sack-dollar"></i></div>
+              <div>
+                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Budget</div>
+                <div class="text-[18px] font-bold text-primary" id="totalBudget">₹0</div>
+              </div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Total Profit</div>
-              <div class="stat-value text-amber-600" id="totalProfit">₹0</div>
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-amber-50 text-amber-600"><i class="fa-solid fa-chart-line"></i></div>
+              <div>
+                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Profit</div>
+                <div class="text-[18px] font-bold text-amber-600" id="totalProfit">₹0</div>
+              </div>
             </div>
           </div>
 
-          <!-- ===== PROJECTS LIST ===== -->
-          <div id="projectsList" class="mb-4"></div>
+          <!-- ===== PROJECTS LIST (cards) ===== -->
+          <div id="projectsList" class="mb-6"></div>
 
-          <!-- ===== TABS ===== -->
-          <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+          <!-- ===== TABS CARD (Products-style green border) ===== -->
+          <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm overflow-hidden">
             <div class="flex overflow-x-auto border-b border-gray-200 px-4 pt-2 gap-1" id="projTabs">
               <button class="page-tab-btn active" data-tab="tab-overview">
-                <svg class="w-3.5 h-3.5 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="3" width="7" height="9" rx="1.5"></rect>
-                  <rect x="14" y="3" width="7" height="5" rx="1.5"></rect>
-                  <rect x="14" y="12" width="7" height="9" rx="1.5"></rect>
-                  <rect x="3" y="16" width="7" height="5" rx="1.5"></rect>
-                </svg>
+                <i class="fa-solid fa-chart-pie mr-1.5"></i>
                 Overview
               </button>
               <button class="page-tab-btn" data-tab="tab-sales">
-                <svg class="w-3.5 h-3.5 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="9" cy="21" r="1"></circle>
-                  <circle cx="20" cy="21" r="1"></circle>
-                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                </svg>
+                <i class="fa-solid fa-cart-shopping mr-1.5"></i>
                 Sales
               </button>
               <button class="page-tab-btn" data-tab="tab-purchases">
-                <svg class="w-3.5 h-3.5 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M4 7h16l-1.5 9a2 2 0 0 1-2 1.7H7.5a2 2 0 0 1-2-1.7L4 7z"></path>
-                  <path d="M8 7V5a4 4 0 0 1 8 0v2"></path>
-                </svg>
+                <i class="fa-solid fa-truck-fast mr-1.5"></i>
                 Purchases
               </button>
               <button class="page-tab-btn" data-tab="tab-expenses">
-                <svg class="w-3.5 h-3.5 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
-                </svg>
+                <i class="fa-solid fa-receipt mr-1.5"></i>
                 Expenses
               </button>
               <button class="page-tab-btn" data-tab="tab-timesheet">
-                <svg class="w-3.5 h-3.5 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="9"/>
-                  <path d="M12 7v5l3 3"/>
-                </svg>
+                <i class="fa-solid fa-clock mr-1.5"></i>
                 Timesheet
               </button>
               <button class="page-tab-btn" data-tab="tab-budget">
-                <svg class="w-3.5 h-3.5 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 2v20M2 12h20"/>
-                </svg>
+                <i class="fa-solid fa-chart-simple mr-1.5"></i>
                 Budget
               </button>
               <button class="page-tab-btn" data-tab="tab-journals">
-                <svg class="w-3.5 h-3.5 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 20h9"/>
-                  <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
-                </svg>
+                <i class="fa-solid fa-book mr-1.5"></i>
                 Journals
               </button>
               <button class="page-tab-btn" data-tab="tab-documents">
-                <svg class="w-3.5 h-3.5 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/>
-                  <path d="M14 2v6h6"/>
-                </svg>
+                <i class="fa-solid fa-folder-open mr-1.5"></i>
                 Documents
               </button>
               <button class="page-tab-btn" data-tab="tab-activity">
-                <svg class="w-3.5 h-3.5 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M3 3v18h18"/>
-                  <path d="M7 15l4-5 3 3 5-7"/>
-                </svg>
+                <i class="fa-solid fa-list-check mr-1.5"></i>
                 Activity
               </button>
             </div>
@@ -539,6 +500,9 @@
 
         </div>
       </main>
+      <!-- ========================================================== -->
+      <!-- ============= PAGE CONTENT ENDS HERE ====================== -->
+      <!-- ========================================================== -->
     </div>
   </div>
 
@@ -563,50 +527,47 @@
     });
 
     // =============================================================
-    // SVG ICONS
+    // SVG ICONS (Products-style)
     // =============================================================
-    function iconPlus() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>`;
-    }
     function iconEdit() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
     }
     function iconTrash() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>`;
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>`;
     }
     function iconEye() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
     }
     function iconX() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
     }
     function iconSave() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>`;
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>`;
     }
-    function iconInfo() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>`;
+    function iconBox() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>`;
     }
     function iconSearch() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>`;
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>`;
     }
     function iconDocument() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6"/></svg>`;
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6"/></svg>`;
     }
     function iconPdf() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M9 15h6"/><path d="M9 11h6"/></svg>`;
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M9 15h6"/><path d="M9 11h6"/></svg>`;
     }
     function iconImage() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>`;
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>`;
     }
     function iconDownload() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>`;
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>`;
     }
-    function iconFolder() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>`;
+    function iconInfo() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>`;
     }
 
     // =============================================================
-    // TOAST
+    // TOAST (Products-style)
     // =============================================================
     function showToast(message, kind) {
       kind = kind || 'success';
@@ -618,7 +579,7 @@
         error: 'bg-red-600'
       };
       var el = document.createElement('div');
-      el.className = 'toast ' + colors[kind] + ' text-white font-semibold px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 max-w-xs';
+      el.className = 'toast ' + colors[kind] + ' text-white text-sm font-semibold px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 max-w-xs';
       el.innerHTML = '<span>' + message + '</span>';
       wrap.appendChild(el);
       setTimeout(function() {
@@ -629,15 +590,15 @@
     }
 
     // =============================================================
-    // MODAL
+    // MODAL (Products-style)
     // =============================================================
     function openModal(innerHtml, opts) {
       opts = opts || {};
       var root = document.getElementById('modalRoot');
       root.innerHTML = `
-        <div class="fixed inset-0 z-[100] flex items-center justify-center p-3" id="modalOverlay">
-          <div class="absolute inset-0 bg-black/40 backdrop-blur-[1px]" id="modalBackdrop"></div>
-          <div class="relative bg-white rounded-xl shadow-2xl w-full ${opts.width || 'max-w-4xl'} max-h-[92vh] overflow-hidden animate-modal">
+        <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" id="modalOverlay">
+          <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]" id="modalBackdrop"></div>
+          <div class="relative bg-white rounded-2xl shadow-2xl w-full ${opts.width || 'max-w-2xl'} max-h-[92vh] overflow-hidden animate-modal">
             ${innerHtml}
           </div>
         </div>`;
@@ -653,22 +614,22 @@
 
     function modalHeader(title, subtitle) {
       return `
-        <div class="flex items-start justify-between px-5 py-3.5 border-b border-gray-100 sticky top-0 bg-white z-10">
+        <div class="flex items-start justify-between px-6 py-5 border-b border-gray-100 sticky top-0 bg-white z-10">
           <div>
-            <h3 class="modal-title text-gray-900">${title}</h3>
-            ${subtitle ? '<p class="modal-subtitle mt-0.5">' + subtitle + '</p>' : ''}
+            <h3 class="text-lg font-bold text-gray-900">${title}</h3>
+            ${subtitle ? '<p class="text-xs text-gray-500 mt-0.5">' + subtitle + '</p>' : ''}
           </div>
-          <button onclick="closeModal()" class="w-7 h-7 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition">${iconX()}</button>
+          <button onclick="closeModal()" class="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition">${iconX()}</button>
         </div>`;
     }
 
     function modalFooter(saveLabel, onSaveAttr, extraBtns) {
       return `
-        <div class="flex items-center justify-between gap-2 px-5 py-3 border-t border-gray-100 bg-gray-50 rounded-b-xl sticky bottom-0">
+        <div class="flex items-center justify-between gap-2 px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl sticky bottom-0">
           <div>${extraBtns || ''}</div>
           <div class="flex gap-2">
-            <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Cancel</button>
-            <button ${onSaveAttr} class="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-primary-dark transition shadow-sm flex items-center gap-1.5">
+            <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Cancel</button>
+            <button ${onSaveAttr} class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-primary hover:bg-primary-dark transition shadow-sm flex items-center gap-1.5">
               ${iconSave()} ${saveLabel}
             </button>
           </div>
@@ -677,7 +638,7 @@
 
     function fld(label, inputHtml, hint) {
       return `
-        <div class="mb-2">
+        <div class="mb-3">
           <label class="form-label">${label}</label>
           ${inputHtml}
           ${hint ? '<div class="form-hint">' + hint + '</div>' : ''}
@@ -687,7 +648,76 @@
     function inputBase() { return "form-input"; }
 
     // =============================================================
-    // PAGE TABS    // =============================================================
+    // HELPERS (Products-style)
+    // =============================================================
+    function money(n) { return '₹' + Number(n || 0).toLocaleString('en-IN'); }
+
+    function badge(text, color) {
+      var map = { green: 'badge-green', amber: 'badge-amber', red: 'badge-red', gray: 'badge-gray', blue: 'badge-blue', purple: 'badge-purple' };
+      var dot = { green: 'badge-dot-green', amber: 'badge-dot-amber', red: 'badge-dot-red', gray: 'badge-dot-gray', blue: 'badge-dot-blue', purple: 'badge-dot-purple' };
+      return '<span class="badge ' + map[color] + '"><span class="badge-dot ' + dot[color] + '"></span>' + text + '</span>';
+    }
+
+    function statusBadge(status) {
+      var map = {
+        active: 'blue',
+        completed: 'green',
+        onhold: 'amber',
+        cancelled: 'red',
+        pending: 'gray',
+        paid: 'green',
+        partial: 'amber',
+        sent: 'blue',
+        received: 'green',
+        approved: 'green'
+      };
+      var label = status.charAt(0).toUpperCase() + status.slice(1);
+      if (status === 'onhold') label = 'On Hold';
+      return badge(label, map[status] || 'gray');
+    }
+
+    function rowActionsHtml(editFn, delFn, viewFn) {
+      var html = '<div class="flex gap-1 justify-end">';
+      if (viewFn) {
+        html += '<button onclick="' + viewFn + '" class="btn-icon-action" title="View">' + iconEye() + '</button>';
+      }
+      html += '<button onclick="' + editFn + '" class="btn-icon-action" title="Edit">' + iconEdit() + '</button>';
+      html += '<button onclick="' + delFn + '" class="btn-icon-action danger" title="Delete">' + iconTrash() + '</button>';
+      html += '</div>';
+      return html;
+    }
+
+    // Products page ka panelWrap — same green border
+    function panelWrap(titleHtml, bodyHtml, extraHead) {
+      return `
+        <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm overflow-hidden">
+          <div class="flex items-center justify-between gap-3 flex-wrap px-5 py-4 border-b border-gray-100">
+            <div class="font-bold text-[14.5px] text-gray-800 flex items-center gap-2">${titleHtml}</div>
+            ${extraHead || ''}
+          </div>
+          <div>${bodyHtml}</div>
+        </div>`;
+    }
+
+    // Products page ka tableHtml — sticky header + fixed height
+    function tableHtml(cols, rowsHtml) {
+      var colHeaders = cols.map(function(c) {
+        return '<th class="text-left text-[11px] font-bold uppercase tracking-wide text-gray-500 px-4 py-3 whitespace-nowrap">' + c + '</th>';
+      }).join('');
+      return `
+        <div class="overflow-auto h-[370px]">
+          <table class="w-full text-[13px]">
+            <thead class="sticky top-0">
+              <tr class="bg-gray-50 border-b border-gray-200">${colHeaders}</tr>
+            </thead>
+            <tbody id="tbody-anchor">${rowsHtml}</tbody>
+          </table>
+        </div>`;
+    }
+
+    // =============================================================
+    // PAGE TABS
+    // =============================================================
     document.addEventListener('DOMContentLoaded', function() {
       var tabs = document.querySelectorAll('#projTabs .page-tab-btn');
       tabs.forEach(function(btn) {
@@ -702,71 +732,8 @@
     });
 
     // =============================================================
-    // HELPERS
+    // DATA (same as before)
     // =============================================================
-    function money(n) { return '₹' + Number(n).toLocaleString('en-IN'); }
-
-    function statusBadge(status) {
-      var map = {
-        active: 'badge-blue',
-        completed: 'badge-green',
-        onhold: 'badge-amber',
-        cancelled: 'badge-red',
-        pending: 'badge-gray'
-      };
-      var dot = {
-        active: 'badge-dot-blue',
-        completed: 'badge-dot-green',
-        onhold: 'badge-dot-amber',
-        cancelled: 'badge-dot-red',
-        pending: 'badge-dot-gray'
-      };
-      var label = status.charAt(0).toUpperCase() + status.slice(1);
-      if (status === 'onhold') label = 'On Hold';
-      return '<span class="badge ' + map[status] + '"><span class="badge-dot ' + dot[status] + '"></span>' + label + '</span>';
-    }
-
-    function panelWrap(titleHtml, bodyHtml, extraHead) {
-      return `
-        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-          <div class="flex items-center justify-between gap-3 flex-wrap px-4 py-2.5 border-b border-gray-100">
-            <div class="font-semibold text-sm text-gray-800 flex items-center gap-2">${titleHtml}</div>
-            ${extraHead || ''}
-          </div>
-          <div>${bodyHtml}</div>
-        </div>`;
-    }
-
-    function tableHtml(cols, rowsHtml) {
-      var colHeaders = cols.map(function(c) {
-        return '<th class="text-left font-semibold whitespace-nowrap">' + c + '</th>';
-      }).join('');
-      return `
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead>
-              <tr class="bg-gray-50 border-b border-gray-200">${colHeaders}</tr>
-            </thead>
-            <tbody id="tbody-anchor">${rowsHtml}</tbody>
-          </table>
-        </div>`;
-    }
-
-    function rowActionsHtml(editFn, delFn, viewFn) {
-      var html = '<div class="flex gap-1">';
-      if (viewFn) {
-        html += '<button onclick="' + viewFn + '" class="btn-icon-action" title="View">' + iconEye() + '</button>';
-      }
-      html += '<button onclick="' + editFn + '" class="btn-icon-action" title="Edit">' + iconEdit() + '</button>';
-      html += '<button onclick="' + delFn + '" class="btn-icon-action danger" title="Delete">' + iconTrash() + '</button>';
-      html += '</div>';
-      return html;
-    }
-
-    // =============================================================
-    // DATA
-    // =============================================================
-
     var projects = [{
       id: 'PRJ-001',
       name: 'Operation & Supervision — WHE',
@@ -830,326 +797,70 @@
       holdReason: 'Client requested hold for 2 months'
     }];
 
-    // SALES for Project
-    var projectSales = [{
-      id: 'INV-001',
-      date: '2026-01-15',
-      number: 'INV/25-26/001',
-      customer: 'Sustro Speciality Oils Pvt Ltd',
-      amount: 167029,
-      status: 'paid',
-      projectId: 'PRJ-001'
-    }, {
-      id: 'INV-002',
-      date: '2026-02-01',
-      number: 'INV/25-26/002',
-      customer: 'Sustro Speciality Oils Pvt Ltd',
-      amount: 250000,
-      status: 'partial',
-      projectId: 'PRJ-001'
-    }, {
-      id: 'INV-003',
-      date: '2026-02-10',
-      number: 'INV/25-26/003',
-      customer: 'XYZ Technologies',
-      amount: 200000,
-      status: 'sent',
-      projectId: 'PRJ-002'
-    }, {
-      id: 'INV-004',
-      date: '2026-02-15',
-      number: 'INV/25-26/004',
-      customer: 'ABC Distributor Group',
-      amount: 950000,
-      status: 'paid',
-      projectId: 'PRJ-003'
-    }];
+    var projectSales = [
+      { id: 'INV-001', date: '2026-01-15', number: 'INV/25-26/001', customer: 'Sustro Speciality Oils Pvt Ltd', amount: 167029, status: 'paid', projectId: 'PRJ-001' },
+      { id: 'INV-002', date: '2026-02-01', number: 'INV/25-26/002', customer: 'Sustro Speciality Oils Pvt Ltd', amount: 250000, status: 'partial', projectId: 'PRJ-001' },
+      { id: 'INV-003', date: '2026-02-10', number: 'INV/25-26/003', customer: 'XYZ Technologies', amount: 200000, status: 'sent', projectId: 'PRJ-002' },
+      { id: 'INV-004', date: '2026-02-15', number: 'INV/25-26/004', customer: 'ABC Distributor Group', amount: 950000, status: 'paid', projectId: 'PRJ-003' }
+    ];
 
-    // PURCHASES for Project
-    var projectPurchases = [{
-      id: 'PUR-001',
-      date: '2026-01-10',
-      number: 'PUR/25-26/001',
-      vendor: 'Global Imports Inc.',
-      amount: 118000,
-      status: 'received',
-      projectId: 'PRJ-001'
-    }, {
-      id: 'PUR-002',
-      date: '2026-01-20',
-      number: 'PUR/25-26/002',
-      vendor: 'Tech Components Ltd.',
-      amount: 95000,
-      status: 'partial',
-      projectId: 'PRJ-001'
-    }, {
-      id: 'PUR-003',
-      date: '2026-02-05',
-      number: 'PUR/25-26/003',
-      vendor: 'Premium Raw Materials',
-      amount: 72000,
-      status: 'received',
-      projectId: 'PRJ-002'
-    }];
+    var projectPurchases = [
+      { id: 'PUR-001', date: '2026-01-10', number: 'PUR/25-26/001', vendor: 'Global Imports Inc.', amount: 118000, status: 'received', projectId: 'PRJ-001' },
+      { id: 'PUR-002', date: '2026-01-20', number: 'PUR/25-26/002', vendor: 'Tech Components Ltd.', amount: 95000, status: 'partial', projectId: 'PRJ-001' },
+      { id: 'PUR-003', date: '2026-02-05', number: 'PUR/25-26/003', vendor: 'Premium Raw Materials', amount: 72000, status: 'received', projectId: 'PRJ-002' }
+    ];
 
-    // EXPENSES for Project
-    var projectExpenses = [{
-      id: 'EXP-001',
-      date: '2026-01-15',
-      category: 'Raw Materials',
-      amount: 48500,
-      vendor: 'Global Imports Inc.',
-      status: 'approved',
-      projectId: 'PRJ-001'
-    }, {
-      id: 'EXP-002',
-      date: '2026-01-20',
-      category: 'Transport & Logistics',
-      amount: 31200,
-      vendor: 'ABC Logistics',
-      status: 'approved',
-      projectId: 'PRJ-001'
-    }, {
-      id: 'EXP-003',
-      date: '2026-02-01',
-      category: 'Marketing & Advertising',
-      amount: 25000,
-      vendor: 'Google Ads',
-      status: 'pending',
-      projectId: null
-    }, {
-      id: 'EXP-004',
-      date: '2026-02-05',
-      category: 'Travel',
-      amount: 15000,
-      vendor: null,
-      status: 'pending',
-      projectId: 'PRJ-002'
-    }];
+    var projectExpenses = [
+      { id: 'EXP-001', date: '2026-01-15', category: 'Raw Materials', amount: 48500, vendor: 'Global Imports Inc.', status: 'approved', projectId: 'PRJ-001' },
+      { id: 'EXP-002', date: '2026-01-20', category: 'Transport & Logistics', amount: 31200, vendor: 'ABC Logistics', status: 'approved', projectId: 'PRJ-001' },
+      { id: 'EXP-003', date: '2026-02-01', category: 'Marketing & Advertising', amount: 25000, vendor: 'Google Ads', status: 'pending', projectId: null },
+      { id: 'EXP-004', date: '2026-02-05', category: 'Travel', amount: 15000, vendor: null, status: 'pending', projectId: 'PRJ-002' }
+    ];
 
-    // TIMESHEETS
-    var timesheets = [{
-      id: 'TS-001',
-      date: '2026-01-15',
-      employee: 'Rajesh Sharma',
-      projectId: 'PRJ-001',
-      task: 'Project Supervision',
-      hours: 8,
-      billable: true,
-      rate: 1500,
-      description: 'Site supervision and coordination'
-    }, {
-      id: 'TS-002',
-      date: '2026-01-20',
-      employee: 'Priya Patel',
-      projectId: 'PRJ-002',
-      task: 'Client Meeting',
-      hours: 4,
-      billable: true,
-      rate: 2000,
-      description: 'Requirements gathering'
-    }, {
-      id: 'TS-003',
-      date: '2026-02-01',
-      employee: 'Amit Kumar',
-      projectId: 'PRJ-004',
-      task: 'Documentation',
-      hours: 6,
-      billable: false,
-      rate: 0,
-      description: 'Internal docs'
-    }, {
-      id: 'TS-004',
-      date: '2026-02-05',
-      employee: 'Rajesh Sharma',
-      projectId: 'PRJ-001',
-      task: 'Site Survey',
-      hours: 10,
-      billable: true,
-      rate: 1500,
-      description: 'Field survey and measurements'
-    }];
+    var timesheets = [
+      { id: 'TS-001', date: '2026-01-15', employee: 'Rajesh Sharma', projectId: 'PRJ-001', task: 'Project Supervision', hours: 8, billable: true, rate: 1500, description: 'Site supervision and coordination' },
+      { id: 'TS-002', date: '2026-01-20', employee: 'Priya Patel', projectId: 'PRJ-002', task: 'Client Meeting', hours: 4, billable: true, rate: 2000, description: 'Requirements gathering' },
+      { id: 'TS-003', date: '2026-02-01', employee: 'Amit Kumar', projectId: 'PRJ-004', task: 'Documentation', hours: 6, billable: false, rate: 0, description: 'Internal docs' },
+      { id: 'TS-004', date: '2026-02-05', employee: 'Rajesh Sharma', projectId: 'PRJ-001', task: 'Site Survey', hours: 10, billable: true, rate: 1500, description: 'Field survey and measurements' }
+    ];
 
-    // BUDGET
-    var projectBudgets = [{
-      projectId: 'PRJ-001',
-      totalBudget: 500000,
-      purchaseBudget: 200000,
-      expenseBudget: 100000,
-      hoursBudget: 200000,
-      actualCost: 310000,
-      variance: 190000
-    }, {
-      projectId: 'PRJ-002',
-      totalBudget: 350000,
-      purchaseBudget: 150000,
-      expenseBudget: 80000,
-      hoursBudget: 120000,
-      actualCost: 120000,
-      variance: 230000
-    }, {
-      projectId: 'PRJ-003',
-      totalBudget: 750000,
-      purchaseBudget: 400000,
-      expenseBudget: 150000,
-      hoursBudget: 200000,
-      actualCost: 720000,
-      variance: 30000
-    }, {
-      projectId: 'PRJ-004',
-      totalBudget: 150000,
-      purchaseBudget: 50000,
-      expenseBudget: 50000,
-      hoursBudget: 50000,
-      actualCost: 25000,
-      variance: 125000
-    }];
+    var projectBudgets = [
+      { projectId: 'PRJ-001', totalBudget: 500000, purchaseBudget: 200000, expenseBudget: 100000, hoursBudget: 200000, actualCost: 310000, variance: 190000 },
+      { projectId: 'PRJ-002', totalBudget: 350000, purchaseBudget: 150000, expenseBudget: 80000, hoursBudget: 120000, actualCost: 120000, variance: 230000 },
+      { projectId: 'PRJ-003', totalBudget: 750000, purchaseBudget: 400000, expenseBudget: 150000, hoursBudget: 200000, actualCost: 720000, variance: 30000 },
+      { projectId: 'PRJ-004', totalBudget: 150000, purchaseBudget: 50000, expenseBudget: 50000, hoursBudget: 50000, actualCost: 25000, variance: 125000 }
+    ];
 
-    // JOURNALS (Project-linked)
-    var projectJournals = [{
-      id: 'JV-001',
-      date: '2026-01-15',
-      narration: 'Sale to Sustro Speciality Oils',
-      reference: 'INV-001',
-      amount: 167029,
-      projectId: 'PRJ-001'
-    }, {
-      id: 'JV-002',
-      date: '2026-01-20',
-      narration: 'Purchase from Global Imports',
-      reference: 'PUR-001',
-      amount: 118000,
-      projectId: 'PRJ-001'
-    }, {
-      id: 'JV-003',
-      date: '2026-02-01',
-      narration: 'Payment to Tech Components',
-      reference: 'PV-001',
-      amount: 95000,
-      projectId: 'PRJ-001'
-    }];
+    var projectJournals = [
+      { id: 'JV-001', date: '2026-01-15', narration: 'Sale to Sustro Speciality Oils', reference: 'INV-001', amount: 167029, projectId: 'PRJ-001' },
+      { id: 'JV-002', date: '2026-01-20', narration: 'Purchase from Global Imports', reference: 'PUR-001', amount: 118000, projectId: 'PRJ-001' },
+      { id: 'JV-003', date: '2026-02-01', narration: 'Payment to Tech Components', reference: 'PV-001', amount: 95000, projectId: 'PRJ-001' }
+    ];
 
-    // DOCUMENTS (Enhancement #5 — Project-Wise Document Management)
-    var projectDocuments = [{
-      id: 'DOC-001',
-      type: 'Invoice',
-      name: 'INV/25-26/001.pdf',
-      projectId: 'PRJ-001',
-      date: '2026-01-15',
-      size: '245 KB',
-      uploadedBy: 'System',
-      description: 'Tax invoice to Sustro'
-    }, {
-      id: 'DOC-002',
-      type: 'Purchase Order',
-      name: 'PO/25-26/001.pdf',
-      projectId: 'PRJ-001',
-      date: '2026-01-10',
-      size: '180 KB',
-      uploadedBy: 'System',
-      description: 'PO to Global Imports'
-    }, {
-      id: 'DOC-003',
-      type: 'Purchase Bill',
-      name: 'PUR/25-26/001.pdf',
-      projectId: 'PRJ-001',
-      date: '2026-01-20',
-      size: '210 KB',
-      uploadedBy: 'System',
-      description: 'Bill from Global Imports'
-    }, {
-      id: 'DOC-004',
-      type: 'Delivery Challan',
-      name: 'DC/25-26/001.pdf',
-      projectId: 'PRJ-001',
-      date: '2026-01-22',
-      size: '150 KB',
-      uploadedBy: 'System',
-      description: 'DC to Sustro'
-    }, {
-      id: 'DOC-005',
-      type: 'Packing List',
-      name: 'PL/25-26/001.pdf',
-      projectId: 'PRJ-001',
-      date: '2026-01-22',
-      size: '120 KB',
-      uploadedBy: 'System',
-      description: 'Packing list for DC-001'
-    }, {
-      id: 'DOC-006',
-      type: 'Contract',
-      name: 'Contract_Sustro_2025.pdf',
-      projectId: 'PRJ-001',
-      date: '2025-11-01',
-      size: '1.2 MB',
-      uploadedBy: 'Rajesh Sharma',
-      description: 'Signed contract document'
-    }, {
-      id: 'DOC-007',
-      type: 'Site Photo',
-      name: 'site_photo_01.jpg',
-      projectId: 'PRJ-001',
-      date: '2025-11-15',
-      size: '3.4 MB',
-      uploadedBy: 'Amit Kumar',
-      description: 'Site photos from initial survey'
-    }, {
-      id: 'DOC-008',
-      type: 'Invoice',
-      name: 'INV/25-26/003.pdf',
-      projectId: 'PRJ-002',
-      date: '2026-02-10',
-      size: '250 KB',
-      uploadedBy: 'System',
-      description: 'Invoice to XYZ Technologies'
-    }, {
-      id: 'DOC-009',
-      type: 'Contract',
-      name: 'Contract_XYZ_2025.pdf',
-      projectId: 'PRJ-002',
-      date: '2025-12-15',
-      size: '950 KB',
-      uploadedBy: 'Priya Patel',
-      description: 'Signed contract with XYZ'
-    }];
+    var projectDocuments = [
+      { id: 'DOC-001', type: 'Invoice', name: 'INV/25-26/001.pdf', projectId: 'PRJ-001', date: '2026-01-15', size: '245 KB', uploadedBy: 'System', description: 'Tax invoice to Sustro' },
+      { id: 'DOC-002', type: 'Purchase Order', name: 'PO/25-26/001.pdf', projectId: 'PRJ-001', date: '2026-01-10', size: '180 KB', uploadedBy: 'System', description: 'PO to Global Imports' },
+      { id: 'DOC-003', type: 'Purchase Bill', name: 'PUR/25-26/001.pdf', projectId: 'PRJ-001', date: '2026-01-20', size: '210 KB', uploadedBy: 'System', description: 'Bill from Global Imports' },
+      { id: 'DOC-004', type: 'Delivery Challan', name: 'DC/25-26/001.pdf', projectId: 'PRJ-001', date: '2026-01-22', size: '150 KB', uploadedBy: 'System', description: 'DC to Sustro' },
+      { id: 'DOC-005', type: 'Packing List', name: 'PL/25-26/001.pdf', projectId: 'PRJ-001', date: '2026-01-22', size: '120 KB', uploadedBy: 'System', description: 'Packing list for DC-001' },
+      { id: 'DOC-006', type: 'Contract', name: 'Contract_Sustro_2025.pdf', projectId: 'PRJ-001', date: '2025-11-01', size: '1.2 MB', uploadedBy: 'Rajesh Sharma', description: 'Signed contract document' },
+      { id: 'DOC-007', type: 'Site Photo', name: 'site_photo_01.jpg', projectId: 'PRJ-001', date: '2025-11-15', size: '3.4 MB', uploadedBy: 'Amit Kumar', description: 'Site photos from initial survey' },
+      { id: 'DOC-008', type: 'Invoice', name: 'INV/25-26/003.pdf', projectId: 'PRJ-002', date: '2026-02-10', size: '250 KB', uploadedBy: 'System', description: 'Invoice to XYZ Technologies' },
+      { id: 'DOC-009', type: 'Contract', name: 'Contract_XYZ_2025.pdf', projectId: 'PRJ-002', date: '2025-12-15', size: '950 KB', uploadedBy: 'Priya Patel', description: 'Signed contract with XYZ' }
+    ];
 
-    // ACTIVITY LOGS
-    var activityLogs = [{
-      id: 'ACT-001',
-      date: '2026-01-15',
-      user: 'Rajesh Sharma',
-      action: 'Created Invoice',
-      detail: 'Invoice INV/25-26/001 created for PRJ-001',
-      projectId: 'PRJ-001'
-    }, {
-      id: 'ACT-002',
-      date: '2026-01-20',
-      user: 'Priya Patel',
-      action: 'Recorded Purchase',
-      detail: 'Purchase PUR/25-26/001 recorded',
-      projectId: 'PRJ-001'
-    }, {
-      id: 'ACT-003',
-      date: '2026-02-01',
-      user: 'Amit Kumar',
-      action: 'Submitted Timesheet',
-      detail: '6 hours logged on documentation',
-      projectId: 'PRJ-004'
-    }, {
-      id: 'ACT-004',
-      date: '2026-02-05',
-      user: 'Rajesh Sharma',
-      action: 'Uploaded Document',
-      detail: 'Site photos uploaded',
-      projectId: 'PRJ-001'
-    }];
+    var activityLogs = [
+      { id: 'ACT-001', date: '2026-01-15', user: 'Rajesh Sharma', action: 'Created Invoice', detail: 'Invoice INV/25-26/001 created for PRJ-001', projectId: 'PRJ-001' },
+      { id: 'ACT-002', date: '2026-01-20', user: 'Priya Patel', action: 'Recorded Purchase', detail: 'Purchase PUR/25-26/001 recorded', projectId: 'PRJ-001' },
+      { id: 'ACT-003', date: '2026-02-01', user: 'Amit Kumar', action: 'Submitted Timesheet', detail: '6 hours logged on documentation', projectId: 'PRJ-004' },
+      { id: 'ACT-004', date: '2026-02-05', user: 'Rajesh Sharma', action: 'Uploaded Document', detail: 'Site photos uploaded', projectId: 'PRJ-001' }
+    ];
 
     var selectedProjectId = 'PRJ-001';
 
     // =============================================================
     // RENDER STATS
     // =============================================================
-
     function renderStats() {
       var total = projects.length;
       var active = projects.filter(function(p) { return p.status === 'active'; }).length;
@@ -1165,14 +876,14 @@
     }
 
     // =============================================================
-    // RENDER PROJECTS LIST
+    // RENDER PROJECTS (cards)
     // =============================================================
-
     function renderProjects() {
       var cardsHtml = projects.map(function(p) {
         var progressFill = p.status === 'completed' ? 'fill-green' : (p.status === 'onhold' ? 'fill-amber' : 'fill-blue');
+        var isSelected = p.id === selectedProjectId;
         return `
-          <div class="project-card" onclick="selectProject('${p.id}')">
+          <div class="project-card ${isSelected ? 'selected' : ''}" onclick="selectProject('${p.id}')">
             <div class="flex items-start justify-between mb-2">
               <div>
                 <div class="proj-name">${p.name}</div>
@@ -1204,7 +915,7 @@
       var p = projects.find(function(x) { return x.id === id; });
       if (!p) return;
       showToast('Selected project: ' + p.name, 'info');
-      // Re-render all tabs for the selected project
+      renderProjects();
       renderOverview();
       renderSales();
       renderPurchases();
@@ -1219,7 +930,6 @@
     // =============================================================
     // RENDER OVERVIEW
     // =============================================================
-
     function renderOverview() {
       var p = projects.find(function(x) { return x.id === selectedProjectId; });
       if (!p) return;
@@ -1227,9 +937,12 @@
       var progressFill = p.status === 'completed' ? 'fill-green' : (p.status === 'onhold' ? 'fill-amber' : 'fill-blue');
 
       var html = `
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
-            <h3 class="text-sm font-bold text-gray-800 mb-2">${p.name}</h3>
+            <h3 class="text-[14px] font-bold text-gray-800 mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-circle-info text-primary"></i>
+              Project Details
+            </h3>
             <table class="report-table">
               <tbody>
                 <tr><td class="text-gray-500">Project Code</td><td class="text-right font-semibold">${p.code}</td></tr>
@@ -1243,7 +956,6 @@
                 ${p.holdReason ? '<tr><td class="text-gray-500">Hold Reason</td><td class="text-right text-xs text-amber-600">' + p.holdReason + '</td></tr>' : ''}
               </tbody>
             </table>
-
             <div class="mt-3">
               <div class="progress-bar" style="height:10px;">
                 <div class="fill ${progressFill}" style="width:${p.progress}%;height:100%;"></div>
@@ -1252,7 +964,10 @@
           </div>
 
           <div>
-            <h3 class="text-sm font-bold text-gray-800 mb-2">Financial Summary</h3>
+            <h3 class="text-[14px] font-bold text-gray-800 mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-chart-line text-primary"></i>
+              Financial Summary
+            </h3>
             <table class="report-table">
               <tbody>
                 <tr><td class="text-gray-500">Total Budget</td><td class="text-right font-mono font-semibold">${money(p.budget)}</td></tr>
@@ -1267,126 +982,129 @@
       `;
 
       document.getElementById('overviewPanel').innerHTML = panelWrap(
-        'Project Overview',
+        '<i class="fa-solid fa-chart-pie text-primary"></i> Project Overview',
         html,
-        '<div class="text-[10px] text-gray-400">Project ID: ' + p.id + '</div>'
+        '<div class="text-[11px] text-gray-400 font-mono">Project ID: ' + p.id + '</div>'
       );
     }
 
     // =============================================================
     // RENDER SALES
     // =============================================================
-
     function renderSales() {
       var rowsHtml = projectSales.filter(function(s) { return s.projectId === selectedProjectId; }).map(function(s) {
         return `
           <tr class="border-b border-gray-100 table-row-hover">
-            <td class="px-3 py-2.5 text-sm">${s.number}</td>
-            <td class="px-3 py-2.5 text-xs text-gray-500">${s.date}</td>
-            <td class="px-3 py-2.5 text-sm text-gray-700">${s.customer}</td>
-            <td class="px-3 py-2.5 font-mono font-semibold text-right text-primary">${money(s.amount)}</td>
-            <td class="px-3 py-2.5">${statusBadge(s.status)}</td>
+            <td class="px-4 py-3 text-sm font-semibold">${s.number}</td>
+            <td class="px-4 py-3 text-xs text-gray-500">${s.date}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${s.customer}</td>
+            <td class="px-4 py-3 font-mono font-semibold text-right text-primary">${money(s.amount)}</td>
+            <td class="px-4 py-3">${statusBadge(s.status)}</td>
           </tr>`;
       }).join('');
 
-      if (!rowsHtml) rowsHtml = '<tr><td colspan="5" class="text-center py-6 text-gray-400 text-sm">No sales linked to this project</td></tr>';
+      if (!rowsHtml) rowsHtml = '<tr><td colspan="5" class="text-center py-10 text-gray-400 text-sm"><div class="flex justify-center mb-2 empty-icon-svg">' + iconBox() + '</div>No sales linked to this project</td></tr>';
 
       document.getElementById('salesPanel').innerHTML = panelWrap(
-        'Project Sales',
-        tableHtml(['Invoice #', 'Date', 'Customer', 'Amount', 'Status'], rowsHtml)
+        '<i class="fa-solid fa-cart-shopping text-primary"></i> Project Sales',
+        tableHtml(['Invoice #', 'Date', 'Customer', 'Amount', 'Status'], rowsHtml),
+        '<span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full">' + projectSales.filter(function(s) { return s.projectId === selectedProjectId; }).length + '</span>'
       );
     }
 
     // =============================================================
     // RENDER PURCHASES
     // =============================================================
-
     function renderPurchases() {
       var rowsHtml = projectPurchases.filter(function(p) { return p.projectId === selectedProjectId; }).map(function(p) {
         return `
           <tr class="border-b border-gray-100 table-row-hover">
-            <td class="px-3 py-2.5 text-sm">${p.number}</td>
-            <td class="px-3 py-2.5 text-xs text-gray-500">${p.date}</td>
-            <td class="px-3 py-2.5 text-sm text-gray-700">${p.vendor}</td>
-            <td class="px-3 py-2.5 font-mono font-semibold text-right text-red-600">${money(p.amount)}</td>
-            <td class="px-3 py-2.5">${statusBadge(p.status)}</td>
+            <td class="px-4 py-3 text-sm font-semibold">${p.number}</td>
+            <td class="px-4 py-3 text-xs text-gray-500">${p.date}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${p.vendor}</td>
+            <td class="px-4 py-3 font-mono font-semibold text-right text-red-600">${money(p.amount)}</td>
+            <td class="px-4 py-3">${statusBadge(p.status)}</td>
           </tr>`;
       }).join('');
 
-      if (!rowsHtml) rowsHtml = '<tr><td colspan="5" class="text-center py-6 text-gray-400 text-sm">No purchases linked to this project</td></tr>';
+      if (!rowsHtml) rowsHtml = '<tr><td colspan="5" class="text-center py-10 text-gray-400 text-sm"><div class="flex justify-center mb-2 empty-icon-svg">' + iconBox() + '</div>No purchases linked to this project</td></tr>';
 
       document.getElementById('purchasesPanel').innerHTML = panelWrap(
-        'Project Purchases',
-        tableHtml(['Bill #', 'Date', 'Vendor', 'Amount', 'Status'], rowsHtml)
+        '<i class="fa-solid fa-truck-fast text-primary"></i> Project Purchases',
+        tableHtml(['Bill #', 'Date', 'Vendor', 'Amount', 'Status'], rowsHtml),
+        '<span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full">' + projectPurchases.filter(function(p) { return p.projectId === selectedProjectId; }).length + '</span>'
       );
     }
 
     // =============================================================
     // RENDER EXPENSES
     // =============================================================
-
     function renderExpenses() {
       var rowsHtml = projectExpenses.filter(function(e) { return e.projectId === selectedProjectId; }).map(function(e) {
         return `
           <tr class="border-b border-gray-100 table-row-hover">
-            <td class="px-3 py-2.5 text-xs text-gray-500">${e.date}</td>
-            <td class="px-3 py-2.5 text-sm text-gray-700">${e.category}</td>
-            <td class="px-3 py-2.5 text-sm text-gray-500">${e.vendor || '—'}</td>
-            <td class="px-3 py-2.5 font-mono font-semibold text-right text-amber-600">${money(e.amount)}</td>
-            <td class="px-3 py-2.5">${statusBadge(e.status)}</td>
+            <td class="px-4 py-3 text-xs text-gray-500">${e.date}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${e.category}</td>
+            <td class="px-4 py-3 text-sm text-gray-500">${e.vendor || '—'}</td>
+            <td class="px-4 py-3 font-mono font-semibold text-right text-amber-600">${money(e.amount)}</td>
+            <td class="px-4 py-3">${statusBadge(e.status)}</td>
           </tr>`;
       }).join('');
 
-      if (!rowsHtml) rowsHtml = '<tr><td colspan="5" class="text-center py-6 text-gray-400 text-sm">No expenses linked to this project</td></tr>';
+      if (!rowsHtml) rowsHtml = '<tr><td colspan="5" class="text-center py-10 text-gray-400 text-sm"><div class="flex justify-center mb-2 empty-icon-svg">' + iconBox() + '</div>No expenses linked to this project</td></tr>';
 
       document.getElementById('expensesPanel').innerHTML = panelWrap(
-        'Project Expenses',
-        tableHtml(['Date', 'Category', 'Vendor', 'Amount', 'Status'], rowsHtml)
+        '<i class="fa-solid fa-receipt text-primary"></i> Project Expenses',
+        tableHtml(['Date', 'Category', 'Vendor', 'Amount', 'Status'], rowsHtml),
+        '<span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full">' + projectExpenses.filter(function(e) { return e.projectId === selectedProjectId; }).length + '</span>'
       );
     }
 
     // =============================================================
     // RENDER TIMESHEET
     // =============================================================
-
     function renderTimesheet() {
       var rowsHtml = timesheets.filter(function(t) { return t.projectId === selectedProjectId; }).map(function(t) {
         return `
           <tr class="border-b border-gray-100 table-row-hover">
-            <td class="px-3 py-2.5 text-xs text-gray-500">${t.date}</td>
-            <td class="px-3 py-2.5 text-sm font-semibold">${t.employee}</td>
-            <td class="px-3 py-2.5 text-sm text-gray-700">${t.task}</td>
-            <td class="px-3 py-2.5 text-center font-mono text-sm">${t.hours}h</td>
-            <td class="px-3 py-2.5 text-center">${t.billable ? '<span class="badge badge-green">Billable</span>' : '<span class="badge badge-gray">Non-Billable</span>'}</td>
-            <td class="px-3 py-2.5 font-mono text-sm text-right">${t.billable ? money(t.rate) : '—'}</td>
-            <td class="px-3 py-2.5 text-sm text-gray-500">${t.description}</td>
+            <td class="px-4 py-3 text-xs text-gray-500">${t.date}</td>
+            <td class="px-4 py-3 text-sm font-semibold">${t.employee}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${t.task}</td>
+            <td class="px-4 py-3 text-center font-mono text-sm">${t.hours}h</td>
+            <td class="px-4 py-3 text-center">${t.billable ? badge('Billable', 'green') : badge('Non-Billable', 'gray')}</td>
+            <td class="px-4 py-3 font-mono text-sm text-right">${t.billable ? money(t.rate) : '—'}</td>
+            <td class="px-4 py-3 text-sm text-gray-500">${t.description}</td>
           </tr>`;
       }).join('');
 
-      if (!rowsHtml) rowsHtml = '<tr><td colspan="7" class="text-center py-6 text-gray-400 text-sm">No timesheets for this project</td></tr>';
+      if (!rowsHtml) rowsHtml = '<tr><td colspan="7" class="text-center py-10 text-gray-400 text-sm"><div class="flex justify-center mb-2 empty-icon-svg">' + iconBox() + '</div>No timesheets for this project</td></tr>';
 
       document.getElementById('timesheetPanel').innerHTML = panelWrap(
-        'Project Timesheets',
-        tableHtml(['Date', 'Employee', 'Task', 'Hours', 'Type', 'Rate', 'Description'], rowsHtml)
+        '<i class="fa-solid fa-clock text-primary"></i> Project Timesheets',
+        tableHtml(['Date', 'Employee', 'Task', 'Hours', 'Type', 'Rate', 'Description'], rowsHtml),
+        '<span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full">' + timesheets.filter(function(t) { return t.projectId === selectedProjectId; }).length + '</span>'
       );
     }
 
     // =============================================================
     // RENDER BUDGET
     // =============================================================
-
     function renderBudget() {
       var b = projectBudgets.find(function(x) { return x.projectId === selectedProjectId; });
       if (!b) {
-        document.getElementById('budgetPanel').innerHTML = panelWrap('Project Budget', '<div class="text-center py-6 text-gray-400 text-sm">No budget configured</div>');
+        document.getElementById('budgetPanel').innerHTML = panelWrap('Project Budget', '<div class="text-center py-10 text-gray-400 text-sm">No budget configured</div>');
         return;
       }
 
       var usagePct = b.totalBudget > 0 ? ((b.actualCost / b.totalBudget) * 100).toFixed(1) : 0;
 
       var html = `
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
+            <h3 class="text-[14px] font-bold text-gray-800 mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-chart-simple text-primary"></i>
+              Budget Breakdown
+            </h3>
             <table class="report-table">
               <tbody>
                 <tr><td class="text-gray-500">Total Budget</td><td class="text-right font-mono font-semibold">${money(b.totalBudget)}</td></tr>
@@ -1399,7 +1117,10 @@
             </table>
           </div>
           <div>
-            <h4 class="text-sm font-bold text-gray-800 mb-2">Budget Utilization</h4>
+            <h3 class="text-[14px] font-bold text-gray-800 mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-gauge-high text-primary"></i>
+              Budget Utilization
+            </h3>
             <div class="progress-bar" style="height:12px;">
               <div class="fill ${usagePct > 90 ? 'fill-amber' : 'fill-blue'}" style="width:${Math.min(usagePct, 100)}%;height:100%;"></div>
             </div>
@@ -1407,8 +1128,7 @@
               <span class="text-gray-500">${usagePct}% used</span>
               <span class="text-gray-500">${money(b.actualCost)} / ${money(b.totalBudget)}</span>
             </div>
-
-            <div class="mt-4 p-3 bg-gray-50 rounded-lg text-xs text-gray-600">
+            <div class="mt-4 p-3 bg-primary-soft rounded-lg text-xs text-gray-600 border border-primary/20">
               <div class="flex items-start gap-2">
                 ${iconInfo()}
                 <span>Budget alerts trigger automatically when usage exceeds thresholds.</span>
@@ -1418,50 +1138,51 @@
         </div>
       `;
 
-      document.getElementById('budgetPanel').innerHTML = panelWrap('Budget Configuration & Variance', html);
+      document.getElementById('budgetPanel').innerHTML = panelWrap(
+        '<i class="fa-solid fa-chart-simple text-primary"></i> Budget Configuration & Variance',
+        html
+      );
     }
 
     // =============================================================
     // RENDER JOURNALS
     // =============================================================
-
     function renderJournals() {
       var rowsHtml = projectJournals.filter(function(j) { return j.projectId === selectedProjectId; }).map(function(j) {
         return `
           <tr class="border-b border-gray-100 table-row-hover">
-            <td class="px-3 py-2.5 text-sm">${j.id}</td>
-            <td class="px-3 py-2.5 text-xs text-gray-500">${j.date}</td>
-            <td class="px-3 py-2.5 text-sm text-gray-700">${j.narration}</td>
-            <td class="px-3 py-2.5 text-xs text-gray-500">${j.reference}</td>
-            <td class="px-3 py-2.5 font-mono font-semibold text-right text-primary">${money(j.amount)}</td>
+            <td class="px-4 py-3 text-sm font-semibold">${j.id}</td>
+            <td class="px-4 py-3 text-xs text-gray-500">${j.date}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${j.narration}</td>
+            <td class="px-4 py-3 text-xs text-gray-500">${j.reference}</td>
+            <td class="px-4 py-3 font-mono font-semibold text-right text-primary">${money(j.amount)}</td>
           </tr>`;
       }).join('');
 
-      if (!rowsHtml) rowsHtml = '<tr><td colspan="5" class="text-center py-6 text-gray-400 text-sm">No journals linked to this project</td></tr>';
+      if (!rowsHtml) rowsHtml = '<tr><td colspan="5" class="text-center py-10 text-gray-400 text-sm"><div class="flex justify-center mb-2 empty-icon-svg">' + iconBox() + '</div>No journals linked to this project</td></tr>';
 
       document.getElementById('journalsPanel').innerHTML = panelWrap(
-        'Project Journal Entries',
-        tableHtml(['Journal #', 'Date', 'Narration', 'Reference', 'Amount'], rowsHtml)
+        '<i class="fa-solid fa-book text-primary"></i> Project Journal Entries',
+        tableHtml(['Journal #', 'Date', 'Narration', 'Reference', 'Amount'], rowsHtml),
+        '<span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full">' + projectJournals.filter(function(j) { return j.projectId === selectedProjectId; }).length + '</span>'
       );
     }
 
     // =============================================================
     // RENDER DOCUMENTS (Enhancement #5)
     // =============================================================
-
     function renderDocuments() {
       var docs = projectDocuments.filter(function(d) { return d.projectId === selectedProjectId; });
 
-      // Filter by type
       var typeFilter = document.getElementById('docTypeFilter') ? document.getElementById('docTypeFilter').value : 'all';
       if (typeFilter !== 'all') {
         docs = docs.filter(function(d) { return d.type === typeFilter; });
       }
 
       var docsHtml = docs.map(function(d) {
-        var iconHtml = d.type === 'Invoice' || d.type === 'Purchase Bill' || d.type === 'Purchase Order' ? iconDocument() :
-                       d.type === 'Contract' || d.type === 'Packing List' || d.type === 'Delivery Challan' ? iconPdf() :
-                       d.type === 'Site Photo' ? iconImage() : iconDocument();
+        var iconHtml = (d.type === 'Invoice' || d.type === 'Purchase Bill' || d.type === 'Purchase Order') ? iconDocument() :
+                       (d.type === 'Contract' || d.type === 'Packing List' || d.type === 'Delivery Challan') ? iconPdf() :
+                       (d.type === 'Site Photo') ? iconImage() : iconDocument();
         return `
           <div class="doc-item">
             <div class="doc-icon">${iconHtml}</div>
@@ -1476,9 +1197,8 @@
           </div>`;
       }).join('');
 
-      if (!docsHtml) docsHtml = '<div class="text-center py-6 text-gray-400 text-sm">No documents uploaded for this project</div>';
+      if (!docsHtml) docsHtml = '<div class="text-center py-10 text-gray-400 text-sm"><div class="flex justify-center mb-2 empty-icon-svg">' + iconBox() + '</div>No documents uploaded for this project</div>';
 
-      // Get unique document types
       var types = ['all'];
       projectDocuments.filter(function(d) { return d.projectId === selectedProjectId; }).forEach(function(d) {
         if (types.indexOf(d.type) === -1) types.push(d.type);
@@ -1492,12 +1212,12 @@
         <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
           <div class="flex items-center gap-2">
             <label class="form-label mb-0">Filter by Type</label>
-            <select id="docTypeFilter" class="form-input text-[11px] max-w-xs" onchange="renderDocuments()">
+            <select id="docTypeFilter" class="form-input text-[12px] max-w-xs" onchange="renderDocuments()">
               ${filterOptions}
             </select>
           </div>
-          <button onclick="uploadDocument()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[11px] font-semibold px-3 py-2 rounded-lg transition shadow-sm">
-            ${iconPlus()} Upload Document
+          <button onclick="uploadDocument()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[12px] font-semibold px-3.5 py-2 rounded-lg transition shadow-sm">
+            <i class="fa-solid fa-plus"></i> Upload Document
           </button>
         </div>
 
@@ -1517,39 +1237,37 @@
       `;
 
       document.getElementById('documentsPanel').innerHTML = panelWrap(
-        'Project Documents <span class="text-[10px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + docs.length + '</span>',
-        html,
-        '<div class="text-[10px] text-gray-400">' + docs.length + ' documents</div>'
+        '<i class="fa-solid fa-folder-open text-primary"></i> Project Documents <span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + docs.length + '</span>',
+        html
       );
     }
 
     // =============================================================
     // RENDER ACTIVITY
     // =============================================================
-
     function renderActivity() {
       var rowsHtml = activityLogs.filter(function(a) { return a.projectId === selectedProjectId; }).map(function(a) {
         return `
           <tr class="border-b border-gray-100 table-row-hover">
-            <td class="px-3 py-2.5 text-xs text-gray-500">${a.date}</td>
-            <td class="px-3 py-2.5 text-sm font-semibold">${a.user}</td>
-            <td class="px-3 py-2.5 text-sm text-gray-700">${a.action}</td>
-            <td class="px-3 py-2.5 text-xs text-gray-500">${a.detail}</td>
+            <td class="px-4 py-3 text-xs text-gray-500">${a.date}</td>
+            <td class="px-4 py-3 text-sm font-semibold">${a.user}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${a.action}</td>
+            <td class="px-4 py-3 text-xs text-gray-500">${a.detail}</td>
           </tr>`;
       }).join('');
 
-      if (!rowsHtml) rowsHtml = '<tr><td colspan="4" class="text-center py-6 text-gray-400 text-sm">No activity logged</td></tr>';
+      if (!rowsHtml) rowsHtml = '<tr><td colspan="4" class="text-center py-10 text-gray-400 text-sm"><div class="flex justify-center mb-2 empty-icon-svg">' + iconBox() + '</div>No activity logged</td></tr>';
 
       document.getElementById('activityPanel').innerHTML = panelWrap(
-        'Activity Log',
-        tableHtml(['Date', 'User', 'Action', 'Details'], rowsHtml)
+        '<i class="fa-solid fa-list-check text-primary"></i> Activity Log',
+        tableHtml(['Date', 'User', 'Action', 'Details'], rowsHtml),
+        '<span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full">' + activityLogs.filter(function(a) { return a.projectId === selectedProjectId; }).length + '</span>'
       );
     }
 
     // =============================================================
     // DOCUMENT ACTIONS
     // =============================================================
-
     function uploadDocument() {
       showToast('Document upload — coming soon!', 'info');
     }
@@ -1560,25 +1278,37 @@
     }
 
     function deleteDocument(id) {
-      if (confirm('Delete this document?')) {
-        projectDocuments = projectDocuments.filter(function(x) { return x.id !== id; });
-        renderDocuments();
-        showToast('Document deleted', 'warning');
-      }
+      var d = projectDocuments.find(function(x) { return x.id === id; });
+      if (!d) return;
+      var modalContent = `
+        ${modalHeader('Delete Document', d.name)}
+        <div class="px-6 py-4 text-sm text-gray-600">
+          <p>Are you sure you want to permanently delete <b class="text-gray-800">${d.name}</b>?</p>
+          <p class="text-gray-400 text-[12px] mt-1">This action cannot be undone.</p>
+        </div>
+        ${modalFooter('Delete', 'onclick="confirmDeleteDocument(\'' + id + '\')"', '')}
+      `;
+      openModal(modalContent, { width: 'max-w-md' });
+    }
+
+    function confirmDeleteDocument(id) {
+      projectDocuments = projectDocuments.filter(function(x) { return x.id !== id; });
+      closeModal();
+      renderDocuments();
+      showToast('Document deleted', 'warning');
     }
 
     // =============================================================
     // PROJECT ACTIONS
     // =============================================================
-
     function openAddProject() {
       var modalContent = `
         ${modalHeader('New Project', 'Create a new project')}
-        <div class="px-5 py-4">
+        <div class="px-6 py-4 modal-scroll">
           <div class="grid grid-cols-2 gap-3">
-            ${fld('Project Name *', '<input type="text" class="form-input" id="p_name" placeholder="Project name">')}
-            ${fld('Project Code *', '<input type="text" class="form-input" id="p_code" placeholder="e.g. 26LW073">')}
-            ${fld('Customer *', '<input type="text" class="form-input" id="p_customer" placeholder="Customer name">')}
+            ${fld('Project Name <span class="required">*</span>', '<input type="text" class="form-input" id="p_name" placeholder="Project name">')}
+            ${fld('Project Code <span class="required">*</span>', '<input type="text" class="form-input" id="p_code" placeholder="e.g. 26LW073">')}
+            ${fld('Customer <span class="required">*</span>', '<input type="text" class="form-input" id="p_customer" placeholder="Customer name">')}
             ${fld('Project Manager', '<input type="text" class="form-input" id="p_pm" placeholder="PM name">')}
             ${fld('Start Date', '<input type="date" class="form-input" id="p_start" value="' + new Date().toISOString().split('T')[0] + '">')}
             ${fld('End Date', '<input type="date" class="form-input" id="p_end">')}
@@ -1589,7 +1319,7 @@
         </div>
         ${modalFooter('Create Project', 'onclick="saveProject()"')}
       `;
-      openModal(modalContent, { width: 'max-w-lg' });
+      openModal(modalContent, { width: 'max-w-2xl' });
     }
 
     function saveProject() {
@@ -1631,18 +1361,38 @@
     }
 
     // =============================================================
-    // SEARCH
+    // SEARCH (Products-style — added to topbar)
     // =============================================================
+    var searchDebounceTimer = null;
 
+    function onSearchInput() {
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(function() {
+        filterProjects();
+      }, 300);
+    }
+
+    function filterProjects() {
+      var input = document.getElementById('searchInput');
+      if (!input) return;
+      var q = input.value.trim().toLowerCase();
+      var cards = document.querySelectorAll('.project-card');
+      cards.forEach(function(c) {
+        var text = c.textContent.toLowerCase();
+        c.style.display = (q.length < 2 || text.indexOf(q) !== -1) ? '' : 'none';
+      });
+    }
+
+    // Add search input to top bar (Products-style)
     (function addSearchToTopbar() {
       var searchContainer = document.querySelector('.app-main header');
       if (searchContainer) {
         var searchHtml = `
           <div class="hidden sm:flex flex-1 max-w-[420px] relative ml-4">
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">${iconSearch()}</span>
-            <input type="text" id="searchInput" placeholder="Search projects by name, customer, code…"
-              onkeyup="filterProjects()"
-              class="w-full border border-gray-200 bg-gray-50 focus:bg-white rounded-lg pl-9 pr-3 py-1.5 text-xs outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition placeholder:text-gray-400">
+            <input type="text" id="searchInput" placeholder="Search projects by name, customer, code… (min 2 letters)"
+              oninput="onSearchInput()"
+              class="w-full border border-gray-200 bg-gray-50 focus:bg-white rounded-lg pl-9 pr-3 py-2 text-[13px] outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition placeholder:text-gray-400">
           </div>
         `;
         var headerContent = searchContainer.innerHTML;
@@ -1656,19 +1406,9 @@
       }
     })();
 
-    function filterProjects() {
-      var q = document.getElementById('searchInput').value.toLowerCase();
-      var cards = document.querySelectorAll('.project-card');
-      cards.forEach(function(c) {
-        var text = c.textContent.toLowerCase();
-        c.style.display = text.indexOf(q) !== -1 ? '' : 'none';
-      });
-    }
-
     // =============================================================
     // INIT
     // =============================================================
-
     renderProjects();
     renderStats();
     renderOverview();
@@ -1681,13 +1421,13 @@
     renderDocuments();
     renderActivity();
 
-    console.log('📁 Projects Module Loaded Successfully');
-    console.log('📊 Total Projects:', projects.length);
-    console.log('📌 Active:', projects.filter(function(p) { return p.status === 'active'; }).length);
-    console.log('📄 Documents:', projectDocuments.length);
-    console.log('🎯 Enhancement #5 — Project-Wise Document Management enabled');
+    console.log('Projects Module Loaded Successfully');
+    console.log('Total Projects:', projects.length);
+    console.log('Active:', projects.filter(function(p) { return p.status === 'active'; }).length);
+    console.log('Documents:', projectDocuments.length);
+    console.log('Enhancement #5 — Project-Wise Document Management enabled');
 
   </script>
 
 </body>
-</html>
+</html> 

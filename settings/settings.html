@@ -40,8 +40,9 @@
 <!-- Shell styling -->
 <link rel="stylesheet" href="/assets/css/nav-sidebar.css" />
 
-<!-- Page-specific styles -->
+<!-- Page-specific styles (EXACTLY same as Products page) -->
 <style>
+  /* Form styles */
   .form-input {
     width: 100%;
     border: 1px solid #e5e7eb;
@@ -72,6 +73,7 @@
   .form-label .required { color: #ef4444; margin-left: 2px; }
   .form-hint { font-size: 10.5px; color: #9ca3af; margin-top: 3px; }
 
+  /* Badge */
   .badge {
     display: inline-flex;
     align-items: center;
@@ -83,6 +85,7 @@
   }
   .badge-green { background: #dcfce7; color: #166534; }
   .badge-amber { background: #fef3c7; color: #92400e; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
   .badge-gray { background: #f1f5f9; color: #475569; }
   .badge-blue { background: #dbeafe; color: #1e40af; }
   .badge-dot {
@@ -93,81 +96,40 @@
   }
   .badge-dot-green { background: #22c55e; }
   .badge-dot-amber { background: #f59e0b; }
+  .badge-dot-red { background: #ef4444; }
   .badge-dot-gray { background: #94a3b8; }
   .badge-dot-blue { background: #3b82f6; }
 
-  .stat-card {
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-  .stat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  }
-
+  /* Table row hover */
   .table-row-hover:hover {
     background: #f8fafc;
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes modalIn {
-    from { opacity: 0; transform: scale(0.96) translateY(6px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-  }
-  .animate-modal { animation: modalIn 0.18s ease; }
-
-  .btn-icon-action {
-    transition: all 0.15s ease;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #94a3b8;
-    background: transparent;
-    border: none;
+  /* Modal tabs */
+  .modal-tab-btn {
+    transition: all 0.2s ease;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    color: #6b7280;
     cursor: pointer;
+    background: transparent;
+    display: flex;
+    gap: 6px;
   }
-  .btn-icon-action:hover {
-    background: #f1f5f9;
+  .modal-tab-btn.active {
     color: #6da84c;
+    border-bottom-color: #6da84c;
   }
-  .btn-icon-action.danger:hover {
-    background: #fee2e2;
-    color: #ef4444;
+  .modal-tab-btn:hover:not(.active) {
+    color: #1f2937;
+    border-bottom-color: #d1d5db;
   }
+  .modal-tab-panel { display: none; }
+  .modal-tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
 
-  .toast {
-    animation: fadeIn 0.2s ease;
-  }
-  .toast-success { background: #16a34a; }
-  .toast-error { background: #dc2626; }
-  .toast-warning { background: #f59e0b; }
-  .toast-info { background: #6da84c; }
-
-  .modal-scroll {
-    max-height: 60vh;
-    overflow-y: auto;
-  }
-  .modal-scroll::-webkit-scrollbar {
-    width: 4px;
-  }
-  .modal-scroll::-webkit-scrollbar-thumb {
-    background: #d1d5db;
-    border-radius: 4px;
-  }
-
-  .empty-icon-svg {
-    opacity: 0.2;
-    width: 48px;
-    height: 48px;
-    color: #94a3b8;
-  }
-
-  /* Tabs inside page */
+  /* Page tabs */
   .page-tab-btn {
     transition: all 0.2s ease;
     padding: 10px 18px;
@@ -190,7 +152,70 @@
   .page-tab-panel { display: none; }
   .page-tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
 
-  /* Logo upload */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.96) translateY(6px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .animate-modal { animation: modalIn 0.18s ease; }
+
+  /* Action buttons */
+  .btn-icon-action {
+    transition: all 0.15s ease;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-icon-action:hover {
+    background: #f1f5f9;
+    color: #6da84c;
+  }
+  .btn-icon-action.danger:hover {
+    background: #fee2e2;
+    color: #ef4444;
+  }
+
+  /* Toast */
+  .toast {
+    animation: fadeIn 0.2s ease;
+  }
+  .toast-success { background: #16a34a; }
+  .toast-error { background: #dc2626; }
+  .toast-warning { background: #f59e0b; }
+  .toast-info { background: #6da84c; }
+
+  /* Scrollbar for modal */
+  .modal-scroll {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  .modal-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+  .modal-scroll::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+  }
+
+  /* Empty state */
+  .empty-icon-svg {
+    opacity: 0.2;
+    width: 48px;
+    height: 48px;
+    color: #94a3b8;
+  }
+
+  /* Logo upload (settings-specific) */
   .logo-upload-area {
     border: 2px dashed #d1d5db;
     border-radius: 12px;
@@ -211,6 +236,16 @@
     margin: 0 auto;
     display: block;
     background: #f1f5f9;
+  }
+
+  /* Inline form card (for Units — replaces modal) */
+  .inline-form-card {
+    border: 1px solid #6da84c;
+    border-radius: 12px;
+    background: #f8fdf5;
+    padding: 16px;
+    margin-bottom: 16px;
+    animation: fadeIn 0.25s ease;
   }
 </style>
 </head>
@@ -238,7 +273,7 @@
 
         <div class="max-w-7xl mx-auto">
 
-          <!-- Page Header -->
+          <!-- Page Header (Reset button REMOVED) -->
           <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
             <div>
               <div class="text-[11px] font-semibold tracking-wide uppercase text-primary">System</div>
@@ -247,49 +282,29 @@
             </div>
             <div class="flex gap-2.5 flex-wrap">
               <button onclick="saveCompany()" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-[13px] font-semibold px-5 py-2.5 rounded-lg transition shadow-sm">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
-                  <path d="M17 21v-8H7v8"/>
-                  <path d="M7 3v5h8"/>
-                </svg>
+                <i class="fa-solid fa-floppy-disk"></i>
                 Save Settings
-              </button>
-              <button onclick="resetSettings()" class="inline-flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[13px] font-semibold px-4 py-2.5 rounded-lg transition">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M3 12a9 9 0 109-9 9 9 0 00-9 9z"/>
-                  <path d="M12 8v4l3 3"/>
-                </svg>
-                Reset
               </button>
             </div>
           </div>
 
           <!-- ========================================================== -->
-          <!-- TABS -->
+          <!-- PAGE TABS CARD (same green border as products panel) -->
           <!-- ========================================================== -->
-          <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+          <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm overflow-hidden">
 
             <!-- Tab Headers -->
             <div class="flex overflow-x-auto border-b border-gray-200 px-4 pt-2 gap-1" id="pageTabs">
               <button class="page-tab-btn active" data-tab="tab-general">
-                <svg class="w-4 h-4 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-                  <circle cx="12" cy="7" r="4"/>
-                </svg>
+                <i class="fa-solid fa-user-tie mr-1.5"></i>
                 General
               </button>
               <button class="page-tab-btn" data-tab="tab-tax">
-                <svg class="w-4 h-4 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/>
-                  <path d="M9 12l2 2 4-4"/>
-                </svg>
-                Tax & GST
+                <i class="fa-solid fa-shield-halved mr-1.5"></i>
+                Tax &amp; GST
               </button>
               <button class="page-tab-btn" data-tab="tab-units">
-                <svg class="w-4 h-4 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/>
-                  <path d="M3 12h18"/>
-                </svg>
+                <i class="fa-solid fa-layer-group mr-1.5"></i>
                 Units
                 <span class="ml-1.5 text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full" id="unitsCountBadge">3</span>
               </button>
@@ -326,6 +341,7 @@
                       <div>
                         <label class="form-label">Legal Company Name <span class="required">*</span></label>
                         <input type="text" class="form-input" id="compLegalName" value="Kunash Media Pvt. Ltd." placeholder="Enter legal name">
+                        <div id="err_compLegalName" class="hidden text-[10.5px] text-red-500 mt-1">This field is required</div>
                       </div>
                       <div>
                         <label class="form-label">Display Name <span class="required">*</span></label>
@@ -371,10 +387,7 @@
                 <!-- Address Section -->
                 <div class="mt-6 pt-6 border-t border-gray-100">
                   <h4 class="text-[14px] font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-                      <circle cx="12" cy="10" r="3"/>
-                    </svg>
+                    <i class="fa-solid fa-location-dot text-primary"></i>
                     Registered Address
                   </h4>
                   <div class="grid sm:grid-cols-2 gap-4">
@@ -510,27 +523,12 @@
                       <option>Inclusive (Tax included in price)</option>
                     </select>
                   </div>
-                  <!-- Branches, Offices & Warehouses -->
-                  <!-- <div>
-                    <label class="form-label">Reverse Charge (RCM) Applicable</label>
-                    <div class="flex items-center gap-4 mt-1.5">
-                      <label class="flex items-center gap-2 text-[13px]">
-                        <input type="radio" name="rcm" value="yes"> <span class="font-medium">Yes</span>
-                      </label>
-                      <label class="flex items-center gap-2 text-[13px]">
-                        <input type="radio" name="rcm" value="no" checked> <span class="font-medium">No</span>
-                      </label>
-                    </div>
-                  </div> -->
                 </div>
 
                 <!-- Tax Rates Configuration -->
                 <div class="mt-6 pt-6 border-t border-gray-100">
                   <h4 class="text-[14px] font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/>
-                      <path d="M9 12l2 2 4-4"/>
-                    </svg>
+                    <i class="fa-solid fa-percent text-primary"></i>
                     Tax Rate Configuration
                   </h4>
                   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -555,67 +553,115 @@
               </div>
 
               <!-- ========================================================== -->
-              <!-- TAB 3: UNITS -->
+              <!-- TAB 3: UNITS OF MEASUREMENT — INLINE FORM (No modal) -->
               <!-- ========================================================== -->
               <div id="tab-units" class="page-tab-panel">
+
+                <!-- Inline Add/Edit Form (hidden by default) -->
+                <div id="unitFormWrap" class="hidden inline-form-card">
+                  <div class="flex items-center justify-between mb-3">
+                    <h4 class="text-[13.5px] font-semibold text-gray-800 flex items-center gap-2">
+                      <i class="fa-solid fa-layer-group text-primary"></i>
+                      <span id="unitFormTitle">Add New Unit</span>
+                    </h4>
+                    <button onclick="cancelUnitForm()" class="w-7 h-7 rounded-lg hover:bg-white flex items-center justify-center text-gray-400 hover:text-gray-700 transition">
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
+                  </div>
+
+                  <div class="grid sm:grid-cols-2 gap-3">
+                    <div>
+                      <label class="form-label">Unit Name <span class="required">*</span></label>
+                      <input type="text" id="u_name" class="form-input" placeholder="e.g. Kilogram">
+                      <div id="err_u_name" class="hidden text-[10.5px] text-red-500 mt-1">This field is required</div>
+                    </div>
+                    <div>
+                      <label class="form-label">Unit Code (GST UQC) <span class="required">*</span></label>
+                      <select id="u_code" class="form-input">
+                        <option value="NOS">NOS — Numbers</option>
+                        <option value="KGS">KGS — Kilograms</option>
+                        <option value="LTR">LTR — Litre</option>
+                        <option value="MTR">MTR — Meter</option>
+                        <option value="MLT">MLT — Millilitre</option>
+                        <option value="GRM">GRM — Gram</option>
+                        <option value="TON">TON — Tonne</option>
+                        <option value="BOX">BOX — Box</option>
+                        <option value="BAG">BAG — Bag</option>
+                        <option value="SET">SET — Set</option>
+                        <option value="PCS">PCS — Pieces</option>
+                        <option value="DRM">DRM — Drum</option>
+                        <option value="ROL">ROL — Roll</option>
+                        <option value="PAC">PAC — Package</option>
+                        <option value="SQM">SQM — Square Meter</option>
+                        <option value="CBM">CBM — Cubic Meter</option>
+                        <option value="HRS">HRS — Hours</option>
+                        <option value="DAY">DAY — Day</option>
+                        <option value="OTH">OTH — Others</option>
+                      </select>
+                      <div id="err_u_code" class="hidden text-[10.5px] text-red-500 mt-1">Please select a unit code</div>
+                    </div>
+                  </div>
+
+                  <div class="grid sm:grid-cols-2 gap-3 mt-1">
+                    <div>
+                      <label class="form-label">Decimal Places Allowed</label>
+                      <select id="u_decimals" class="form-input">
+                        <option value="0" selected>0 (e.g. 48 Nos)</option>
+                        <option value="1">1 (e.g. 4.5 Kgs)</option>
+                        <option value="2">2 (e.g. 4.55 Ltr)</option>
+                        <option value="3">3 (e.g. 4.550 Mtr)</option>
+                      </select>
+                      <div class="form-hint">Controls how the quantity is rounded on invoices & stock</div>
+                    </div>
+                    <div>
+                      <label class="form-label">Applicable Item Category</label>
+                      <input type="text" id="u_category" class="form-input" placeholder="e.g. Chemicals, Equipment">
+                    </div>
+                  </div>
+
+                  <div class="mt-3">
+                    <label class="form-label">Description / Usage Note</label>
+                    <textarea id="u_description" rows="2" class="form-input" placeholder="Where this unit is typically used"></textarea>
+                  </div>
+
+                  <div class="flex justify-end gap-2 mt-4">
+                    <button onclick="cancelUnitForm()" class="px-4 py-2 rounded-lg text-[12.5px] font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Cancel</button>
+                    <button onclick="saveUnit()" class="px-4 py-2 rounded-lg text-[12.5px] font-semibold text-white bg-primary hover:bg-primary-dark transition shadow-sm flex items-center gap-1.5">
+                      <i class="fa-solid fa-floppy-disk"></i>
+                      <span id="unitSaveLabel">Save Unit</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Header + Add button -->
                 <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
-                  <!-- <div>
-                    <h4 class="text-[14px] font-semibold text-gray-800">Branches, Offices &amp; Warehouses</h4>
-                    <p class="text-[12px] text-gray-500">Manage all physical locations of your business</p>
-                  </div> -->
-                  <button onclick="openUnitModal()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[12px] font-semibold px-3.5 py-2 rounded-lg transition shadow-sm">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                  <div>
+                    <h4 class="text-[14px] font-semibold text-gray-800">Units of Measurement</h4>
+                    <p class="text-[12px] text-gray-500">These units appear as options when creating an Item, and print on invoices as per GST UQC rules</p>
+                  </div>
+                  <button onclick="openUnitForm()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[12px] font-semibold px-3.5 py-2 rounded-lg transition shadow-sm">
+                    <i class="fa-solid fa-plus"></i>
                     Add New Unit
                   </button>
                 </div>
 
-                <!-- Units Table -->
-                <div class="border border-gray-200 rounded-xl overflow-hidden">
-                  <table class="w-full text-[13px]">
-                    <thead class="bg-gray-50 border-b border-gray-200">
-                      <tr>
-                        <th class="px-4 py-3 text-left font-semibold text-gray-600">Unit Name</th>
-                        <th class="px-4 py-3 text-right font-semibold text-gray-600">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100" id="unitsTableBody">
-                      <!-- Units rows injected by JS -->
-                    </tbody>
-                  </table>
-                </div>
+                <!-- Units Table Panel (Products-style panelWrap) -->
+                <div id="unitsPanel"></div>
 
-                <!-- Empty state -->
-                <div id="unitsEmptyState" class="hidden text-center py-10 text-gray-400 text-sm">
-                  <div class="flex justify-center mb-2">
-                    <svg class="w-12 h-12 opacity-30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                      <path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/>
-                      <path d="M3 12h18"/>
-                    </svg>
-                  </div>
-                  <p>No units added yet.</p>
-                  <button onclick="openUnitModal()" class="mt-2 text-primary font-semibold hover:underline">Add your first unit</button>
-                </div>
               </div>
 
             </div><!-- /p-5 -->
           </div><!-- /card -->
 
-          <!-- Bottom Actions -->
+          <!-- Bottom Actions (Reset/Cancel REMOVED) -->
           <div class="flex flex-wrap items-center justify-between gap-3 mt-6">
             <div class="text-[12px] text-gray-500 flex items-center gap-1">
-              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
+              <i class="fa-solid fa-clock"></i>
               Last updated: <span class="font-medium text-gray-700" id="lastUpdated">Today at 10:30 AM</span>
             </div>
             <div class="flex gap-3">
-              <button onclick="resetSettings()" class="px-5 py-2.5 rounded-lg border border-gray-200 text-[13px] font-semibold text-gray-600 hover:bg-gray-50 transition">
-                Cancel
-              </button>
               <button onclick="saveCompany()" class="px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-dark text-white text-[13px] font-semibold transition shadow-sm flex items-center gap-1.5">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
-                  <path d="M17 21v-8H7v8"/>
-                  <path d="M7 3v5h8"/>
-                </svg>
+                <i class="fa-solid fa-floppy-disk"></i>
                 Save All Changes
               </button>
             </div>
@@ -633,8 +679,10 @@
   <!-- SCRIPTS -->
   <!-- ========================================================== -->
 
+  <!-- Shell JS -->
   <script src="/assets/js/nav-sidebar.js"></script>
 
+  <!-- Main Settings JS (all logic — Products page ke exact patterns) -->
   <script>
     // =============================================================
     // NAV-SIDEBAR INIT
@@ -651,7 +699,7 @@
     });
 
     // =============================================================
-    // SVG ICONS
+    // SVG ICONS (same as Products page)
     // =============================================================
     function iconEdit() {
       return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
@@ -659,15 +707,27 @@
     function iconTrash() {
       return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>`;
     }
+    function iconEye() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+    }
     function iconX() {
       return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
     }
     function iconSave() {
       return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>`;
     }
+    function iconBox() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>`;
+    }
+    function iconBuilding() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>`;
+    }
+    function iconSearch() {
+      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>`;
+    }
 
     // =============================================================
-    // TOAST
+    // TOAST SYSTEM (same as Products page)
     // =============================================================
     function showToast(message, kind) {
       kind = kind || 'success';
@@ -687,6 +747,114 @@
         el.style.opacity = '0';
         setTimeout(function() { el.remove(); }, 300);
       }, 2600);
+    }
+
+    // =============================================================
+    // MODAL SYSTEM (same as Products page)
+    // =============================================================
+    function openModal(innerHtml, opts) {
+      opts = opts || {};
+      var root = document.getElementById('modalRoot');
+      root.innerHTML = `
+        <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" id="modalOverlay">
+          <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]" id="modalBackdrop"></div>
+          <div class="relative bg-white rounded-2xl shadow-2xl w-full ${opts.width || 'max-w-3xl'} max-h-[92vh] overflow-hidden animate-modal">
+            ${innerHtml}
+          </div>
+        </div>`;
+      document.getElementById('modalBackdrop').addEventListener('click', closeModal);
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      var root = document.getElementById('modalRoot');
+      root.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    function modalHeader(title, subtitle) {
+      return `
+        <div class="flex items-start justify-between px-6 py-5 border-b border-gray-100 sticky top-0 bg-white z-10">
+          <div>
+            <h3 class="text-lg font-bold text-gray-900">${title}</h3>
+            ${subtitle ? '<p class="text-xs text-gray-500 mt-0.5">' + subtitle + '</p>' : ''}
+          </div>
+          <button onclick="closeModal()" class="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition">${iconX()}</button>
+        </div>`;
+    }
+
+    function modalFooter(saveLabel, onSaveAttr, extraBtns) {
+      return `
+        <div class="flex items-center justify-between gap-2 px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl sticky bottom-0">
+          <div>${extraBtns || ''}</div>
+          <div class="flex gap-2">
+            <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Cancel</button>
+            <button ${onSaveAttr} class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-primary hover:bg-primary-dark transition shadow-sm flex items-center gap-1.5">
+              ${iconSave()} ${saveLabel}
+            </button>
+          </div>
+        </div>`;
+    }
+
+    function fld(label, inputHtml, hint) {
+      return `
+        <div class="mb-3">
+          <label class="form-label">${label}</label>
+          ${inputHtml}
+          ${hint ? '<div class="form-hint">' + hint + '</div>' : ''}
+        </div>`;
+    }
+
+    function inputBase() { return "form-input"; }
+
+    // =============================================================
+    // HELPERS (same as Products page)
+    // =============================================================
+    function money(n) { return '₹' + Number(n || 0).toLocaleString('en-IN'); }
+
+    function badge(text, color) {
+      var map = { green: 'badge-green', amber: 'badge-amber', red: 'badge-red', gray: 'badge-gray', blue: 'badge-blue' };
+      var dot = { green: 'badge-dot-green', amber: 'badge-dot-amber', red: 'badge-dot-red', gray: 'badge-dot-gray', blue: 'badge-dot-blue' };
+      return '<span class="badge ' + map[color] + '"><span class="badge-dot ' + dot[color] + '"></span>' + text + '</span>';
+    }
+
+    function rowActionsHtml(editFn, delFn, viewFn) {
+      var html = '<div class="flex gap-1 justify-end">';
+      if (viewFn) {
+        html += '<button onclick="' + viewFn + '" class="btn-icon-action" title="View">' + iconEye() + '</button>';
+      }
+      html += '<button onclick="' + editFn + '" class="btn-icon-action" title="Edit">' + iconEdit() + '</button>';
+      html += '<button onclick="' + delFn + '" class="btn-icon-action danger" title="Delete">' + iconTrash() + '</button>';
+      html += '</div>';
+      return html;
+    }
+
+    // Products page ka panelWrap — same green border
+    function panelWrap(titleHtml, bodyHtml, extraHead) {
+      return `
+        <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm overflow-hidden">
+          <div class="flex items-center justify-between gap-3 flex-wrap px-5 py-4 border-b border-gray-100">
+            <div class="font-bold text-[14.5px] text-gray-800 flex items-center gap-2">${titleHtml}</div>
+            ${extraHead || ''}
+          </div>
+          <div>${bodyHtml}</div>
+        </div>`;
+    }
+
+    // Products page ka tableHtml — same sticky header + fixed height
+    function tableHtml(cols, rowsHtml) {
+      var colHeaders = cols.map(function(c) {
+        return '<th class="text-left text-[11px] font-bold uppercase tracking-wide text-gray-500 px-4 py-3 whitespace-nowrap">' + c + '</th>';
+      }).join('');
+      return `
+        <div class="overflow-auto h-[370px]">
+          <table class="w-full text-[13px]">
+            <thead class="sticky top-0">
+              <tr class="bg-gray-50 border-b border-gray-200">${colHeaders}</tr>
+            </thead>
+            <tbody id="tbody-anchor">${rowsHtml}</tbody>
+          </table>
+        </div>`;
     }
 
     // =============================================================
@@ -740,150 +908,212 @@
     }
 
     // =============================================================
-    // UNITS MANAGEMENT — Dynamic Multi-Unit CRUD (Simplified)
+    // UNITS DATA — pre-populated with items relevant to the business
     // =============================================================
     var unitsData = [
-      { id: 'unit-001', name: 'Head Office - Mumbai' },
-      { id: 'unit-002', name: 'Branch Office - Pune' },
-      { id: 'unit-003', name: 'Warehouse - Bhiwandi' }
+      { id: 'unit-001', name: 'Numbers', code: 'NOS', decimals: 0, category: 'Equipment', description: 'Countable items — blowers, pumps, valves' },
+      { id: 'unit-002', name: 'Kilogram', code: 'KGS', decimals: 3, category: 'Chemicals', description: 'Weight-based items — chemicals, media' },
+      { id: 'unit-003', name: 'Litre', code: 'LTR', decimals: 2, category: 'Chemicals', description: 'Liquid chemicals — coagulant, flocculant' }
     ];
 
     var editingUnitId = null;
 
+    // =============================================================
+    // RENDER UNITS — Products-style table inside panelWrap
+    // =============================================================
     function renderUnits() {
-      var tbody = document.getElementById('unitsTableBody');
-      var emptyState = document.getElementById('unitsEmptyState');
-      var badge = document.getElementById('unitsCountBadge');
+      var badgeEl = document.getElementById('unitsCountBadge');
+      if (badgeEl) badgeEl.textContent = unitsData.length;
 
-      if (badge) badge.textContent = unitsData.length;
-      if (!tbody) return;
-
+      var rowsHtml = '';
       if (unitsData.length === 0) {
-        tbody.innerHTML = '';
-        if (emptyState) emptyState.classList.remove('hidden');
-        return;
+        rowsHtml = `
+          <tr>
+            <td colspan="6" class="text-center py-10 text-gray-400 text-sm">
+              <div class="flex justify-center mb-2 empty-icon-svg">${iconBox()}</div>
+              No units found. Click
+              <button onclick="openUnitForm()" class="text-primary font-semibold hover:underline mx-1">add a new unit</button>
+              to get started.
+            </td>
+          </tr>`;
+      } else {
+        rowsHtml = unitsData.map(function(u) {
+          return `
+            <tr class="border-b border-gray-100 table-row-hover">
+              <td class="px-4 py-3">
+                <div class="font-semibold text-gray-800">${u.name}</div>
+                ${u.description ? '<div class="text-[11.5px] text-gray-400 mt-0.5">' + u.description + '</div>' : ''}
+              </td>
+              <td class="px-4 py-3">${badge(u.code || '—', 'blue')}</td>
+              <td class="px-4 py-3 text-gray-600">${u.decimals != null ? u.decimals : '0'} decimal(s)</td>
+              <td class="px-4 py-3 text-gray-600">${u.category || '—'}</td>
+              <td class="px-4 py-3">
+                <span class="text-[11px] text-gray-400 font-mono">${u.id}</span>
+              </td>
+              <td class="px-4 py-3">${rowActionsHtml(
+                "editUnit('"+u.id+"')",
+                "delUnit('"+u.id+"')",
+                null
+              )}</td>
+            </tr>`;
+        }).join('');
       }
-      if (emptyState) emptyState.classList.add('hidden');
 
-      tbody.innerHTML = unitsData.map(function(u) {
-        return `
-          <tr class="table-row-hover">
-            <td class="px-4 py-3">
-              <div class="font-medium text-gray-800">${u.name}</div>
-            </td>
-            <td class="px-4 py-3 text-right">
-              <button onclick="editUnit('${u.id}')" class="btn-icon-action" title="Edit">${iconEdit()}</button>
-              <button onclick="deleteUnit('${u.id}')" class="btn-icon-action danger" title="Delete">${iconTrash()}</button>
-            </td>
-          </tr>
-        `;
-      }).join('');
+      var panelHtml = panelWrap(
+        'All Units <span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + unitsData.length + '</span>',
+        tableHtml(['Unit Name', 'Code', 'Decimals', 'Category', 'ID', 'Actions'], rowsHtml)
+      );
+
+      document.getElementById('unitsPanel').innerHTML = panelHtml;
     }
 
-    function openUnitModal(unit) {
-      editingUnitId = unit ? unit.id : null;
-      var isEdit = !!unit;
-      var u = unit || { name: '' };
-
-      var modalHtml = `
-        <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" id="modalOverlay">
-          <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]" id="modalBackdrop"></div>
-          <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-hidden animate-modal">
-            <div class="flex items-start justify-between px-6 py-5 border-b border-gray-100">
-              <div>
-                <h3 class="font-display text-lg font-semibold text-gray-900">${isEdit ? 'Edit Unit' : 'Add New Unit'}</h3>
-                <p class="text-xs text-gray-500 mt-0.5">${isEdit ? 'Update unit name' : ''}</p>
-              </div>
-              <button onclick="closeUnitModal()" class="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition">${iconX()}</button>
-            </div>
-
-            <div class="px-6 py-5 modal-scroll">
-              <div>
-                <label class="form-label">Unit Name <span class="required">*</span></label>
-                <input type="text" class="form-input" id="u_name" value="${u.name}" placeholder="e.g. Branch Office - Pune">
-              </div>
-            </div>
-
-            <div class="flex items-center justify-end gap-2 px-6 py-4 border-t border-gray-100 bg-gray-50">
-              <button onclick="closeUnitModal()" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Cancel</button>
-              <button onclick="saveUnit()" class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-primary hover:bg-primary-dark transition shadow-sm flex items-center gap-1.5">
-                ${iconSave()} ${isEdit ? 'Update Unit' : 'Save Unit'}
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
-
-      document.getElementById('modalRoot').innerHTML = modalHtml;
-      document.getElementById('modalBackdrop').addEventListener('click', closeUnitModal);
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeUnitModal() {
-      document.getElementById('modalRoot').innerHTML = '';
-      document.body.style.overflow = '';
+    // =============================================================
+    // INLINE FORM (Add / Edit Unit) — NO MODAL
+    // =============================================================
+    function openUnitForm() {
       editingUnitId = null;
+      document.getElementById('unitFormTitle').textContent = 'Add New Unit';
+      document.getElementById('unitSaveLabel').textContent = 'Save Unit';
+      document.getElementById('u_name').value = '';
+      document.getElementById('u_code').value = 'NOS';
+      document.getElementById('u_decimals').value = '0';
+      document.getElementById('u_category').value = '';
+      document.getElementById('u_description').value = '';
+      setUnitFieldError('u_name', false);
+      setUnitFieldError('u_code', false);
+      document.getElementById('unitFormWrap').classList.remove('hidden');
+      document.getElementById('u_name').focus();
+    }
+
+    function editUnit(id) {
+      var unit = unitsData.find(function(u) { return u.id === id; });
+      if (!unit) return;
+      editingUnitId = id;
+      document.getElementById('unitFormTitle').textContent = 'Edit Unit';
+      document.getElementById('unitSaveLabel').textContent = 'Update Unit';
+      document.getElementById('u_name').value = unit.name || '';
+      document.getElementById('u_code').value = unit.code || 'NOS';
+      document.getElementById('u_decimals').value = String(unit.decimals != null ? unit.decimals : 0);
+      document.getElementById('u_category').value = unit.category || '';
+      document.getElementById('u_description').value = unit.description || '';
+      setUnitFieldError('u_name', false);
+      setUnitFieldError('u_code', false);
+      document.getElementById('unitFormWrap').classList.remove('hidden');
+      document.getElementById('unitFormWrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      document.getElementById('u_name').focus();
+    }
+
+    function cancelUnitForm() {
+      editingUnitId = null;
+      document.getElementById('unitFormWrap').classList.add('hidden');
+      setUnitFieldError('u_name', false);
+      setUnitFieldError('u_code', false);
     }
 
     function saveUnit() {
-      var name = document.getElementById('u_name').value.trim();
+      var name = (document.getElementById('u_name').value || '').trim();
+      var code = document.getElementById('u_code').value || '';
+      var decimals = parseInt(document.getElementById('u_decimals').value, 10) || 0;
+      var category = (document.getElementById('u_category').value || '').trim();
+      var description = (document.getElementById('u_description').value || '').trim();
 
-      if (!name) {
+      // Products-style inline validation
+      var nameMissing = !name;
+      setUnitFieldError('u_name', nameMissing);
+      if (nameMissing) {
         showToast('Please enter Unit Name', 'error');
+        document.getElementById('u_name').focus();
         return;
       }
+
+      var codeMissing = !code;
+      setUnitFieldError('u_code', codeMissing);
+      if (codeMissing) {
+        showToast('Please select a Unit Code', 'error');
+        return;
+      }
+
+      // Prevent duplicate unit codes
+      var duplicate = unitsData.some(function(u) {
+        return u.code === code && u.id !== editingUnitId;
+      });
+      if (duplicate) {
+        setUnitFieldError('u_code', true);
+        showToast('A unit with code "' + code + '" already exists', 'error');
+        return;
+      }
+      setUnitFieldError('u_code', false);
 
       if (editingUnitId) {
         var existing = unitsData.find(function(u) { return u.id === editingUnitId; });
         if (existing) {
           existing.name = name;
-          showToast('Unit updated successfully ✅', 'success');
+          existing.code = code;
+          existing.decimals = decimals;
+          existing.category = category;
+          existing.description = description;
+          showToast('Unit updated successfully', 'success');
         }
       } else {
         unitsData.push({
           id: 'unit-' + String(Date.now()),
-          name: name
+          name: name,
+          code: code,
+          decimals: decimals,
+          category: category,
+          description: description
         });
-        showToast('Unit added successfully ✅', 'success');
+        showToast('Unit added successfully', 'success');
       }
 
-      closeUnitModal();
+      cancelUnitForm();
       renderUnits();
     }
 
-    function editUnit(id) {
-      var unit = unitsData.find(function(u) { return u.id === id; });
-      if (unit) openUnitModal(unit);
-    }
-
-    function deleteUnit(id) {
+    function delUnit(id) {
       var unit = unitsData.find(function(u) { return u.id === id; });
       if (!unit) return;
 
-      if (confirm('Are you sure you want to delete unit "' + unit.name + '"?')) {
-        unitsData = unitsData.filter(function(u) { return u.id !== id; });
-        renderUnits();
-        showToast('Unit deleted successfully', 'warning');
-      }
+      // Products-style delete confirmation modal
+      var modalContent = `
+        ${modalHeader('Delete Unit', unit.name + ' (' + unit.code + ')')}
+        <div class="px-6 py-4 text-sm text-gray-600">
+          <p>Are you sure you want to permanently delete <b class="text-gray-800">${unit.name}</b>?</p>
+          <p class="text-gray-400 text-[12px] mt-1">Items already using this unit will keep their existing value, but it will no longer appear as an option for new items.</p>
+        </div>
+        ${modalFooter('Delete', 'onclick="confirmDelUnit(\'' + id + '\')"', '')}
+      `;
+      openModal(modalContent, { width: 'max-w-md' });
+    }
+
+    function confirmDelUnit(id) {
+      unitsData = unitsData.filter(function(u) { return u.id !== id; });
+      closeModal();
+      renderUnits();
+      showToast('Unit deleted successfully', 'warning');
+    }
+
+    // Products-style inline error toggle
+    function setUnitFieldError(id, hasError) {
+      var el = document.getElementById(id);
+      var err = document.getElementById('err_' + id);
+      if (el) el.classList.toggle('border-red-500', !!hasError);
+      if (err) err.classList.toggle('hidden', !hasError);
     }
 
     // =============================================================
-    // SAVE / RESET
+    // SAVE COMPANY
     // =============================================================
     function saveCompany() {
       var name = document.getElementById('compLegalName').value;
       if (!name) {
+        setUnitFieldError('compLegalName', true);
         showToast('Please enter company name', 'error');
         return;
       }
-      showToast('✅ Company settings saved successfully!', 'success');
+      setUnitFieldError('compLegalName', false);
+      showToast('Company settings saved successfully', 'success');
       document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
-    }
-
-    function resetSettings() {
-      if (confirm('Are you sure you want to reset all settings to default?')) {
-        showToast('Settings reset to default', 'warning');
-      }
     }
 
     // =============================================================
@@ -895,18 +1125,19 @@
         saveCompany();
       }
       if (e.key === 'Escape') {
-        closeUnitModal();
+        cancelUnitForm();
+        closeModal();
       }
     });
 
     // =============================================================
     // INIT LOG
     // =============================================================
-    console.log('🏢 Organization Setup Module Loaded Successfully');
-    console.log('📌 Company: Kunash Media Pvt. Ltd.');
-    console.log('📍 Location: Mumbai, Maharashtra (State Code: 27)');
-    console.log('🏷️ GSTIN: 27AABCU1234D1ZP');
-    console.log('🏢 Units:', unitsData.length, '(Dynamic Multi-Unit CRUD enabled)');
+    console.log('Organization Setup Module Loaded Successfully');
+    console.log('Company: Kunash Media Pvt. Ltd.');
+    console.log('Location: Mumbai, Maharashtra (State Code: 27)');
+    console.log('GSTIN: 27AABCU1234D1ZP');
+    console.log('Units of Measurement:', unitsData.length, '(Inline CRUD — no modal for add/edit)');
 
   </script>
 
