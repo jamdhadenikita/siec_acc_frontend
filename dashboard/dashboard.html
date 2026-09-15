@@ -8,14 +8,8 @@
 <link rel="manifest" href="/favicon_io/site.webmanifest">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<title>Dashboard</title>
+<title>Dashboard — Aquilon ERP</title>
 
-<!--
-  ANTI-FLICKER SCRIPT — must be the first thing in <head>, before any
-  stylesheet. It reads the saved collapse state synchronously and sets
-  it on <html> so the sidebar is the correct width on the very first
-  paint. Copy this exact block, unchanged, to the top of every admin page.
--->
 <script>
   (function () {
     try {
@@ -27,7 +21,6 @@
   })();
 </script>
 
-<!-- Tailwind (utility classes for page content) -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -42,37 +35,894 @@
   };
 </script>
 
-<!-- Shell styling (sidebar / topbar / overlays) — source of truth, loads after Tailwind -->
 <link rel="stylesheet" href="/assets/css/nav-sidebar.css" />
+
+<style>
+  body { font-size: 12px; background: #f3f4f6; }
+
+  .stat-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    padding: 12px 16px !important;
+  }
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  }
+  .stat-card .stat-label {
+    font-size: 9.5px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; color: #6b7280;
+  }
+  .stat-card .stat-value {
+    font-size: 20px; font-weight: 700;
+    color: #1a1a2e; margin-top: 4px;
+  }
+  .stat-card .stat-icon {
+    width: 34px; height: 34px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .table-row-hover:hover { background: #f8fafc; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade { animation: fadeIn 0.2s ease; }
+
+  .card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px;
+  }
+  .card-title {
+    font-size: 13.5px; font-weight: 700; color: #1a1a2e;
+  }
+
+  /* ========== CHART STYLES ========== */
+  .chart-wrap {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 8px;
+    height: 180px;
+    padding: 12px 0 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .chart-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    gap: 6px;
+  }
+  .chart-bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+    height: calc(100% - 24px);
+    width: 100%;
+  }
+  .chart-bar {
+    width: 14px;
+    min-height: 4px;
+    border-radius: 3px 3px 0 0;
+    transition: height 0.6s ease;
+  }
+  .chart-bar-income { background: #6da84c; }
+  .chart-bar-expense { background: #f87171; }
+  .chart-label {
+    font-size: 10px;
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    height: 16px;
+    line-height: 16px;
+    flex-shrink: 0;
+  }
+
+  .cf-chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 8px;
+    height: 120px;
+    padding: 12px 0 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .cf-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    gap: 6px;
+  }
+  .cf-bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+    height: calc(100% - 24px);
+    width: 100%;
+  }
+  .cf-bar {
+    width: 12px;
+    min-height: 4px;
+    border-radius: 3px 3px 0 0;
+    transition: height 0.6s ease;
+  }
+  .cf-bar-in { background: #22c55e; }
+  .cf-bar-out { background: #f87171; }
+
+  .prog-bar {
+    height: 6px; border-radius: 3px;
+    background: #f1f5f9; overflow: hidden;
+    margin-top: 6px;
+  }
+  .prog-bar .fill {
+    height: 100%; border-radius: 3px;
+    transition: width 0.6s ease;
+  }
+  .prog-green { background: #22c55e; }
+  .prog-amber { background: #f59e0b; }
+  .prog-red { background: #ef4444; }
+  .prog-blue { background: #3b82f6; }
+
+  .hero-gradient {
+    background: linear-gradient(135deg, #0f2a1a, #1a3a28);
+    border-radius: 12px;
+    padding: 18px 22px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-gradient::after {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(109,168,76,0.15) 0%, transparent 70%);
+    top: -100px; right: -100px;
+  }
+
+  .pipeline {
+    display: flex; gap: 0;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    position: relative; z-index: 1;
+  }
+  .pipeline-step {
+    flex-shrink: 0;
+    min-width: 88px;
+    text-align: center;
+    position: relative;
+  }
+  .pipeline-step .line {
+    position: absolute;
+    top: 13px; left: 50%;
+    width: 100%; height: 2px;
+    background: rgba(255,255,255,0.15);
+    z-index: 0;
+  }
+  .pipeline-step:last-child .line { display: none; }
+  .pipeline-step .circle {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    position: relative; z-index: 1;
+  }
+  .pipeline-step .label {
+    font-size: 10px; margin-top: 6px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.2;
+  }
+  .pipe-complete .circle { background: #6da84c; color: white; }
+  .pipe-current .circle {
+    background: #d97706; color: #2a1b08;
+    box-shadow: 0 0 0 4px rgba(217,119,6,0.3);
+  }
+  .pipe-pending .circle {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.5);
+  }
+
+  .alert-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 9px 12px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    margin-bottom: 6px;
+    transition: all 0.15s ease;
+  }
+  .alert-item:hover { background: #f1f5f9; }
+  .alert-item .alert-icon {
+    width: 28px; height: 28px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .ai-red { background: #fee2e2; color: #991b1b; }
+  .ai-amber { background: #fef3c7; color: #92400e; }
+  .ai-blue { background: #dbeafe; color: #1e40af; }
+  .ai-green { background: #dcfce7; color: #166534; }
+  .ai-purple { background: #ede9fe; color: #5b21b6; }
+
+  .alert-item .alert-title {
+    font-size: 12px; font-weight: 600; color: #1a1a2e;
+  }
+  .alert-item .alert-desc {
+    font-size: 10.5px; color: #6b7280; margin-top: 2px;
+  }
+  .alert-item .alert-time {
+    font-size: 10px; color: #94a3b8; margin-top: 3px;
+  }
+
+  .ring-wrap { position: relative; width: 44px; height: 44px; }
+  .ring-wrap svg { transform: rotate(-90deg); }
+  .ring-center {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+  }
+
+  .quick-action {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+  .quick-action:hover {
+    border-color: #6da84c;
+    background: #f8fafc;
+    transform: translateY(-1px);
+  }
+  .quick-action .qa-icon {
+    width: 30px; height: 30px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    background: #eef5e8; color: #6da84c;
+    flex-shrink: 0;
+  }
+  .quick-action .qa-label {
+    font-size: 12px; font-weight: 600; color: #1a1a2e;
+  }
+  .quick-action .qa-desc {
+    font-size: 10px; color: #94a3b8; margin-top: 1px;
+  }
+</style>
 </head>
 
 <body class="bg-gray-50 text-gray-800 antialiased">
 
   <div class="flex min-h-screen">
-    <!-- Sidebar gets injected here by nav-sidebar.js -->
     <div id="sidebar-root"></div>
 
     <div class="app-main flex-1 flex flex-col min-w-0">
-      <!-- Top bar gets injected here -->
       <div id="topbar-root"></div>
 
-      <!-- ============= PAGE CONTENT STARTS HERE ============= -->
-      <main class="p-4 sm:p-6 lg:p-8">
-        <div class="max-w-6xl mx-auto">
-          <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-            <h2 class="text-base font-semibold text-gray-800 mb-1">Dashboard</h2>
-            <p class="text-sm text-gray-500">
-              Placeholder page template
-            </p>
+      <main class="p-4 sm:p-6 lg:p-7">
+
+        <div id="toastWrap" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2 items-end"></div>
+
+        <div class="max-w-7xl mx-auto">
+
+          <!-- ===== PAGE HEADER ===== -->
+          <div class="flex flex-wrap items-start justify-between gap-4 mb-5">
+            <div>
+              <div class="text-[11px] font-semibold tracking-wide uppercase text-primary mb-1">Overview</div>
+              <h1 class="text-[24px] sm:text-[26px] font-bold tracking-tight text-gray-900">Dashboard</h1>
+              <p class="text-[13px] text-gray-500 mt-1">Real-time snapshot of your business performance</p>
+            </div>
+            <div class="flex gap-2.5 flex-wrap">
+              <button onclick="showToast('Export started...', 'info')"
+                class="inline-flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[12px] font-semibold px-3.5 py-2.5 rounded-lg transition">
+                <i class="fa-solid fa-download"></i>
+                Export
+              </button>
+              <button onclick="showToast('Refreshing dashboard...', 'info')"
+                class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-[12px] font-semibold px-3.5 py-2.5 rounded-lg transition shadow-sm">
+                <i class="fa-solid fa-rotate"></i>
+                Refresh
+              </button>
+            </div>
           </div>
+
+          <!-- ===== HERO: PROJECT LIFECYCLE ===== -->
+          <div class="hero-gradient mb-5">
+            <div class="flex flex-wrap justify-between items-start gap-3 mb-4 relative z-10">
+              <div>
+                <h3 class="text-[16px] font-semibold">Operation &amp; Supervision Contract — WHE</h3>
+                <p class="text-[12px] text-primary-soft/70 mt-0.5">Sustro Speciality Oils Pvt Ltd · Project Code 26LW069</p>
+              </div>
+              <span class="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700">
+                <span class="w-[6px] h-[6px] rounded-full bg-amber-500"></span>In Progress
+              </span>
+            </div>
+
+            <div class="pipeline">
+              <div class="pipeline-step pipe-complete">
+                <div class="line"></div>
+                <div class="circle">✓</div>
+                <div class="label">Enquiry</div>
+              </div>
+              <div class="pipeline-step pipe-complete">
+                <div class="line"></div>
+                <div class="circle">✓</div>
+                <div class="label">Proposal</div>
+              </div>
+              <div class="pipeline-step pipe-complete">
+                <div class="line"></div>
+                <div class="circle">✓</div>
+                <div class="label">Onboarding</div>
+              </div>
+              <div class="pipeline-step pipe-complete">
+                <div class="line"></div>
+                <div class="circle">✓</div>
+                <div class="label">Budget</div>
+              </div>
+              <div class="pipeline-step pipe-complete">
+                <div class="line"></div>
+                <div class="circle">✓</div>
+                <div class="label">Purchase</div>
+              </div>
+              <div class="pipeline-step pipe-current">
+                <div class="line"></div>
+                <div class="circle">6</div>
+                <div class="label text-white font-semibold">Timesheet</div>
+              </div>
+              <div class="pipeline-step pipe-pending">
+                <div class="line"></div>
+                <div class="circle">7</div>
+                <div class="label">Invoice</div>
+              </div>
+              <div class="pipeline-step pipe-pending">
+                <div class="line"></div>
+                <div class="circle">8</div>
+                <div class="label">Payment</div>
+              </div>
+              <div class="pipeline-step pipe-pending">
+                <div class="line"></div>
+                <div class="circle">9</div>
+                <div class="label">Reconcile</div>
+              </div>
+              <div class="pipeline-step pipe-pending">
+                <div class="line"></div>
+                <div class="circle">10</div>
+                <div class="label">GST Filing</div>
+              </div>
+              <div class="pipeline-step pipe-pending">
+                <div class="circle">11</div>
+                <div class="label">Profitability</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== STAT CARDS ===== -->
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-5">
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
+              <div class="flex items-center justify-between mb-2">
+                <span class="stat-label">Sales</span>
+                <span class="stat-icon bg-primary-soft text-primary-dark"><i class="fa-solid fa-cart-shopping"></i></span>
+              </div>
+              <div class="stat-value">₹42.5L</div>
+              <div class="text-[11px] mt-1 font-semibold text-emerald-600"><i class="fa-solid fa-arrow-up"></i> +12.4%</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
+              <div class="flex items-center justify-between mb-2">
+                <span class="stat-label">Purchases</span>
+                <span class="stat-icon bg-amber-50 text-amber-600"><i class="fa-solid fa-truck-fast"></i></span>
+              </div>
+              <div class="stat-value">₹18.2L</div>
+              <div class="text-[11px] mt-1 font-semibold text-emerald-600"><i class="fa-solid fa-arrow-up"></i> +4.1%</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
+              <div class="flex items-center justify-between mb-2">
+                <span class="stat-label">Receivables</span>
+                <span class="stat-icon bg-amber-50 text-amber-700"><i class="fa-solid fa-hand-holding-dollar"></i></span>
+              </div>
+              <div class="stat-value">₹9.8L</div>
+              <div class="text-[11px] mt-1 font-semibold text-amber-600"><i class="fa-solid fa-triangle-exclamation"></i> 3 overdue</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
+              <div class="flex items-center justify-between mb-2">
+                <span class="stat-label">Payables</span>
+                <span class="stat-icon bg-rose-50 text-rose-700"><i class="fa-solid fa-file-invoice-dollar"></i></span>
+              </div>
+              <div class="stat-value">₹4.1L</div>
+              <div class="text-[11px] mt-1 font-semibold text-rose-600">Due in 12 days</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
+              <div class="flex items-center justify-between mb-2">
+                <span class="stat-label">Bank Balance</span>
+                <span class="stat-icon bg-emerald-50 text-emerald-700"><i class="fa-solid fa-building-columns"></i></span>
+              </div>
+              <div class="stat-value">₹12.6L</div>
+              <div class="text-[11px] mt-1 font-semibold text-emerald-600">3 accounts</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
+              <div class="flex items-center justify-between mb-2">
+                <span class="stat-label">GST Payable</span>
+                <span class="stat-icon bg-primary-soft text-primary-dark"><i class="fa-solid fa-shield-halved"></i></span>
+              </div>
+              <div class="stat-value">₹3.15L</div>
+              <div class="text-[11px] mt-1 font-semibold text-amber-600">Due 20th</div>
+            </div>
+          </div>
+
+          <!-- ===== CHARTS: INCOME vs EXPENSE + TOP EXPENSES ===== -->
+          <div class="grid lg:grid-cols-3 gap-4 mb-5">
+
+            <!-- Income & Expense Chart -->
+            <div class="card lg:col-span-2">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Income &amp; Expense</div>
+                  <div class="text-[11px] text-gray-500 mt-0.5">Last 6 months</div>
+                </div>
+                <div class="flex items-center gap-4 text-[11px]">
+                  <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-primary"></span> Income</span>
+                  <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-400"></span> Expense</span>
+                </div>
+              </div>
+              <div class="card-body p-4">
+                <div class="chart-wrap">
+                  <div class="chart-col">
+                    <div class="chart-bars">
+                      <div class="chart-bar chart-bar-income" style="height:72%;"></div>
+                      <div class="chart-bar chart-bar-expense" style="height:48%;"></div>
+                    </div>
+                    <div class="chart-label">Jan</div>
+                  </div>
+                  <div class="chart-col">
+                    <div class="chart-bars">
+                      <div class="chart-bar chart-bar-income" style="height:84%;"></div>
+                      <div class="chart-bar chart-bar-expense" style="height:56%;"></div>
+                    </div>
+                    <div class="chart-label">Feb</div>
+                  </div>
+                  <div class="chart-col">
+                    <div class="chart-bars">
+                      <div class="chart-bar chart-bar-income" style="height:92%;"></div>
+                      <div class="chart-bar chart-bar-expense" style="height:64%;"></div>
+                    </div>
+                    <div class="chart-label">Mar</div>
+                  </div>
+                  <div class="chart-col">
+                    <div class="chart-bars">
+                      <div class="chart-bar chart-bar-income" style="height:78%;"></div>
+                      <div class="chart-bar chart-bar-expense" style="height:72%;"></div>
+                    </div>
+                    <div class="chart-label">Apr</div>
+                  </div>
+                  <div class="chart-col">
+                    <div class="chart-bars">
+                      <div class="chart-bar chart-bar-income" style="height:96%;"></div>
+                      <div class="chart-bar chart-bar-expense" style="height:68%;"></div>
+                    </div>
+                    <div class="chart-label">May</div>
+                  </div>
+                  <div class="chart-col">
+                    <div class="chart-bars">
+                      <div class="chart-bar chart-bar-income" style="height:88%;"></div>
+                      <div class="chart-bar chart-bar-expense" style="height:82%;"></div>
+                    </div>
+                    <div class="chart-label">Jun</div>
+                  </div>
+                </div>
+                <div class="flex flex-wrap justify-between mt-4 pt-3 border-t border-gray-100 text-[12px] gap-2">
+                  <span class="text-gray-500">Total Income: <b class="text-gray-800">₹6,82,000</b></span>
+                  <span class="text-gray-500">Total Expense: <b class="text-gray-800">₹4,15,000</b></span>
+                  <span class="text-emerald-600 font-semibold">Net: +₹2,67,000</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Top Expenses -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Top Expenses</div>
+                <a href="/expenses/expenses.html" class="text-[11px] font-semibold text-primary hover:underline">View All</a>
+              </div>
+              <div class="card-body p-4 space-y-3">
+                <div>
+                  <div class="flex justify-between text-[12.5px]">
+                    <span class="font-medium text-gray-700">Office Rent</span>
+                    <span class="font-semibold">₹85,000</span>
+                  </div>
+                  <div class="prog-bar"><div class="fill prog-green" style="width:85%"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-[12.5px]">
+                    <span class="font-medium text-gray-700">Staff Salaries</span>
+                    <span class="font-semibold">₹72,000</span>
+                  </div>
+                  <div class="prog-bar"><div class="fill prog-amber" style="width:72%"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-[12.5px]">
+                    <span class="font-medium text-gray-700">Raw Materials</span>
+                    <span class="font-semibold">₹48,500</span>
+                  </div>
+                  <div class="prog-bar"><div class="fill prog-red" style="width:48%"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-[12.5px]">
+                    <span class="font-medium text-gray-700">Transport &amp; Logistics</span>
+                    <span class="font-semibold">₹31,200</span>
+                  </div>
+                  <div class="prog-bar"><div class="fill prog-green" style="width:31%"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-[12.5px]">
+                    <span class="font-medium text-gray-700">Utilities</span>
+                    <span class="font-semibold">₹18,750</span>
+                  </div>
+                  <div class="prog-bar"><div class="fill prog-amber" style="width:19%"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== CASH FLOW ===== -->
+          <div class="card mb-5">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Cash Flow</div>
+                <div class="text-[11px] text-gray-500 mt-0.5">Last 6 months · Net cash position</div>
+              </div>
+              <div class="flex items-center gap-3 text-[12px]">
+                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Inflow</span>
+                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-400"></span> Outflow</span>
+              </div>
+            </div>
+            <div class="card-body p-4">
+              <div class="cf-chart">
+                <div class="cf-col">
+                  <div class="cf-bars">
+                    <div class="cf-bar cf-bar-in" style="height:48%;"></div>
+                    <div class="cf-bar cf-bar-out" style="height:32%;"></div>
+                  </div>
+                  <div class="chart-label">Jan</div>
+                </div>
+                <div class="cf-col">
+                  <div class="cf-bars">
+                    <div class="cf-bar cf-bar-in" style="height:56%;"></div>
+                    <div class="cf-bar cf-bar-out" style="height:40%;"></div>
+                  </div>
+                  <div class="chart-label">Feb</div>
+                </div>
+                <div class="cf-col">
+                  <div class="cf-bars">
+                    <div class="cf-bar cf-bar-in" style="height:72%;"></div>
+                    <div class="cf-bar cf-bar-out" style="height:44%;"></div>
+                  </div>
+                  <div class="chart-label">Mar</div>
+                </div>
+                <div class="cf-col">
+                  <div class="cf-bars">
+                    <div class="cf-bar cf-bar-in" style="height:64%;"></div>
+                    <div class="cf-bar cf-bar-out" style="height:52%;"></div>
+                  </div>
+                  <div class="chart-label">Apr</div>
+                </div>
+                <div class="cf-col">
+                  <div class="cf-bars">
+                    <div class="cf-bar cf-bar-in" style="height:80%;"></div>
+                    <div class="cf-bar cf-bar-out" style="height:58%;"></div>
+                  </div>
+                  <div class="chart-label">May</div>
+                </div>
+                <div class="cf-col">
+                  <div class="cf-bars">
+                    <div class="cf-bar cf-bar-in" style="height:68%;"></div>
+                    <div class="cf-bar cf-bar-out" style="height:64%;"></div>
+                  </div>
+                  <div class="chart-label">Jun</div>
+                </div>
+              </div>
+              <div class="flex flex-wrap justify-between mt-4 pt-3 border-t border-gray-100 text-[12px] gap-2">
+                <span class="text-gray-500">Total Inflow: <b class="text-gray-800">₹9,45,000</b></span>
+                <span class="text-gray-500">Total Outflow: <b class="text-gray-800">₹5,82,000</b></span>
+                <span class="text-emerald-600 font-semibold">Net Cash Flow: +₹3,63,000</span>
+                <span class="text-gray-500">Ending Balance: <b class="text-gray-800">₹12,60,000</b></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== RECEIVABLES / PAYABLES ===== -->
+          <div class="grid lg:grid-cols-2 gap-4 mb-5">
+
+            <!-- Receivables -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Receivables</div>
+                <a href="/customer-payments/customer-payments.html" class="text-[11px] font-semibold text-primary hover:underline">View All</a>
+              </div>
+              <div class="card-body p-4">
+                <div class="text-[11.5px] text-gray-500 mb-2">Total Unpaid <b class="text-gray-800">₹3,72,580</b></div>
+                <div class="prog-bar mb-4"><div class="fill prog-amber" style="width:100%"></div></div>
+                <div class="flex gap-2.5">
+                  <a href="/sales-orders/sales-orders.html" class="flex-1 bg-gray-50 hover:bg-gray-100 transition rounded-lg px-3.5 py-2.5">
+                    <div class="text-[10.5px] font-bold uppercase text-primary-dark">Current</div>
+                    <div class="text-[16px] font-semibold">₹0.00</div>
+                  </a>
+                  <a href="/invoices/invoices.html" class="flex-1 bg-gray-50 hover:bg-gray-100 transition rounded-lg px-3.5 py-2.5">
+                    <div class="text-[10.5px] font-bold uppercase text-amber-600">Overdue</div>
+                    <div class="text-[16px] font-semibold">₹3,72,580</div>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payables -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Payables</div>
+                <a href="/vendor-payments/vendor-payments.html" class="text-[11px] font-semibold text-primary hover:underline">View All</a>
+              </div>
+              <div class="card-body p-4">
+                <div class="text-[11.5px] text-gray-500 mb-2">Total Unpaid <b class="text-gray-800">₹2,49,849</b></div>
+                <div class="prog-bar mb-4">
+                  <div class="fill prog-amber" style="width:98%"></div>
+                </div>
+                <div class="flex gap-2.5">
+                  <a href="/purchaseBills/purchaseBills.html" class="flex-1 bg-gray-50 hover:bg-gray-100 transition rounded-lg px-3.5 py-2.5">
+                    <div class="text-[10.5px] font-bold uppercase text-primary-dark">Current</div>
+                    <div class="text-[16px] font-semibold">₹5,837</div>
+                  </a>
+                  <a href="/purchaseBills/purchaseBills.html" class="flex-1 bg-gray-50 hover:bg-gray-100 transition rounded-lg px-3.5 py-2.5">
+                    <div class="text-[10.5px] font-bold uppercase text-amber-600">Overdue</div>
+                    <div class="text-[16px] font-semibold">₹2,44,013</div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== ACTIVE PROJECTS + BANK ACCOUNTS ===== -->
+          <div class="grid lg:grid-cols-2 gap-4 mb-5">
+
+            <!-- Active Projects -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Active Projects</div>
+                <a href="/projects/projects.html" class="text-[11px] font-semibold text-primary hover:underline">View All →</a>
+              </div>
+              <div class="divide-y divide-gray-100">
+                <div class="flex items-center gap-3.5 px-4 py-3.5 table-row-hover">
+                  <div class="ring-wrap">
+                    <svg viewBox="0 0 40 40" class="w-11 h-11">
+                      <circle cx="20" cy="20" r="17" fill="none" stroke="#E8EDED" stroke-width="4" />
+                      <circle cx="20" cy="20" r="17" fill="none" stroke="#6da84c" stroke-width="4" stroke-linecap="round" stroke-dasharray="106.81" stroke-dashoffset="40.59" />
+                    </svg>
+                    <div class="ring-center text-primary-dark">62%</div>
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="text-[12.8px] font-semibold text-gray-800 truncate">Operation &amp; Supervision — WHE</div>
+                    <div class="text-[11px] text-gray-400">Sustro Speciality Oils</div>
+                    <div class="prog-bar"><div class="fill prog-green" style="width:62%"></div></div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3.5 px-4 py-3.5 table-row-hover">
+                  <div class="ring-wrap">
+                    <svg viewBox="0 0 40 40" class="w-11 h-11">
+                      <circle cx="20" cy="20" r="17" fill="none" stroke="#E8EDED" stroke-width="4" />
+                      <circle cx="20" cy="20" r="17" fill="none" stroke="#d97706" stroke-width="4" stroke-linecap="round" stroke-dasharray="106.81" stroke-dashoffset="73.70" />
+                    </svg>
+                    <div class="ring-center text-amber-600">31%</div>
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="text-[12.8px] font-semibold text-gray-800 truncate">Odor Control Unit — Retrofit</div>
+                    <div class="text-[11px] text-gray-400">XYZ Technologies</div>
+                    <div class="prog-bar"><div class="fill prog-amber" style="width:31%"></div></div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3.5 px-4 py-3.5 table-row-hover">
+                  <div class="ring-wrap">
+                    <svg viewBox="0 0 40 40" class="w-11 h-11">
+                      <circle cx="20" cy="20" r="17" fill="none" stroke="#E8EDED" stroke-width="4" />
+                      <circle cx="20" cy="20" r="17" fill="none" stroke="#6da84c" stroke-width="4" stroke-linecap="round" stroke-dasharray="106.81" stroke-dashoffset="12.82" />
+                    </svg>
+                    <div class="ring-center text-primary-dark">88%</div>
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="text-[12.8px] font-semibold text-gray-800 truncate">Dual Media Filter — Phase II</div>
+                    <div class="text-[11px] text-gray-400">ABC Distributor Group</div>
+                    <div class="prog-bar"><div class="fill prog-green" style="width:88%"></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bank Accounts -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Bank Accounts</div>
+                <a href="/banking/banking.html" class="text-[11px] font-semibold text-primary hover:underline">View All →</a>
+              </div>
+              <div class="divide-y divide-gray-100">
+                <div class="flex items-center justify-between px-4 py-3.5 table-row-hover">
+                  <div class="flex items-center gap-2.5 text-[13px] font-semibold">
+                    <span class="w-[30px] h-[30px] rounded-lg bg-primary-soft text-primary-dark flex items-center justify-center">
+                      <i class="fa-solid fa-building-columns"></i>
+                    </span>
+                    HDFC Bank — Current
+                  </div>
+                  <div class="font-mono text-[12.5px] font-semibold text-primary">₹8,40,000</div>
+                </div>
+                <div class="flex items-center justify-between px-4 py-3.5 table-row-hover">
+                  <div class="flex items-center gap-2.5 text-[13px] font-semibold">
+                    <span class="w-[30px] h-[30px] rounded-lg bg-primary-soft text-primary-dark flex items-center justify-center">
+                      <i class="fa-solid fa-building-columns"></i>
+                    </span>
+                    ICICI Bank — Current
+                  </div>
+                  <div class="font-mono text-[12.5px] font-semibold text-primary">₹3,60,000</div>
+                </div>
+                <div class="flex items-center justify-between px-4 py-3.5 table-row-hover">
+                  <div class="flex items-center gap-2.5 text-[13px] font-semibold">
+                    <span class="w-[30px] h-[30px] rounded-lg bg-primary-soft text-primary-dark flex items-center justify-center">
+                      <i class="fa-solid fa-money-bill-wave"></i>
+                    </span>
+                    Petty Cash
+                  </div>
+                  <div class="font-mono text-[12.5px] font-semibold text-primary">₹60,000</div>
+                </div>
+                <div class="flex items-center justify-between px-4 py-3.5 table-row-hover">
+                  <div class="flex items-center gap-2.5 text-[13px] font-semibold">
+                    <span class="w-[30px] h-[30px] rounded-lg bg-primary-soft text-primary-dark flex items-center justify-center">
+                      <i class="fa-solid fa-money-check"></i>
+                    </span>
+                    Payment Clearing
+                  </div>
+                  <div class="font-mono text-[12.5px] font-semibold text-primary">₹1,04,822</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== ALERTS & QUICK ACTIONS ===== -->
+          <div class="grid lg:grid-cols-3 gap-4">
+
+            <!-- Alerts -->
+            <div class="card lg:col-span-2">
+              <div class="card-header">
+                <div class="card-title">Alerts &amp; Notifications</div>
+                <a href="/notifications/notifications.html" class="text-[11px] font-semibold text-primary hover:underline">View All</a>
+              </div>
+              <div class="card-body p-4">
+                <div class="alert-item">
+                  <div class="alert-icon ai-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                  <div class="flex-1">
+                    <div class="alert-title">Low Stock Alert: Chemical Dosing Pump</div>
+                    <div class="alert-desc">Stock is 3 units (Reorder level: 5 units). Please reorder soon.</div>
+                    <div class="alert-time">10 minutes ago</div>
+                  </div>
+                </div>
+                <div class="alert-item">
+                  <div class="alert-icon ai-amber"><i class="fa-solid fa-clock"></i></div>
+                  <div class="flex-1">
+                    <div class="alert-title">Invoice Overdue: INV/25-26/002</div>
+                    <div class="alert-desc">Invoice for ABC Enterprises (₹1,41,865) is 5 days overdue.</div>
+                    <div class="alert-time">1 hour ago</div>
+                  </div>
+                </div>
+                <div class="alert-item">
+                  <div class="alert-icon ai-blue"><i class="fa-solid fa-check"></i></div>
+                  <div class="flex-1">
+                    <div class="alert-title">Purchase Order Awaiting Approval</div>
+                    <div class="alert-desc">PO/25-26/005 for Premium Raw Materials (₹2,18,500) needs approval.</div>
+                    <div class="alert-time">2 hours ago</div>
+                  </div>
+                </div>
+                <div class="alert-item">
+                  <div class="alert-icon ai-green"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                  <div class="flex-1">
+                    <div class="alert-title">Payment Received: ₹1,00,000</div>
+                    <div class="alert-desc">Payment received from XYZ Retail Store against INV/25-26/001.</div>
+                    <div class="alert-time">3 hours ago</div>
+                  </div>
+                </div>
+                <div class="alert-item">
+                  <div class="alert-icon ai-purple"><i class="fa-solid fa-bullseye"></i></div>
+                  <div class="flex-1">
+                    <div class="alert-title">Project Budget Alert: PRJ-001</div>
+                    <div class="alert-desc">Operation &amp; Supervision — WHE budget usage reached 62%.</div>
+                    <div class="alert-time">5 hours ago</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Quick Actions</div>
+              </div>
+              <div class="card-body p-4">
+                <div class="space-y-2">
+                  <a href="/invoices/invoices.html" class="quick-action">
+                    <div class="qa-icon"><i class="fa-solid fa-file-invoice"></i></div>
+                    <div>
+                      <div class="qa-label">New Invoice</div>
+                      <div class="qa-desc">Create tax invoice</div>
+                    </div>
+                  </a>
+                  <a href="/purchaseOrders/purchaseOrders.html" class="quick-action">
+                    <div class="qa-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                    <div>
+                      <div class="qa-label">New Purchase Order</div>
+                      <div class="qa-desc">Order from vendor</div>
+                    </div>
+                  </a>
+                  <a href="/customer-payments/customer-payments.html" class="quick-action">
+                    <div class="qa-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                    <div>
+                      <div class="qa-label">Record Payment</div>
+                      <div class="qa-desc">Customer receipt</div>
+                    </div>
+                  </a>
+                  <a href="/expenses/expenses.html" class="quick-action">
+                    <div class="qa-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+                    <div>
+                      <div class="qa-label">Log Expense</div>
+                      <div class="qa-desc">Record business expense</div>
+                    </div>
+                  </a>
+                  <a href="/projects/projects.html" class="quick-action">
+                    <div class="qa-icon"><i class="fa-solid fa-folder"></i></div>
+                    <div>
+                      <div class="qa-label">New Project</div>
+                      <div class="qa-desc">Start a new project</div>
+                    </div>
+                  </a>
+                  <a href="/timetracking/timetracking.html" class="quick-action">
+                    <div class="qa-icon"><i class="fa-solid fa-clock"></i></div>
+                    <div>
+                      <div class="qa-label">Log Time</div>
+                      <div class="qa-desc">Track billable hours</div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </main>
-      <!-- ============= PAGE CONTENT ENDS HERE ============= -->
     </div>
   </div>
 
+  <!-- ========================================================== -->
+  <!-- SCRIPTS -->
+  <!-- ========================================================== -->
+
   <script src="/assets/js/nav-sidebar.js"></script>
   <script>
+    // =============================================================
+    // NAV-SIDEBAR INIT
+    // =============================================================
     NavSidebar.init({
       basePath: "",
       activePage: "dashboard",
@@ -80,10 +930,49 @@
       user: {
         name: "Admin",
         role: "Super Admin",
-        avatarUrl: "", 
+        avatarUrl: "",
       },
     });
 
+    // =============================================================
+    // TOAST
+    // =============================================================
+    function showToast(message, kind) {
+      kind = kind || 'success';
+      var wrap = document.getElementById('toastWrap');
+      if (!wrap) {
+        wrap = document.createElement('div');
+        wrap.id = 'toastWrap';
+        wrap.className = 'fixed bottom-5 right-5 z-[200] flex flex-col gap-2 items-end';
+        document.body.appendChild(wrap);
+      }
+      var colors = {
+        success: 'background:#16a34a',
+        info: 'background:#6da84c',
+        warning: 'background:#f59e0b',
+        error: 'background:#dc2626'
+      };
+      var el = document.createElement('div');
+      el.style.cssText = colors[kind] + ';color:white;font-size:12px;font-weight:600;padding:8px 14px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);max-width:280px;';
+      el.innerHTML = '<span>' + message + '</span>';
+      wrap.appendChild(el);
+      setTimeout(function() {
+        el.style.transition = 'opacity .3s';
+        el.style.opacity = '0';
+        setTimeout(function() { el.remove(); }, 300);
+      }, 2600);
+    }
+
+    // =============================================================
+    // INIT
+    // =============================================================
+
+    console.log('📊 Dashboard Module Loaded Successfully');
+    console.log('💰 Business metrics displayed');
+    console.log('📈 Charts: Income/Expense, Cash Flow (working)');
+    console.log('📁 Projects, Banking, Alerts loaded');
+
   </script>
+
 </body>
 </html>
