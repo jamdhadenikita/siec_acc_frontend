@@ -337,7 +337,7 @@
     '      <li class="sidebar-nav-heading"><span>Finance</span></li>',
 
     '      <li class="sidebar-nav-item">',
-    '        <a href="/gst-tax/gst-tax.html" class="sidebar-nav-link" data-page="gsttax">',
+    '        <a href="/gst-tax/gst-tax.html" class="sidebar-nav-link" data-page="gst-tax">',
     '          <span class="sidebar-nav-icon"><i class="fa-solid fa-shield-halved"></i></span>',
     '          <span class="sidebar-nav-label">GST / Tax</span>',
     '          <span class="sidebar-tooltip">GST / Tax</span>',
