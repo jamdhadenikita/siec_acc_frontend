@@ -76,6 +76,17 @@
   .form-label .required { color: #ef4444; margin-left: 2px; }
   .form-hint { font-size: 9.5px; color: #9ca3af; margin-top: 2px; }
 
+  .form-subsection-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #6da84c;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eef5e8;
+  }
+
   .badge {
     display: inline-flex;
     align-items: center;
@@ -105,9 +116,136 @@
   .badge-dot-purple { background: #8b5cf6; }
 
   .stat-card {
+    border: 1px solid #6da84c;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
     padding: 10px 14px !important;
   }
+
+  /* Inline per-table filters (replaces the dropdown Filter button) */
+  .inline-filter-select {
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    color: #374151;
+    font-size: 10.5px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 6px 9px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    max-width: 150px;
+  }
+  .inline-filter-select:hover { border-color: #d1d5db; }
+  .inline-filter-select:focus {
+    border-color: #6da84c;
+    box-shadow: 0 0 0 3px rgba(109, 168, 76, 0.15);
+  }
+
+  /* Reset-filters button (distinct from row delete/danger buttons) */
+  .inline-filter-reset {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 29px;
+    padding: 0 10px;
+    border-radius: 8px;
+    border: 1px solid #d7e8cc;
+    background: #f4f9f0;
+    color: #5c9140;
+    font-size: 10.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .inline-filter-reset:hover {
+    background: #eef5e8;
+    border-color: #6da84c;
+    color: #4a7633;
+  }
+  .inline-filter-reset svg { flex-shrink: 0; }
+
+  /* Table filter bar (sits directly above the table, inside the panel) */
+  .table-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 10px 16px;
+    background: #fafbfc;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .table-filter-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-right: 2px;
+    white-space: nowrap;
+  }
+
+  /* Pagination bar (bottom of table) */
+  .pagination-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 16px;
+    border-top: 1px solid #f1f5f9;
+    background: #fafbfc;
+  }
+  .pagination-info {
+    font-size: 10.5px;
+    color: #6b7280;
+    font-weight: 500;
+  }
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .pagination-size-select {
+    border: 1px solid #6da84c;
+    background: #fff;
+    color: #374151;
+    font-size: 10.5px;
+    font-weight: 600;
+    border-radius: 7px;
+    padding: 5px 7px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+  .pagination-size-select:hover { border-color: #5c9140; }
+  .pagination-size-select:focus {
+    border-color: #6da84c;
+    box-shadow: 0 0 0 3px rgba(109, 168, 76, 0.15);
+  }
+  .pagination-page-label {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #374151;
+    white-space: nowrap;
+    padding: 0 3px;
+  }
+  .pagination-btn {
+    width: 25px;
+    height: 25px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    color: #4b5563;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .pagination-btn:hover:not(:disabled) { background: #eef5e8; color: #5c9140; border-color: #cfe3c1; }
+  .pagination-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .stat-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
@@ -388,6 +526,22 @@
     text-align: right;
     font-size: 13px;
   }
+
+  /* Transport Details block */
+  .transport-block {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+  }
+  .transport-block .meta-label {
+    font-weight: 600;
+    color: #6b7280;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
 </style>
 </head>
 
@@ -411,37 +565,9 @@
             <div>
               <div class="page-breadcrumb">Sales</div>
               <h1 class="page-title text-gray-900">Delivery Challan</h1>
-              <p class="page-subtitle mt-0.5">Record physical delivery of goods. Generate Packing List (Enhancement #6).</p>
+              <!-- <p class="page-subtitle mt-0.5">Record physical delivery of goods. Generate Packing List (Enhancement #6).</p> -->
             </div>
-            <div class="flex gap-2 flex-wrap">
-              <div class="relative inline-block" data-dd-trigger>
-                <button onclick="toggleFilterDD()" class="filter-btn inline-flex items-center gap-1.5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-semibold rounded-lg transition">
-                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 6h18M7 12h10M11 18h2"/>
-                  </svg>
-                  Filter
-                  <span id="filterBadge" class="hidden text-[9px] bg-primary text-white px-1.5 py-0.5 rounded-full">0</span>
-                </button>
-                <div id="filterDD" data-dd-menu class="hidden absolute top-full left-0 mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-lg p-3 z-50">
-                  <div class="mb-2">
-                    <label class="text-[9px] font-semibold text-gray-500 uppercase tracking-wide">Status</label>
-                    <select id="filterStatus" onchange="filterDC()" class="form-input text-[10px]">
-                      <option value="all">All Status</option>
-                      <option value="draft">Draft</option>
-                      <option value="dispatched">Dispatched</option>
-                      <option value="delivered">Delivered</option>
-                    </select>
-                  </div>
-                  <div class="mb-2">
-                    <label class="text-[9px] font-semibold text-gray-500 uppercase tracking-wide">Customer</label>
-                    <select id="filterCustomer" onchange="filterDC()" class="form-input text-[10px]">
-                      <option value="all">All Customers</option>
-                    </select>
-                  </div>
-                  <button onclick="clearFilters()" class="text-[10px] text-primary font-semibold hover:underline">Clear Filters</button>
-                </div>
-              </div>
-
+            <div class="flex gap-2 flex-wrap items-center">
               <button onclick="openAddDC()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[11px] font-semibold px-3 py-2 rounded-lg transition shadow-sm">
                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <path d="M12 5v14M5 12h14"/>
@@ -453,19 +579,19 @@
 
           <!-- ===== STATS CARDS ===== -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-4">
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
+            <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
               <div class="stat-label">Total</div>
               <div class="stat-value" id="totalDC">0</div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
+            <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
               <div class="stat-label">Draft</div>
               <div class="stat-value text-gray-500" id="draftDC">0</div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
+            <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
               <div class="stat-label">Dispatched</div>
               <div class="stat-value text-blue-600" id="dispatchedDC">0</div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
+            <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
               <div class="stat-label">Delivered</div>
               <div class="stat-value text-green-600" id="deliveredDC">0</div>
             </div>
@@ -540,6 +666,12 @@
     }
     function iconPrint() {
       return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>`;
+    }
+    function iconChevronLeft() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>`;
+    }
+    function iconChevronRight() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>`;
     }
 
     // =============================================================
@@ -624,22 +756,6 @@
     function inputBase() { return "form-input"; }
 
     // =============================================================
-    // DROPDOWN
-    // =============================================================
-    document.addEventListener('click', function(e) {
-      if (!e.target.closest('[data-dd-trigger]')) {
-        document.querySelectorAll('[data-dd-menu]').forEach(function(m) { m.classList.add('hidden'); });
-      }
-    });
-
-    function toggleFilterDD() {
-      var menu = document.getElementById('filterDD');
-      var isHidden = menu.classList.contains('hidden');
-      document.querySelectorAll('[data-dd-menu]').forEach(function(m) { m.classList.add('hidden'); });
-      if (isHidden) menu.classList.remove('hidden');
-    }
-
-    // =============================================================
     // HELPERS
     // =============================================================
     function money(n) { return '₹' + Number(n).toLocaleString('en-IN'); }
@@ -675,7 +791,7 @@
 
     function panelWrap(titleHtml, bodyHtml, extraHead) {
       return `
-        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+        <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm overflow-hidden">
           <div class="flex items-center justify-between gap-3 flex-wrap px-4 py-2.5 border-b border-gray-100">
             <div class="font-semibold text-sm text-gray-800 flex items-center gap-2">${titleHtml}</div>
             ${extraHead || ''}
@@ -747,6 +863,10 @@
         packageType: 'Cardboard Box',
         dimensions: '30x20x15 cm',
         totalWeight: '15.5 Kg',
+        transporterName: 'Sharma Road Carriers',
+        vehicleNumber: 'DL-01-AB-1234',
+        ewayBillNumber: 'EWB-2401120012345',
+        driverContact: '+91-9811122233',
         created: true
       },
       notes: 'Delivered to warehouse',
@@ -770,6 +890,10 @@
         packageType: 'Wooden Crate',
         dimensions: '120x80x60 cm',
         totalWeight: '85 Kg',
+        transporterName: 'VRL Logistics',
+        vehicleNumber: 'MH-12-CD-5678',
+        ewayBillNumber: 'EWB-2401200098765',
+        driverContact: '',
         created: true
       },
       notes: 'Dispatched via surface transport',
@@ -792,6 +916,10 @@
         packageType: '',
         dimensions: '',
         totalWeight: '',
+        transporterName: '',
+        vehicleNumber: '',
+        ewayBillNumber: '',
+        driverContact: '',
         created: false
       },
       notes: 'Pending packing',
@@ -814,6 +942,10 @@
         packageType: 'Cardboard Box',
         dimensions: '40x30x25 cm',
         totalWeight: '22 Kg',
+        transporterName: 'Blue Dart Express',
+        vehicleNumber: 'KA-05-EF-9012',
+        ewayBillNumber: 'EWB-2402010054321',
+        driverContact: '+91-9845566778',
         created: true
       },
       notes: 'Express delivery',
@@ -837,6 +969,10 @@
         packageType: 'Export Grade Box',
         dimensions: '100x80x70 cm',
         totalWeight: '120 Kg',
+        transporterName: 'Global Freight Forwarders',
+        vehicleNumber: 'DL-03-GH-3456',
+        ewayBillNumber: 'EWB-2402080011223',
+        driverContact: '+91-9900112233',
         created: true
       },
       notes: 'Export documentation attached',
@@ -844,6 +980,58 @@
     }];
 
     var nextDCNo = 6;
+
+    // =============================================================
+    // FILTER STATE (persists across re-renders since the controls
+    // now live inside the table panel and get rebuilt each render)
+    // =============================================================
+    var dcFilterState = { status: 'all', customer: 'all' };
+
+    // =============================================================
+    // PAGINATION (DC table)
+    // =============================================================
+    var dcPageState = { page: 1, pageSize: 10 };
+
+    function paginateList(list, state) {
+      var totalItems = list.length;
+      var totalPages = Math.max(1, Math.ceil(totalItems / state.pageSize));
+      if (state.page > totalPages) state.page = totalPages;
+      if (state.page < 1) state.page = 1;
+      var start = (state.page - 1) * state.pageSize;
+      return { pageItems: list.slice(start, start + state.pageSize), totalItems: totalItems, totalPages: totalPages };
+    }
+
+    function paginationBarHtml(totalItems, state) {
+      var totalPages = Math.max(1, Math.ceil(totalItems / state.pageSize));
+      var start = totalItems === 0 ? 0 : (state.page - 1) * state.pageSize + 1;
+      var end = Math.min(totalItems, state.page * state.pageSize);
+      return `
+        <div class="pagination-bar">
+          <div class="pagination-info">Showing ${start}–${end} of ${totalItems}</div>
+          <div class="pagination-controls">
+            <select class="pagination-size-select" onchange="changeDCPageSize(this.value)">
+              <option value="10" ${state.pageSize === 10 ? 'selected' : ''}>10</option>
+              <option value="25" ${state.pageSize === 25 ? 'selected' : ''}>25</option>
+              <option value="50" ${state.pageSize === 50 ? 'selected' : ''}>50</option>
+              <option value="100" ${state.pageSize === 100 ? 'selected' : ''}>100</option>
+            </select>
+            <button type="button" class="pagination-btn" onclick="goToDCPage(${state.page - 1})" ${state.page <= 1 ? 'disabled' : ''} title="Previous page">${iconChevronLeft()}</button>
+            <span class="pagination-page-label">Page ${state.page} of ${totalPages}</span>
+            <button type="button" class="pagination-btn" onclick="goToDCPage(${state.page + 1})" ${state.page >= totalPages ? 'disabled' : ''} title="Next page">${iconChevronRight()}</button>
+          </div>
+        </div>`;
+    }
+
+    function goToDCPage(page) {
+      dcPageState.page = page;
+      renderDC(true);
+    }
+
+    function changeDCPageSize(size) {
+      dcPageState.pageSize = Number(size);
+      dcPageState.page = 1;
+      renderDC(true);
+    }
 
     // =============================================================
     // FUNCTIONS
@@ -864,21 +1052,38 @@
       document.getElementById('draftDC').textContent = draft;
       document.getElementById('dispatchedDC').textContent = dispatched;
       document.getElementById('deliveredDC').textContent = delivered;
+    }
 
-      var filterCustomer = document.getElementById('filterCustomer');
-      var currentVal = filterCustomer.value;
-      filterCustomer.innerHTML = '<option value="all">All Customers</option>';
-      customers.forEach(function(c) {
-        filterCustomer.innerHTML += '<option value="' + c.id + '">' + c.name + '</option>';
-      });
-      filterCustomer.value = currentVal;
+    // Builds the filter bar that sits directly above the table, inside
+    // the same panel, so it's visually tied to the table it filters.
+    function tableFilterBarHtml() {
+      var statusOptions = ['all', 'draft', 'dispatched', 'delivered'].map(function(s) {
+        var label = s === 'all' ? 'All Status' : s.charAt(0).toUpperCase() + s.slice(1);
+        return '<option value="' + s + '" ' + (dcFilterState.status === s ? 'selected' : '') + '>' + label + '</option>';
+      }).join('');
+
+      var customerOptions = '<option value="all" ' + (dcFilterState.customer === 'all' ? 'selected' : '') + '>All Customers</option>' +
+        customers.map(function(c) {
+          return '<option value="' + c.id + '" ' + (dcFilterState.customer === c.id ? 'selected' : '') + '>' + c.name + '</option>';
+        }).join('');
+
+      return `
+        <div class="table-filter-bar">
+          <span class="table-filter-label flex items-center gap-1">${iconFilter()} Filter</span>
+          <select id="filterStatus" onchange="filterDC()" class="inline-filter-select">${statusOptions}</select>
+          <select id="filterCustomer" onchange="filterDC()" class="inline-filter-select">${customerOptions}</select>
+          <button onclick="clearFilters()" class="inline-filter-reset" title="Reset filters">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 019-9 9 9 0 016.36 2.64L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 01-9 9 9 9 0 01-6.36-2.64L3 16"/><path d="M3 21v-5h5"/></svg>
+            Reset
+          </button>
+        </div>`;
     }
 
     function getFilteredDC() {
       var searchInput = document.getElementById('searchInput');
       var q = searchInput ? searchInput.value.toLowerCase() : '';
-      var status = document.getElementById('filterStatus').value || 'all';
-      var customer = document.getElementById('filterCustomer').value || 'all';
+      var status = dcFilterState.status || 'all';
+      var customer = dcFilterState.customer || 'all';
 
       return deliveryChallans.filter(function(dc) {
         var matchSearch = dc.number.toLowerCase().indexOf(q) !== -1 ||
@@ -890,8 +1095,10 @@
       });
     }
 
-    function renderDC() {
+    function renderDC(keepPage) {
       var filtered = getFilteredDC();
+      if (!keepPage) dcPageState.page = 1;
+      var page = paginateList(filtered, dcPageState);
 
       var rowsHtml = '';
       if (filtered.length === 0) {
@@ -904,7 +1111,7 @@
             </td>
           </tr>`;
       } else {
-        rowsHtml = filtered.map(function(dc) {
+        rowsHtml = page.pageItems.map(function(dc) {
           var hasPL = dc.packingList && dc.packingList.created;
           return `
             <tr class="border-b border-gray-100 table-row-hover">
@@ -928,25 +1135,35 @@
         }).join('');
       }
 
-      var panelHtml = panelWrap(
-        'Delivery Challans <span class="text-[10px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + filtered.length + '</span>',
-        tableHtml(['DC #', 'Date', 'Customer', 'SO Reference', 'Items', 'Status', 'Packing List', 'Actions'], rowsHtml),
-        '<div class="flex items-center gap-2"><span class="text-[10px] text-gray-400">Show:</span><select id="pageSizeSelect" onchange="renderDC()" class="text-[10px] border border-gray-200 rounded-lg px-2 py-1 bg-white outline-none"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select></div>'
-      );
+      // Build the panel with the filter bar sitting directly above the table
+      var panelHtml = `
+        <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm overflow-hidden">
+          <div class="flex items-center justify-between gap-3 flex-wrap px-4 py-2.5 border-b border-gray-100">
+            <div class="font-semibold text-sm text-gray-800 flex items-center gap-2">Delivery Challans <span class="text-[10px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">${filtered.length}</span></div>
+          </div>
+          ${tableFilterBarHtml()}
+          ${tableHtml(['DC ', 'Date', 'Customer', 'SO Reference', 'Items', 'Status', 'Packing List', 'Actions'], rowsHtml)}
+          ${paginationBarHtml(filtered.length, dcPageState)}
+        </div>`;
 
       document.getElementById('dcPanel').innerHTML = panelHtml;
       renderStats();
     }
 
-    function filterDC() { renderDC(); }
+    function filterDC() {
+      var fStatus = document.getElementById('filterStatus');
+      var fCustomer = document.getElementById('filterCustomer');
+      if (fStatus) dcFilterState.status = fStatus.value;
+      if (fCustomer) dcFilterState.customer = fCustomer.value;
+      renderDC();
+    }
 
     function clearFilters() {
-      document.getElementById('filterStatus').value = 'all';
-      document.getElementById('filterCustomer').value = 'all';
+      dcFilterState.status = 'all';
+      dcFilterState.customer = 'all';
       var searchInput = document.getElementById('searchInput');
       if (searchInput) searchInput.value = '';
       renderDC();
-      toggleFilterDD();
     }
 
     // =============================================================
@@ -994,7 +1211,7 @@
                 <div class="text-xs text-gray-500">${dc.customerAddress || ''}</div>
               </div>
               <div style="text-align:right;">
-                <div><span class="meta-label">DC #</span> <span class="meta-value">${dc.number}</span></div>
+                <div><span class="meta-label">DC </span> <span class="meta-value">${dc.number}</span></div>
                 <div><span class="meta-label">Date</span> <span class="meta-value">${dc.date}</span></div>
                 <div><span class="meta-label">SO Reference</span> <span class="meta-value">${dc.soReference || '—'}</span></div>
                 <div><span class="meta-label">Status</span> ${statusBadge(dc.status)}</div>
@@ -1017,6 +1234,8 @@
               </thead>
               <tbody>${itemsHtml}</tbody>
             </table>
+
+            ${hasPL ? transportDetailsBlockHtml(dc.packingList) : ''}
 
             ${dc.notes ? `<div class="text-xs text-gray-500 mt-2"><strong>Notes:</strong> ${dc.notes}</div>` : ''}
 
@@ -1042,18 +1261,34 @@
     }
 
     // =============================================================
-    // PACKING LIST FUNCTIONS (Enhancement #6)
+    // PACKING LIST + TRANSPORT DETAILS FUNCTIONS (Enhancement #6)
     // =============================================================
+
+    function transportDetailsBlockHtml(pl) {
+      var hasAny = pl.transporterName || pl.vehicleNumber || pl.ewayBillNumber || pl.driverContact;
+      if (!hasAny) return '';
+      return `
+        <div class="transport-block">
+          <div class="meta-label mb-1.5">Transport Details</div>
+          <div class="grid grid-cols-2 gap-2 text-xs text-gray-700">
+            <div><span class="text-gray-500">Transporter:</span> <span class="font-semibold">${pl.transporterName || '—'}</span></div>
+            <div><span class="text-gray-500">Vehicle No.:</span> <span class="font-semibold">${pl.vehicleNumber || '—'}</span></div>
+            <div><span class="text-gray-500">E-way Bill No.:</span> <span class="font-semibold">${pl.ewayBillNumber || '—'}</span></div>
+            <div><span class="text-gray-500">Driver Contact:</span> <span class="font-semibold">${pl.driverContact || '—'}</span></div>
+          </div>
+        </div>`;
+    }
 
     function generatePackingList(id) {
       var dc = deliveryChallans.find(function(x) { return x.id === id; });
       if (!dc) return;
 
-      // Open modal to enter packing list details
+      // Open modal to enter packing list + transport details
       var modalContent = `
         ${modalHeader('Generate Packing List', dc.number)}
         <div class="px-5 py-4 modal-scroll">
 
+          <div class="form-subsection-label">Package Details</div>
           <div class="grid grid-cols-2 gap-3">
             ${fld('Package Count *', '<input type="number" class="form-input" id="pl_packages" value="' + (dc.packingList && dc.packingList.packages ? dc.packingList.packages : 1) + '" placeholder="Number of packages">')}
             ${fld('Package Type', '<select class="form-input" id="pl_type"><option ' + (dc.packingList && dc.packingList.packageType === 'Cardboard Box' ? 'selected' : '') + '>Cardboard Box</option><option ' + (dc.packingList && dc.packingList.packageType === 'Wooden Crate' ? 'selected' : '') + '>Wooden Crate</option><option ' + (dc.packingList && dc.packingList.packageType === 'Plastic Container' ? 'selected' : '') + '>Plastic Container</option><option ' + (dc.packingList && dc.packingList.packageType === 'Export Grade Box' ? 'selected' : '') + '>Export Grade Box</option><option ' + (dc.packingList && dc.packingList.packageType === 'Pallet' ? 'selected' : '') + '>Pallet</option><option ' + (dc.packingList && dc.packingList.packageType === 'Other' ? 'selected' : '') + '>Other</option></select>')}
@@ -1061,6 +1296,16 @@
           <div class="grid grid-cols-2 gap-3">
             ${fld('Dimensions (LxWxH)', '<input type="text" class="form-input" id="pl_dimensions" value="' + (dc.packingList && dc.packingList.dimensions ? dc.packingList.dimensions : '') + '" placeholder="e.g. 30x20x15 cm">')}
             ${fld('Total Weight', '<input type="text" class="form-input" id="pl_weight" value="' + (dc.packingList && dc.packingList.totalWeight ? dc.packingList.totalWeight : '') + '" placeholder="e.g. 15.5 Kg">')}
+          </div>
+
+          <div class="form-subsection-label mt-3">Transport Details</div>
+          <div class="grid grid-cols-2 gap-3">
+            ${fld('Transporter Name', '<input type="text" class="form-input" id="pl_transporterName" value="' + (dc.packingList && dc.packingList.transporterName ? dc.packingList.transporterName : '') + '" placeholder="e.g. Sharma Road Carriers">')}
+            ${fld('Vehicle Number', '<input type="text" class="form-input" id="pl_vehicleNumber" value="' + (dc.packingList && dc.packingList.vehicleNumber ? dc.packingList.vehicleNumber : '') + '" placeholder="e.g. DL-01-AB-1234">')}
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            ${fld('E-way Bill Number', '<input type="text" class="form-input" id="pl_ewayBillNumber" value="' + (dc.packingList && dc.packingList.ewayBillNumber ? dc.packingList.ewayBillNumber : '') + '" placeholder="e.g. EWB-2401120012345">')}
+            ${fld('Driver Contact', '<input type="text" class="form-input" id="pl_driverContact" value="' + (dc.packingList && dc.packingList.driverContact ? dc.packingList.driverContact : '') + '" placeholder="Optional">', 'Optional')}
           </div>
 
           <div class="mt-3 p-3 bg-gray-50 rounded-lg">
@@ -1081,6 +1326,10 @@
       var packageType = document.getElementById('pl_type').value || '';
       var dimensions = document.getElementById('pl_dimensions').value || '';
       var totalWeight = document.getElementById('pl_weight').value || '';
+      var transporterName = document.getElementById('pl_transporterName').value || '';
+      var vehicleNumber = document.getElementById('pl_vehicleNumber').value || '';
+      var ewayBillNumber = document.getElementById('pl_ewayBillNumber').value || '';
+      var driverContact = document.getElementById('pl_driverContact').value || '';
 
       if (packages === 0) {
         showToast('Please enter package count', 'error');
@@ -1092,6 +1341,10 @@
         packageType: packageType,
         dimensions: dimensions,
         totalWeight: totalWeight,
+        transporterName: transporterName,
+        vehicleNumber: vehicleNumber,
+        ewayBillNumber: ewayBillNumber,
+        driverContact: driverContact,
         created: true
       };
 
@@ -1148,7 +1401,7 @@
                 <div class="text-xs text-gray-500">${dc.customerAddress || ''}</div>
               </div>
               <div style="text-align:right;">
-                <div><span class="meta-label">DC #</span> <span class="meta-value">${dc.number}</span></div>
+                <div><span class="meta-label">DC</span> <span class="meta-value">${dc.number}</span></div>
                 <div><span class="meta-label">Date</span> <span class="meta-value">${dc.date}</span></div>
                 <div><span class="meta-label">SO Reference</span> <span class="meta-value">${dc.soReference || '—'}</span></div>
               </div>
@@ -1161,7 +1414,9 @@
               <div><span class="text-gray-500">Total Weight:</span> <span class="font-semibold">${pl.totalWeight || '—'}</span></div>
             </div>
 
-            <table class="pl-table">
+            ${transportDetailsBlockHtml(pl)}
+
+            <table class="pl-table" style="margin-top:12px;">
               <thead>
                 <tr>
                   <th>Description</th>
@@ -1260,7 +1515,7 @@
         <div class="px-5 py-4 modal-scroll">
 
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-            ${fld('DC #', '<input type="text" class="form-input" id="f_number" value="' + e.number + '" disabled>')}
+            ${fld('DC ', '<input type="text" class="form-input" id="f_number" value="' + e.number + '" disabled>')}
             ${fld('Date *', '<input type="date" class="form-input" id="f_date" value="' + e.date + '">')}
             ${fld('Customer *', '<select id="f_customer" class="form-input" onchange="updateAddress()">' + customers.map(function(c) { return '<option ' + (c.id === e.customerId ? 'selected' : '') + ' value="' + c.id + '">' + c.name + '</option>'; }).join('') + '</select>')}
             ${fld('SO Reference', '<select class="form-input" id="f_soReference"><option value="">None</option>' + salesOrders.map(function(so) { return '<option ' + (so.id === e.soReference ? 'selected' : '') + ' value="' + so.number + '">' + so.number + ' - ' + so.customerName + '</option>'; }).join('') + '</select>')}
@@ -1425,7 +1680,7 @@
           soReference: soReference,
           status: status,
           items: itemsData,
-          packingList: { packages: 0, packageType: '', dimensions: '', totalWeight: '', created: false },
+          packingList: { packages: 0, packageType: '', dimensions: '', totalWeight: '', transporterName: '', vehicleNumber: '', ewayBillNumber: '', driverContact: '', created: false },
           notes: notes,
           createdAt: date
         };
