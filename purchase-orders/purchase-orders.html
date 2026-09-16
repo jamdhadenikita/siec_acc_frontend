@@ -8,7 +8,7 @@
 <link rel="manifest" href="/favicon_io/site.webmanifest">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<title>Purchase Orders — Aquilon ERP</title>
+<title>Purchase Management — Aquilon ERP</title>
 
 <script>
   (function () {
@@ -36,350 +36,7 @@
 </script>
 
 <link rel="stylesheet" href="/assets/css/nav-sidebar.css" />
-
-<style>
-  body {
-    font-size: 12px;
-    background: #f3f4f6;
-  }
-
-  .form-input {
-    width: 100%;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    padding: 5px 10px;
-    font-size: 11px;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    background: #fafafa;
-    color: #1a1a2e;
-  }
-  .form-input:focus {
-    border-color: #6da84c;
-    box-shadow: 0 0 0 3px rgba(109, 168, 76, 0.12);
-    background: #ffffff;
-  }
-  .form-input:disabled {
-    background: #f3f4f6;
-    cursor: not-allowed;
-  }
-
-  .form-label {
-    font-size: 10px;
-    font-weight: 600;
-    color: #374151;
-    display: block;
-    margin-bottom: 3px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  .form-label .required { color: #ef4444; margin-left: 2px; }
-  .form-hint { font-size: 9.5px; color: #9ca3af; margin-top: 2px; }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 12px;
-  }
-  .badge-green { background: #dcfce7; color: #166534; }
-  .badge-amber { background: #fef3c7; color: #92400e; }
-  .badge-red { background: #fee2e2; color: #991b1b; }
-  .badge-gray { background: #f1f5f9; color: #475569; }
-  .badge-blue { background: #dbeafe; color: #1e40af; }
-  .badge-purple { background: #ede9fe; color: #5b21b6; }
-  .badge-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  .badge-dot-green { background: #22c55e; }
-  .badge-dot-amber { background: #f59e0b; }
-  .badge-dot-red { background: #ef4444; }
-  .badge-dot-gray { background: #94a3b8; }
-  .badge-dot-blue { background: #3b82f6; }
-  .badge-dot-purple { background: #8b5cf6; }
-
-  .stat-card {
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-    padding: 10px 14px !important;
-  }
-  .stat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  }
-  .stat-card .stat-label {
-    font-size: 9px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #6b7280;
-  }
-  .stat-card .stat-value {
-    font-size: 17px;
-    font-weight: 700;
-    color: #1a1a2e;
-    margin-top: 2px;
-  }
-
-  .table-row-hover:hover {
-    background: #f8fafc;
-  }
-
-  .btn-icon-action {
-    transition: all 0.15s ease;
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #94a3b8;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-  }
-  .btn-icon-action:hover {
-    background: #f1f5f9;
-    color: #6da84c;
-  }
-  .btn-icon-action.danger:hover {
-    background: #fee2e2;
-    color: #ef4444;
-  }
-  .btn-icon-action.primary:hover {
-    background: #eef5e8;
-    color: #6da84c;
-  }
-
-  .toast {
-    animation: fadeIn 0.2s ease;
-    font-size: 12px;
-  }
-  .toast-success { background: #16a34a; }
-  .toast-error { background: #dc2626; }
-  .toast-warning { background: #f59e0b; }
-  .toast-info { background: #6da84c; }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes modalIn {
-    from { opacity: 0; transform: scale(0.96) translateY(6px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-  }
-  .animate-modal { animation: modalIn 0.18s ease; }
-
-  .modal-scroll {
-    max-height: 55vh;
-    overflow-y: auto;
-  }
-  .modal-scroll::-webkit-scrollbar {
-    width: 4px;
-  }
-  .modal-scroll::-webkit-scrollbar-thumb {
-    background: #d1d5db;
-    border-radius: 4px;
-  }
-
-  .empty-icon-svg {
-    opacity: 0.2;
-    width: 40px;
-    height: 40px;
-    color: #94a3b8;
-  }
-
-  .line-item-row:hover {
-    background: #f8fafc;
-  }
-  .line-item-row td {
-    padding: 4px 6px;
-    vertical-align: middle;
-  }
-
-  .page-title {
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  .page-subtitle {
-    font-size: 12px;
-    color: #6b7280;
-  }
-  .page-breadcrumb {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #6da84c;
-  }
-
-  table th {
-    font-size: 9.5px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #6b7280;
-    padding: 8px 12px;
-  }
-  table td {
-    font-size: 12px;
-    padding: 8px 12px;
-  }
-  table td .font-mono {
-    font-size: 11px;
-  }
-
-  .modal-title {
-    font-size: 16px;
-    font-weight: 700;
-  }
-  .modal-subtitle {
-    font-size: 11px;
-    color: #6b7280;
-  }
-
-  .filter-btn {
-    font-size: 11px;
-    padding: 5px 12px;
-  }
-  .filter-btn svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  /* PO Preview */
-  .po-preview {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 24px 28px;
-    max-width: 820px;
-    margin: 0 auto;
-    font-family: 'Inter', system-ui, sans-serif;
-  }
-  .po-preview .po-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    border-bottom: 2px solid #6da84c;
-    padding-bottom: 16px;
-    margin-bottom: 16px;
-  }
-  .po-preview .po-company-name {
-    font-size: 18px;
-    font-weight: 700;
-    color: #1a1a2e;
-  }
-  .po-preview .po-company-details {
-    font-size: 11px;
-    color: #6b7280;
-    line-height: 1.5;
-    margin-top: 4px;
-  }
-  .po-preview .po-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: #6da84c;
-    letter-spacing: 0.04em;
-  }
-  .po-preview .po-meta {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 16px;
-    font-size: 12px;
-  }
-  .po-preview .po-meta .meta-label {
-    font-weight: 600;
-    color: #6b7280;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  .po-preview .po-meta .meta-value {
-    font-weight: 600;
-    color: #1a1a2e;
-  }
-  .po-preview .po-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 12px 0;
-    font-size: 12px;
-  }
-  .po-preview .po-table th {
-    background: #f8fafc;
-    text-align: left;
-    padding: 8px 10px;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: #6b7280;
-    border-bottom: 2px solid #e5e7eb;
-  }
-  .po-preview .po-table td {
-    padding: 8px 10px;
-    border-bottom: 1px solid #f1f5f9;
-  }
-  .po-preview .po-totals {
-    margin-top: 12px;
-    border-top: 2px solid #e5e7eb;
-    padding-top: 12px;
-    text-align: right;
-    font-size: 13px;
-  }
-  .po-preview .po-totals .total-row {
-    display: flex;
-    justify-content: flex-end;
-    gap: 30px;
-    padding: 3px 0;
-  }
-  .po-preview .po-totals .total-row .label {
-    color: #6b7280;
-    font-weight: 500;
-  }
-  .po-preview .po-totals .total-row .value {
-    font-weight: 600;
-    min-width: 120px;
-    text-align: right;
-  }
-  .po-preview .po-totals .grand-total {
-    font-size: 16px;
-    font-weight: 700;
-    color: #6da84c;
-    border-top: 2px solid #6da84c;
-    padding-top: 8px;
-    margin-top: 4px;
-  }
-  .po-preview .po-footer {
-    margin-top: 20px;
-    font-size: 11px;
-    color: #6b7280;
-    border-top: 1px solid #e5e7eb;
-    padding-top: 12px;
-    text-align: center;
-  }
-  .po-preview .po-terms {
-    font-size: 11px;
-    color: #6b7280;
-    margin-top: 8px;
-    padding: 10px 14px;
-    background: #f8fafc;
-    border-radius: 6px;
-  }
-
-  /* Status colors */
-  .status-draft { background: #f1f5f9; color: #475569; }
-  .status-sent { background: #dbeafe; color: #1e40af; }
-  .status-received { background: #dcfce7; color: #166534; }
-  .status-partial { background: #fef3c7; color: #92400e; }
-</style>
+<link rel="stylesheet" href="/purchase-orders/purchase.css" />
 </head>
 
 <body class="bg-gray-50 text-gray-800 antialiased text-sm">
@@ -392,6 +49,7 @@
 
       <main class="p-3 sm:p-4 lg:p-5">
 
+        <!-- Shared toast + modal mount points (one modal is open at a time across all 4 modules) -->
         <div id="toastWrap" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2 items-end"></div>
         <div id="modalRoot"></div>
 
@@ -401,74 +59,261 @@
           <div class="flex flex-wrap items-start justify-between gap-3 mb-4">
             <div>
               <div class="page-breadcrumb">Purchase</div>
-              <h1 class="page-title text-gray-900">Purchase Orders</h1>
-              <p class="page-subtitle mt-0.5">Place formal orders with vendors. Track approval and receipt status.</p>
+              <h1 class="page-title text-gray-900">Purchase Management</h1>
+              <!-- <p class="page-subtitle mt-0.5">Raise requirements, issue orders, record what arrives, and bill it — the full purchase-to-pay flow in one place.</p> -->
             </div>
-            <div class="flex gap-2 flex-wrap">
-              <div class="relative inline-block" data-dd-trigger>
-                <button onclick="toggleFilterDD()" class="filter-btn inline-flex items-center gap-1.5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-semibold rounded-lg transition">
-                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 6h18M7 12h10M11 18h2"/>
-                  </svg>
-                  Filter
-                  <span id="filterBadge" class="hidden text-[9px] bg-primary text-white px-1.5 py-0.5 rounded-full">0</span>
-                </button>
-                <div id="filterDD" data-dd-menu class="hidden absolute top-full left-0 mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-lg p-3 z-50">
-                  <div class="mb-2">
-                    <label class="text-[9px] font-semibold text-gray-500 uppercase tracking-wide">Status</label>
-                    <select id="filterStatus" onchange="filterPO()" class="form-input text-[10px]">
-                      <option value="all">All Status</option>
-                      <option value="draft">Draft</option>
-                      <option value="sent">Sent</option>
-                      <option value="partial">Partially Received</option>
-                      <option value="received">Received</option>
-                    </select>
-                  </div>
-                  <div class="mb-2">
-                    <label class="text-[9px] font-semibold text-gray-500 uppercase tracking-wide">Vendor</label>
-                    <select id="filterVendor" onchange="filterPO()" class="form-input text-[10px]">
-                      <option value="all">All Vendors</option>
-                    </select>
-                  </div>
-                  <button onclick="clearFilters()" class="text-[10px] text-primary font-semibold hover:underline">Clear Filters</button>
-                </div>
+          </div>
+
+          <!-- ===== MODULE TABS ===== -->
+          <div class="module-tabs mb-4">
+            <button class="module-tab-btn active" data-module="pr" onclick="switchModuleTab('pr')">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg>
+              Purchase Requirement
+            </button>
+            <button class="module-tab-btn" data-module="po" onclick="switchModuleTab('po')">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6"/></svg>
+              Purchase Orders
+            </button>
+            <button class="module-tab-btn" data-module="grn" onclick="switchModuleTab('grn')">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+              Goods Receipt
+            </button>
+            <button class="module-tab-btn" data-module="pb" onclick="switchModuleTab('pb')">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6"/></svg>
+              Purchase Bills
+            </button>
+          </div>
+
+          <!-- =========================================================
+               MODULE: PURCHASE REQUIREMENT
+               ========================================================= -->
+          <section class="module-tab-panel" data-module="pr">
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div>
+                <h2 class="module-title">Purchase Requirements</h2>
+                <!-- <p class="module-subtitle">Raise a material request — from a project, a sales order, or plain stock replenishment — and route it for approval before it becomes a Purchase Order.</p> -->
               </div>
+              <div class="flex gap-2 flex-wrap items-center">
+                <div class="relative flex-1 min-w-[180px] max-w-[260px]">
+                  <input type="text" id="search-pr" placeholder="Search requirements by number, requester…" onkeyup="renderPR()"
+                    class="w-full border border-gray-200 bg-white rounded-lg pl-3 pr-3 py-1.5 text-xs outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition placeholder:text-gray-400">
+                </div>
+                <!-- Inline table filters (no dropdown) -->
+                <select id="filterPriority-pr" onchange="filterPR()" class="inline-filter-select">
+                  <option value="all">All Priority</option>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+                <select id="filterStatus-pr" onchange="filterPR()" class="inline-filter-select">
+                  <option value="all">All Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="approved">Approved</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+                <button onclick="clearFiltersPR()" class="inline-filter-reset" title="Reset filters">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 019-9 9 9 0 016.36 2.64L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 01-9 9 9 9 0 01-6.36-2.64L3 16"/><path d="M3 21v-5h5"/></svg>
+                  Reset
+                </button>
+                <button onclick="openAddPR()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[11px] font-semibold px-3 py-2 rounded-lg transition shadow-sm">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                  New Requirement
+                </button>
+              </div>
+            </div>
 
-              <button onclick="openAddPO()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[11px] font-semibold px-3 py-2 rounded-lg transition shadow-sm">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M12 5v14M5 12h14"/>
-                </svg>
-                New Purchase Order
-              </button>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-4">
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Total</div>
+                <div class="stat-value" id="totalPR">0</div>
+              </div>
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Pending Approval</div>
+                <div class="stat-value text-amber-600" id="pendingPR">0</div>
+              </div>
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Approved</div>
+                <div class="stat-value text-green-600" id="approvedPR">0</div>
+              </div>
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Rejected</div>
+                <div class="stat-value text-red-600" id="rejectedPR">0</div>
+              </div>
             </div>
-          </div>
 
-          <!-- ===== STATS CARDS ===== -->
-          <div class="grid grid-cols-2 md:grid-cols-5 gap-2.5 mb-4">
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Total</div>
-              <div class="stat-value" id="totalPO">0</div>
-            </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Draft</div>
-              <div class="stat-value text-gray-500" id="draftPO">0</div>
-            </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Sent</div>
-              <div class="stat-value text-blue-600" id="sentPO">0</div>
-            </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Received</div>
-              <div class="stat-value text-green-600" id="receivedPO">0</div>
-            </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Total Value</div>
-              <div class="stat-value text-primary" id="totalValue">₹0</div>
-            </div>
-          </div>
+            <div id="prPanel"></div>
+          </section>
 
-          <!-- ===== PURCHASE ORDERS TABLE ===== -->
-          <div id="poPanel"></div>
+          <!-- =========================================================
+               MODULE: PURCHASE ORDERS
+               ========================================================= -->
+          <section class="module-tab-panel hidden" data-module="po">
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div>
+                <h2 class="module-title">Purchase Orders</h2>
+                <!-- <p class="module-subtitle">Issue and track vendor purchase orders from Draft through to Closed, and hand off to Goods Receipt on delivery.</p> -->
+              </div>
+              <div class="flex gap-2 flex-wrap items-center">
+                <div class="relative flex-1 min-w-[180px] max-w-[260px]">
+                  <input type="text" id="search-po" placeholder="Search POs by number, vendor…" onkeyup="renderPO()"
+                    class="w-full border border-gray-200 bg-white rounded-lg pl-3 pr-3 py-1.5 text-xs outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition placeholder:text-gray-400">
+                </div>
+                <select id="filterStatus-po" onchange="filterPO()" class="inline-filter-select">
+                  <option value="all">All Status</option>
+                  <option value="draft">Draft</option>
+                  <option value="approved">Approved</option>
+                  <option value="sent">Sent</option>
+                  <option value="partial">Partial</option>
+                  <option value="fully_received">Fully Received</option>
+                  <option value="closed">Closed</option>
+                </select>
+                <button onclick="clearFiltersPO()" class="inline-filter-reset" title="Reset filters">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 019-9 9 9 0 016.36 2.64L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 01-9 9 9 9 0 01-6.36-2.64L3 16"/><path d="M3 21v-5h5"/></svg>
+                  Reset
+                </button>
+                <button onclick="openAddPO()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[11px] font-semibold px-3 py-2 rounded-lg transition shadow-sm">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                  New Purchase Order
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-2.5 mb-4">
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Total</div>
+                <div class="stat-value" id="totalPO">0</div>
+              </div>
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Draft</div>
+                <div class="stat-value text-gray-500" id="draftPO">0</div>
+              </div>
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Open (Sent/Partial)</div>
+                <div class="stat-value text-amber-600" id="openPO">0</div>
+              </div>
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Fully Received</div>
+                <div class="stat-value text-green-600" id="receivedPO">0</div>
+              </div>
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Total Value</div>
+                <div class="stat-value text-primary" id="totalValuePO">₹0</div>
+              </div>
+            </div>
+
+            <div id="poPanel"></div>
+          </section>
+
+          <!-- =========================================================
+               MODULE: GOODS RECEIPT
+               ========================================================= -->
+          <section class="module-tab-panel hidden" data-module="grn">
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div>
+                <h2 class="module-title">Goods Receipt</h2>
+                <!-- <p class="module-subtitle">Record what actually arrived against a Purchase Order — the missing link between the PO and the Purchase Bill.</p> -->
+              </div>
+              <div class="flex gap-2 flex-wrap items-center">
+                <div class="relative flex-1 min-w-[180px] max-w-[260px]">
+                  <input type="text" id="search-grn" placeholder="Search GRNs by number, PO…" onkeyup="renderGRN()"
+                    class="w-full border border-gray-200 bg-white rounded-lg pl-3 pr-3 py-1.5 text-xs outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition placeholder:text-gray-400">
+                </div>
+                <select id="filterStatus-grn" onchange="filterGRN()" class="inline-filter-select">
+                  <option value="all">All Status</option>
+                  <option value="draft">Draft</option>
+                  <option value="completed">Completed</option>
+                </select>
+                <button onclick="clearFiltersGRN()" class="inline-filter-reset" title="Reset filters">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 019-9 9 9 0 016.36 2.64L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 01-9 9 9 9 0 01-6.36-2.64L3 16"/><path d="M3 21v-5h5"/></svg>
+                  Reset
+                </button>
+                <button onclick="openAddGRN()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[11px] font-semibold px-3 py-2 rounded-lg transition shadow-sm">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                  New Goods Receipt
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-4">
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Total</div>
+                <div class="stat-value" id="totalGRN">0</div>
+              </div>
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Draft</div>
+                <div class="stat-value text-gray-500" id="draftGRN">0</div>
+              </div>
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Completed</div>
+                <div class="stat-value text-green-600" id="completedGRN">0</div>
+              </div>
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Awaiting Bill</div>
+                <div class="stat-value text-amber-600" id="awaitingBillGRN">0</div>
+              </div>
+            </div>
+
+            <div id="grnPanel"></div>
+          </section>
+
+          <!-- =========================================================
+               MODULE: PURCHASE BILLS
+               ========================================================= -->
+          <section class="module-tab-panel hidden" data-module="pb">
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div>
+                <h2 class="module-title">Purchase Bills</h2>
+                <!-- <p class="module-subtitle">Record vendor bills against a PO/GRN and track payments through to Accounts Payable.</p> -->
+              </div>
+              <div class="flex gap-2 flex-wrap items-center">
+                <div class="relative flex-1 min-w-[180px] max-w-[260px]">
+                  <input type="text" id="search-pb" placeholder="Search bills by number, vendor…" onkeyup="renderPB()"
+                    class="w-full border border-gray-200 bg-white rounded-lg pl-3 pr-3 py-1.5 text-xs outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition placeholder:text-gray-400">
+                </div>
+                <select id="filterStatus-pb" onchange="filterPB()" class="inline-filter-select">
+                  <option value="all">All Status</option>
+                  <option value="draft">Draft</option>
+                  <option value="received">Received</option>
+                  <option value="partial">Partially Paid</option>
+                  <option value="paid">Paid</option>
+                  <option value="overdue">Overdue</option>
+                </select>
+                <button onclick="clearFiltersPB()" class="inline-filter-reset" title="Reset filters">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 019-9 9 9 0 016.36 2.64L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 01-9 9 9 9 0 01-6.36-2.64L3 16"/><path d="M3 21v-5h5"/></svg>
+                  Reset
+                </button>
+                <button onclick="openAddPB()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[11px] font-semibold px-3 py-2 rounded-lg transition shadow-sm">
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                  New Purchase Bill
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-2.5 mb-4">
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Total</div>
+                <div class="stat-value" id="totalPB">0</div>
+              </div>
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Unpaid</div>
+                <div class="stat-value text-amber-600" id="unpaidPB">0</div>
+              </div>
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Overdue</div>
+                <div class="stat-value text-red-600" id="overduePB">0</div>
+              </div>
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Paid</div>
+                <div class="stat-value text-green-600" id="paidPB">0</div>
+              </div>
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm stat-card">
+                <div class="stat-label">Total Payable</div>
+                <div class="stat-value text-primary" id="totalPayable">₹0</div>
+              </div>
+            </div>
+
+            <div id="pbPanel"></div>
+          </section>
 
         </div>
       </main>
@@ -478,1060 +323,17 @@
   <!-- ========================================================== -->
   <!-- SCRIPTS -->
   <!-- ========================================================== -->
-
+  <script src="/assets/js/shared-data.js"></script>
   <script src="/assets/js/nav-sidebar.js"></script>
   <script>
-    // =============================================================
-    // NAV-SIDEBAR INIT
-    // =============================================================
     NavSidebar.init({
       basePath: "",
-      activePage: "purchase",
-      pageTitle: "Purchase Orders",
-      user: {
-        name: "Admin",
-        role: "Super Admin",
-        avatarUrl: "",
-      },
+      activePage: "purchaseManagement",
+      pageTitle: "Purchase Management",
+      user: { name: "Admin", role: "Super Admin", avatarUrl: "" },
     });
-
-    // =============================================================
-    // SVG ICONS
-    // =============================================================
-    function iconPlus() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>`;
-    }
-    function iconEdit() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
-    }
-    function iconTrash() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>`;
-    }
-    function iconEye() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
-    }
-    function iconX() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
-    }
-    function iconFilter() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h2"/></svg>`;
-    }
-    function iconSave() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>`;
-    }
-    function iconInfo() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>`;
-    }
-    function iconDocument() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6"/></svg>`;
-    }
-    function iconSearch() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>`;
-    }
-    function iconSend() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>`;
-    }
-    function iconReceive() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>`;
-    }
-    function iconCurrency() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`;
-    }
-
-    // =============================================================
-    // TOAST
-    // =============================================================
-    function showToast(message, kind) {
-      kind = kind || 'success';
-      var wrap = document.getElementById('toastWrap');
-      var colors = {
-        success: 'bg-green-600',
-        info: 'bg-primary',
-        warning: 'bg-amber-600',
-        error: 'bg-red-600'
-      };
-      var el = document.createElement('div');
-      el.className = 'toast ' + colors[kind] + ' text-white font-semibold px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 max-w-xs';
-      el.innerHTML = '<span>' + message + '</span>';
-      wrap.appendChild(el);
-      setTimeout(function() {
-        el.style.transition = 'opacity .3s';
-        el.style.opacity = '0';
-        setTimeout(function() { el.remove(); }, 300);
-      }, 2600);
-    }
-
-    // =============================================================
-    // MODAL
-    // =============================================================
-    function openModal(innerHtml, opts) {
-      opts = opts || {};
-      var root = document.getElementById('modalRoot');
-      root.innerHTML = `
-        <div class="fixed inset-0 z-[100] flex items-center justify-center p-3" id="modalOverlay">
-          <div class="absolute inset-0 bg-black/40 backdrop-blur-[1px]" id="modalBackdrop"></div>
-          <div class="relative bg-white rounded-xl shadow-2xl w-full ${opts.width || 'max-w-4xl'} max-h-[92vh] overflow-hidden animate-modal">
-            ${innerHtml}
-          </div>
-        </div>`;
-      document.getElementById('modalBackdrop').addEventListener('click', closeModal);
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-      var root = document.getElementById('modalRoot');
-      root.innerHTML = '';
-      document.body.style.overflow = '';
-    }
-
-    function modalHeader(title, subtitle) {
-      return `
-        <div class="flex items-start justify-between px-5 py-3.5 border-b border-gray-100 sticky top-0 bg-white z-10">
-          <div>
-            <h3 class="modal-title text-gray-900">${title}</h3>
-            ${subtitle ? '<p class="modal-subtitle mt-0.5">' + subtitle + '</p>' : ''}
-          </div>
-          <button onclick="closeModal()" class="w-7 h-7 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition">${iconX()}</button>
-        </div>`;
-    }
-
-    function modalFooter(saveLabel, onSaveAttr, extraBtns) {
-      return `
-        <div class="flex items-center justify-between gap-2 px-5 py-3 border-t border-gray-100 bg-gray-50 rounded-b-xl sticky bottom-0">
-          <div>${extraBtns || ''}</div>
-          <div class="flex gap-2">
-            <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Cancel</button>
-            <button ${onSaveAttr} class="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-primary-dark transition shadow-sm flex items-center gap-1.5">
-              ${iconSave()} ${saveLabel}
-            </button>
-          </div>
-        </div>`;
-    }
-
-    function fld(label, inputHtml, hint) {
-      return `
-        <div class="mb-2">
-          <label class="form-label">${label}</label>
-          ${inputHtml}
-          ${hint ? '<div class="form-hint">' + hint + '</div>' : ''}
-        </div>`;
-    }
-
-    function inputBase() { return "form-input"; }
-
-    // =============================================================
-    // DROPDOWN
-    // =============================================================
-    document.addEventListener('click', function(e) {
-      if (!e.target.closest('[data-dd-trigger]')) {
-        document.querySelectorAll('[data-dd-menu]').forEach(function(m) { m.classList.add('hidden'); });
-      }
-    });
-
-    function toggleFilterDD() {
-      var menu = document.getElementById('filterDD');
-      var isHidden = menu.classList.contains('hidden');
-      document.querySelectorAll('[data-dd-menu]').forEach(function(m) { m.classList.add('hidden'); });
-      if (isHidden) menu.classList.remove('hidden');
-    }
-
-    // =============================================================
-    // HELPERS
-    // =============================================================
-    function money(n) { return '₹' + Number(n).toLocaleString('en-IN'); }
-
-    function formatCurrency(amount, currency) {
-      var symbols = { INR: '₹', USD: '$', EUR: '€', GBP: '£', AED: 'د.إ' };
-      var symbol = symbols[currency] || '₹';
-      return symbol + Number(amount).toLocaleString('en-IN');
-    }
-
-    function getCurrencySymbol(currency) {
-      var symbols = { INR: '₹', USD: '$', EUR: '€', GBP: '£', AED: 'د.إ' };
-      return symbols[currency] || '₹';
-    }
-
-    function statusBadge(status) {
-      var map = {
-        draft: 'badge-gray',
-        sent: 'badge-blue',
-        partial: 'badge-amber',
-        received: 'badge-green'
-      };
-      var dot = {
-        draft: 'badge-dot-gray',
-        sent: 'badge-dot-blue',
-        partial: 'badge-dot-amber',
-        received: 'badge-dot-green'
-      };
-      var label = status.charAt(0).toUpperCase() + status.slice(1);
-      if (status === 'partial') label = 'Partially Received';
-      return '<span class="badge ' + map[status] + '"><span class="badge-dot ' + dot[status] + '"></span>' + label + '</span>';
-    }
-
-    function rowActionsHtml(editFn, delFn, viewFn, sendFn, receiveFn) {
-      var html = '<div class="flex gap-1">';
-      if (viewFn) {
-        html += '<button onclick="' + viewFn + '" class="btn-icon-action" title="View">' + iconEye() + '</button>';
-      }
-      if (sendFn) {
-        html += '<button onclick="' + sendFn + '" class="btn-icon-action primary" title="Send">' + iconSend() + '</button>';
-      }
-      if (receiveFn) {
-        html += '<button onclick="' + receiveFn + '" class="btn-icon-action primary" title="Mark Received">' + iconReceive() + '</button>';
-      }
-      html += '<button onclick="' + editFn + '" class="btn-icon-action" title="Edit">' + iconEdit() + '</button>';
-      html += '<button onclick="' + delFn + '" class="btn-icon-action danger" title="Delete">' + iconTrash() + '</button>';
-      html += '</div>';
-      return html;
-    }
-
-    function panelWrap(titleHtml, bodyHtml, extraHead) {
-      return `
-        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-          <div class="flex items-center justify-between gap-3 flex-wrap px-4 py-2.5 border-b border-gray-100">
-            <div class="font-semibold text-sm text-gray-800 flex items-center gap-2">${titleHtml}</div>
-            ${extraHead || ''}
-          </div>
-          <div>${bodyHtml}</div>
-        </div>`;
-    }
-
-    function tableHtml(cols, rowsHtml) {
-      var colHeaders = cols.map(function(c) {
-        return '<th class="text-left font-semibold whitespace-nowrap">' + c + '</th>';
-      }).join('');
-      return `
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead>
-              <tr class="bg-gray-50 border-b border-gray-200">${colHeaders}</tr>
-            </thead>
-            <tbody id="tbody-anchor">${rowsHtml}</tbody>
-          </table>
-        </div>`;
-    }
-
-    // =============================================================
-    // DATA
-    // =============================================================
-
-    var vendors = [
-      { id: 'VEN-001', name: 'Global Imports Inc.', gstin: '27AABCU1234D1ZP', state: 'Maharashtra', stateCode: '27' },
-      { id: 'VEN-002', name: 'Local Supplier Co.', gstin: '', state: 'Maharashtra', stateCode: '27' },
-      { id: 'VEN-003', name: 'ABC Distributors', gstin: '24XYZBC1234E1ZP', state: 'Delhi', stateCode: '07' },
-      { id: 'VEN-004', name: 'Tech Components Ltd.', gstin: '29TECH1234H1ZP', state: 'Karnataka', stateCode: '29' },
-      { id: 'VEN-005', name: 'Premium Raw Materials', gstin: '19PRM1234J1ZP', state: 'Kerala', stateCode: '32' },
-    ];
-
-    var items = [
-      { id: 'ITM-1001', name: 'Centrifugal Blower — 5HP', price: 35000, gst: 18, unit: 'Pcs' },
-      { id: 'ITM-1002', name: 'Dual Media Filter Vessel — 500L', price: 95000, gst: 18, unit: 'Pcs' },
-      { id: 'ITM-1003', name: 'Activated Carbon Media', price: 4800, gst: 18, unit: 'Kg' },
-      { id: 'ITM-1004', name: 'PVC Pressure Pipe — 6"', price: 620, gst: 18, unit: 'Mtr' },
-      { id: 'ITM-1005', name: 'Chemical Dosing Pump — 50LPH', price: 21000, gst: 18, unit: 'Pcs' },
-    ];
-
-    var exchangeRates = { INR: 1, USD: 83.5, EUR: 90.2, GBP: 105.8, AED: 22.7 };
-
-    var purchaseOrders = [{
-      id: 'PO-001',
-      number: 'PO/25-26/001',
-      date: '2026-01-12',
-      vendorId: 'VEN-001',
-      vendorName: 'Global Imports Inc.',
-      vendorGST: '27AABCU1234D1ZP',
-      vendorState: 'Maharashtra',
-      vendorStateCode: '27',
-      expectedDelivery: '2026-02-12',
-      paymentTerms: 'Net 30 days',
-      currency: 'INR',
-      exchangeRate: 1,
-      status: 'sent',
-      items: [
-        { itemId: 'ITM-1001', name: 'Centrifugal Blower — 5HP', qty: 2, rate: 35000, gst: 18, unit: 'Pcs' },
-        { itemId: 'ITM-1003', name: 'Activated Carbon Media', qty: 10, rate: 4800, gst: 18, unit: 'Kg' }
-      ],
-      discount: 5,
-      tax: 18,
-      total: 0,
-      totalINR: 0,
-      receivedQty: {},
-      createdAt: '2026-01-12',
-      notes: 'Urgent order for project WHE'
-    }, {
-      id: 'PO-002',
-      number: 'PO/25-26/002',
-      date: '2026-01-18',
-      vendorId: 'VEN-002',
-      vendorName: 'Local Supplier Co.',
-      vendorGST: '',
-      vendorState: 'Maharashtra',
-      vendorStateCode: '27',
-      expectedDelivery: '2026-02-18',
-      paymentTerms: 'Net 15 days',
-      currency: 'INR',
-      exchangeRate: 1,
-      status: 'draft',
-      items: [
-        { itemId: 'ITM-1002', name: 'Dual Media Filter Vessel — 500L', qty: 1, rate: 95000, gst: 18, unit: 'Pcs' },
-        { itemId: 'ITM-1004', name: 'PVC Pressure Pipe — 6"', qty: 20, rate: 620, gst: 18, unit: 'Mtr' }
-      ],
-      discount: 10,
-      tax: 18,
-      total: 0,
-      totalINR: 0,
-      receivedQty: {},
-      createdAt: '2026-01-18',
-      notes: 'Awaiting approval'
-    }, {
-      id: 'PO-003',
-      number: 'PO/25-26/003',
-      date: '2026-01-22',
-      vendorId: 'VEN-003',
-      vendorName: 'ABC Distributors',
-      vendorGST: '24XYZBC1234E1ZP',
-      vendorState: 'Delhi',
-      vendorStateCode: '07',
-      expectedDelivery: '2026-02-22',
-      paymentTerms: 'Net 7 days',
-      currency: 'INR',
-      exchangeRate: 1,
-      status: 'received',
-      items: [
-        { itemId: 'ITM-1005', name: 'Chemical Dosing Pump — 50LPH', qty: 2, rate: 21000, gst: 18, unit: 'Pcs' }
-      ],
-      discount: 0,
-      tax: 18,
-      total: 0,
-      totalINR: 0,
-      receivedQty: { 'ITM-1005': 2 },
-      createdAt: '2026-01-22',
-      notes: 'Complete order received'
-    }, {
-      id: 'PO-004',
-      number: 'PO/25-26/004',
-      date: '2026-01-28',
-      vendorId: 'VEN-004',
-      vendorName: 'Tech Components Ltd.',
-      vendorGST: '29TECH1234H1ZP',
-      vendorState: 'Karnataka',
-      vendorStateCode: '29',
-      expectedDelivery: '2026-02-28',
-      paymentTerms: 'Net 45 days',
-      currency: 'USD',
-      exchangeRate: 83.5,
-      status: 'sent',
-      items: [
-        { itemId: 'ITM-1001', name: 'Centrifugal Blower — 5HP', qty: 3, rate: 420, gst: 18, unit: 'Pcs' }
-      ],
-      discount: 8,
-      tax: 18,
-      total: 0,
-      totalINR: 0,
-      receivedQty: { 'ITM-1001': 1 },
-      createdAt: '2026-01-28',
-      notes: 'International order - USD currency'
-    }, {
-      id: 'PO-005',
-      number: 'PO/25-26/005',
-      date: '2026-02-05',
-      vendorId: 'VEN-005',
-      vendorName: 'Premium Raw Materials',
-      vendorGST: '19PRM1234J1ZP',
-      vendorState: 'Kerala',
-      vendorStateCode: '32',
-      expectedDelivery: '2026-03-05',
-      paymentTerms: 'Net 30 days',
-      currency: 'INR',
-      exchangeRate: 1,
-      status: 'partial',
-      items: [
-        { itemId: 'ITM-1002', name: 'Dual Media Filter Vessel — 500L', qty: 2, rate: 95000, gst: 18, unit: 'Pcs' },
-        { itemId: 'ITM-1005', name: 'Chemical Dosing Pump — 50LPH', qty: 3, rate: 21000, gst: 18, unit: 'Pcs' }
-      ],
-      discount: 5,
-      tax: 18,
-      total: 0,
-      totalINR: 0,
-      receivedQty: { 'ITM-1002': 1, 'ITM-1005': 0 },
-      createdAt: '2026-02-05',
-      notes: 'Partial shipment received'
-    }];
-
-    var nextPONo = 6;
-
-    // Calculate totals
-    purchaseOrders.forEach(function(po) {
-      var subtotal = po.items.reduce(function(sum, item) { return sum + (item.qty * item.rate); }, 0);
-      var discountAmt = subtotal * (po.discount / 100);
-      var afterDiscount = subtotal - discountAmt;
-      var taxAmt = afterDiscount * (po.tax / 100);
-      po.total = afterDiscount + taxAmt;
-      po.totalINR = po.total * po.exchangeRate;
-    });
-
-    // =============================================================
-    // FUNCTIONS
-    // =============================================================
-
-    function getVendorName(id) {
-      var v = vendors.find(function(x) { return x.id === id; });
-      return v ? v.name : id;
-    }
-
-    function renderStats() {
-      var total = purchaseOrders.length;
-      var draft = purchaseOrders.filter(function(po) { return po.status === 'draft'; }).length;
-      var sent = purchaseOrders.filter(function(po) { return po.status === 'sent'; }).length;
-      var received = purchaseOrders.filter(function(po) { return po.status === 'received'; }).length;
-      var totalVal = purchaseOrders.reduce(function(sum, po) { return sum + po.totalINR; }, 0);
-
-      document.getElementById('totalPO').textContent = total;
-      document.getElementById('draftPO').textContent = draft;
-      document.getElementById('sentPO').textContent = sent;
-      document.getElementById('receivedPO').textContent = received;
-      document.getElementById('totalValue').textContent = money(totalVal);
-
-      var filterVendor = document.getElementById('filterVendor');
-      var currentVal = filterVendor.value;
-      filterVendor.innerHTML = '<option value="all">All Vendors</option>';
-      vendors.forEach(function(v) {
-        filterVendor.innerHTML += '<option value="' + v.id + '">' + v.name + '</option>';
-      });
-      filterVendor.value = currentVal;
-    }
-
-    function getFilteredPO() {
-      var searchInput = document.getElementById('searchInput');
-      var q = searchInput ? searchInput.value.toLowerCase() : '';
-      var status = document.getElementById('filterStatus').value || 'all';
-      var vendor = document.getElementById('filterVendor').value || 'all';
-
-      return purchaseOrders.filter(function(po) {
-        var matchSearch = po.number.toLowerCase().indexOf(q) !== -1 ||
-          po.vendorName.toLowerCase().indexOf(q) !== -1 ||
-          po.id.toLowerCase().indexOf(q) !== -1;
-        var matchStatus = status === 'all' || po.status === status;
-        var matchVendor = vendor === 'all' || po.vendorId === vendor;
-        return matchSearch && matchStatus && matchVendor;
-      });
-    }
-
-    function renderPO() {
-      var filtered = getFilteredPO();
-
-      var rowsHtml = '';
-      if (filtered.length === 0) {
-        rowsHtml = `
-          <tr>
-            <td colspan="9" class="text-center py-10 text-gray-400 text-sm">
-              <div class="flex justify-center mb-2 empty-icon-svg">${iconDocument()}</div>
-              No purchase orders found. Try adjusting your filters or
-              <button onclick="openAddPO()" class="text-primary font-semibold hover:underline">create a new purchase order</button>.
-            </td>
-          </tr>`;
-      } else {
-        rowsHtml = filtered.map(function(po) {
-          var canSend = po.status === 'draft';
-          var canReceive = po.status === 'sent' || po.status === 'partial';
-          var currencySymbol = getCurrencySymbol(po.currency);
-          return `
-            <tr class="border-b border-gray-100 table-row-hover">
-              <td class="px-3 py-2.5">
-                <div class="font-semibold text-gray-800 text-sm">${po.number}</div>
-                <div class="text-[10px] text-gray-400 font-mono">${po.id}</div>
-              </td>
-              <td class="px-3 py-2.5 text-xs">${po.date}</td>
-              <td class="px-3 py-2.5 text-sm text-gray-700">${po.vendorName}</td>
-              <td class="px-3 py-2.5 text-xs">${po.expectedDelivery}</td>
-              <td class="px-3 py-2.5 font-mono font-semibold text-sm">${currencySymbol}${Number(po.total).toLocaleString('en-IN')}</td>
-              <td class="px-3 py-2.5 text-[10px]">${po.items.reduce(function(sum, item) { return sum + item.qty; }, 0)} items</td>
-              <td class="px-3 py-2.5">${statusBadge(po.status)}</td>
-              <td class="px-3 py-2.5">${rowActionsHtml(
-                "editPO('"+po.id+"')",
-                "delPO('"+po.id+"')",
-                "viewPO('"+po.id+"')",
-                canSend ? "sendPO('"+po.id+"')" : null,
-                canReceive ? "receivePO('"+po.id+"')" : null
-              )}</td>
-            </tr>`;
-        }).join('');
-      }
-
-      var panelHtml = panelWrap(
-        'Purchase Orders <span class="text-[10px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + filtered.length + '</span>',
-        tableHtml(['PO #', 'Date', 'Vendor', 'Expected Delivery', 'Total', 'Items', 'Status', 'Actions'], rowsHtml),
-        '<div class="flex items-center gap-2"><span class="text-[10px] text-gray-400">Show:</span><select id="pageSizeSelect" onchange="renderPO()" class="text-[10px] border border-gray-200 rounded-lg px-2 py-1 bg-white outline-none"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select></div>'
-      );
-
-      document.getElementById('poPanel').innerHTML = panelHtml;
-      renderStats();
-    }
-
-    function filterPO() { renderPO(); }
-
-    function clearFilters() {
-      document.getElementById('filterStatus').value = 'all';
-      document.getElementById('filterVendor').value = 'all';
-      var searchInput = document.getElementById('searchInput');
-      if (searchInput) searchInput.value = '';
-      renderPO();
-      toggleFilterDD();
-    }
-
-    // =============================================================
-    // VIEW PURCHASE ORDER
-    // =============================================================
-
-    function viewPO(id) {
-      var po = purchaseOrders.find(function(x) { return x.id === id; });
-      if (!po) return;
-
-      var itemsHtml = po.items.map(function(item) {
-        var amount = item.qty * item.rate;
-        var received = po.receivedQty && po.receivedQty[item.itemId] ? po.receivedQty[item.itemId] : 0;
-        return `
-          <tr>
-            <td class="px-2 py-1.5 text-xs">${item.name}</td>
-            <td class="px-2 py-1.5 text-xs text-center">${item.qty}</td>
-            <td class="px-2 py-1.5 text-xs text-center">${received}</td>
-            <td class="px-2 py-1.5 text-xs text-center">${item.unit || 'Pcs'}</td>
-            <td class="px-2 py-1.5 text-xs font-mono text-right">${formatCurrency(item.rate, po.currency)}</td>
-            <td class="px-2 py-1.5 text-xs font-mono text-right">${formatCurrency(amount, po.currency)}</td>
-          </tr>`;
-      }).join('');
-
-      var subtotal = po.items.reduce(function(sum, item) { return sum + (item.qty * item.rate); }, 0);
-      var discountAmt = subtotal * (po.discount / 100);
-      var afterDiscount = subtotal - discountAmt;
-      var taxAmt = afterDiscount * (po.tax / 100);
-
-      var modalContent = `
-        ${modalHeader('Purchase Order Details — ' + po.number, po.id)}
-        <div class="px-5 py-4 modal-scroll">
-
-          <div class="po-preview">
-            <div class="po-header">
-              <div>
-                <div class="po-company-name">${company.name || 'Kunash Media Pvt. Ltd.'}</div>
-                <div class="po-company-details">
-                  ${company.address || '401, Creative Hub, BKC, Mumbai - 400051'}<br>
-                  GSTIN: ${company.gstin || '27AABCU1234D1ZP'} | Phone: ${company.phone || '+91-9876543210'}
-                </div>
-              </div>
-              <div style="text-align:right;">
-                <div class="po-title">PURCHASE ORDER</div>
-              </div>
-            </div>
-
-            <div class="po-meta">
-              <div>
-                <div class="meta-label">Vendor</div>
-                <div class="meta-value">${po.vendorName}</div>
-                <div class="text-xs text-gray-500">GSTIN: ${po.vendorGST || '—'}</div>
-                <div class="text-xs text-gray-500">State: ${po.vendorState}</div>
-              </div>
-              <div style="text-align:right;">
-                <div><span class="meta-label">PO #</span> <span class="meta-value">${po.number}</span></div>
-                <div><span class="meta-label">Date</span> <span class="meta-value">${po.date}</span></div>
-                <div><span class="meta-label">Expected Delivery</span> <span class="meta-value">${po.expectedDelivery}</span></div>
-                <div><span class="meta-label">Payment Terms</span> <span class="meta-value">${po.paymentTerms}</span></div>
-                <div><span class="meta-label">Currency</span> <span class="meta-value">${po.currency}</span></div>
-                <div><span class="meta-label">Status</span> ${statusBadge(po.status)}</div>
-              </div>
-            </div>
-
-            <table class="po-table">
-              <thead>
-                <tr>
-                  <th>Description</th>
-                  <th class="text-center">Ordered</th>
-                  <th class="text-center">Received</th>
-                  <th class="text-center">Unit</th>
-                  <th class="text-right">Rate</th>
-                  <th class="text-right">Amount</th>
-                </tr>
-              </thead>
-              <tbody>${itemsHtml}</tbody>
-            </table>
-
-            <div class="po-totals">
-              <div class="total-row"><span class="label">Subtotal</span><span class="value">${formatCurrency(subtotal, po.currency)}</span></div>
-              ${po.discount > 0 ? `<div class="total-row"><span class="label">Discount (${po.discount}%)</span><span class="value" style="color:#dc2626;">-${formatCurrency(discountAmt, po.currency)}</span></div>` : ''}
-              <div class="total-row"><span class="label">Tax (${po.tax}%)</span><span class="value">${formatCurrency(taxAmt, po.currency)}</span></div>
-              <div class="grand-total total-row"><span class="label">Grand Total</span><span class="value">${formatCurrency(po.total, po.currency)}</span></div>
-              ${po.currency !== 'INR' ? `<div class="text-[10px] text-gray-400 mt-1">INR Equivalent: ${money(po.totalINR)} (Rate: ${po.exchangeRate})</div>` : ''}
-            </div>
-
-            ${po.notes ? `<div class="po-terms"><strong>Notes:</strong> ${po.notes}</div>` : ''}
-            <div class="po-footer">
-              <p>This is a system generated purchase order. | ${company.name}</p>
-            </div>
-          </div>
-
-        </div>
-        ${modalFooter('Close', 'onclick="closeModal()"')}
-      `;
-
-      openModal(modalContent, { width: 'max-w-4xl' });
-    }
-
-    // =============================================================
-    // ADD / EDIT PURCHASE ORDER
-    // =============================================================
-
-    function openAddPO() { openPOModal(null); }
-
-    function editPO(id) {
-      var po = purchaseOrders.find(function(x) { return x.id === id; });
-      if (po) openPOModal(po);
-    }
-
-    function openPOModal(existing) {
-      var e = existing || {
-        number: 'PO/25-26/' + String(purchaseOrders.length + 1).padStart(3, '0'),
-        date: new Date().toISOString().split('T')[0],
-        expectedDelivery: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString().split('T')[0],
-        vendorId: vendors[0].id,
-        paymentTerms: 'Net 30 days',
-        currency: 'INR',
-        exchangeRate: 1,
-        status: 'draft',
-        items: [],
-        discount: 0,
-        tax: 18,
-        total: 0,
-        notes: ''
-      };
-      var isEdit = !!existing;
-
-      // Line items
-      var lineItemsHtml = '';
-      if (e.items && e.items.length > 0) {
-        lineItemsHtml = e.items.map(function(item, idx) {
-          return `
-            <tr class="border-b border-gray-100 line-item-row">
-              <td class="px-2 py-1">
-                <select class="form-input text-[10px] item-select" data-idx="${idx}">
-                  ${items.map(function(it) { return '<option ' + (it.id === item.itemId ? 'selected' : '') + ' value="' + it.id + '">' + it.name + '</option>'; }).join('')}
-                </select>
-              </td>
-              <td class="px-2 py-1">
-                <input type="number" class="form-input text-[10px] item-qty" value="${item.qty}" data-idx="${idx}" placeholder="Qty" onchange="calcPOTotal()">
-              </td>
-              <td class="px-2 py-1">
-                <input type="number" class="form-input text-[10px] item-rate" value="${item.rate}" data-idx="${idx}" placeholder="Rate" onchange="calcPOTotal()">
-              </td>
-              <td class="px-2 py-1 text-center">
-                <button onclick="removeLineItem(this)" class="text-red-500 hover:text-red-700 transition">${iconX()}</button>
-              </td>
-            </tr>`;
-        }).join('');
-      }
-
-      var currencyOptions = ['INR', 'USD', 'EUR', 'GBP', 'AED'];
-
-      var modalContent = `
-        ${modalHeader(isEdit ? 'Edit Purchase Order' : 'New Purchase Order', isEdit ? e.number : 'Create a new purchase order for vendor')}
-
-        <div class="px-5 py-4 modal-scroll">
-
-          <!-- Header Fields -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-            ${fld('PO #', '<input type="text" class="form-input" id="f_number" value="' + e.number + '" disabled>')}
-            ${fld('Date *', '<input type="date" class="form-input" id="f_date" value="' + e.date + '">')}
-            ${fld('Vendor *', '<select id="f_vendor" class="form-input" onchange="updateVendorDetails()">' + vendors.map(function(v) { return '<option ' + (v.id === e.vendorId ? 'selected' : '') + ' value="' + v.id + '">' + v.name + '</option>'; }).join('') + '</select>')}
-            ${fld('Expected Delivery *', '<input type="date" class="form-input" id="f_delivery" value="' + e.expectedDelivery + '">')}
-          </div>
-
-          <!-- Multi-Currency (Enhancement #2) -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2">
-            ${fld('Currency', '<select id="f_currency" class="form-input" onchange="updateCurrency()">' + currencyOptions.map(function(c) { return '<option ' + (c === e.currency ? 'selected' : '') + ' value="' + c + '">' + c + '</option>'; }).join('') + '</select>', 'Select currency for this PO')}
-            ${fld('Exchange Rate', '<input type="number" class="form-input" id="f_exchangeRate" value="' + e.exchangeRate + '" step="0.01" onchange="calcPOTotal()">')}
-            ${fld('INR Equivalent', '<input type="text" class="form-input" id="f_inrEquivalent" value="' + (e.totalINR ? money(e.totalINR) : '₹0') + '" disabled style="background:#f3f4f6;">')}
-            ${fld('Payment Terms', '<select class="form-input" id="f_paymentTerms"><option ' + (e.paymentTerms === 'Net 7 days' ? 'selected' : '') + '>Net 7 days</option><option ' + (e.paymentTerms === 'Net 15 days' ? 'selected' : '') + '>Net 15 days</option><option ' + (e.paymentTerms === 'Net 30 days' ? 'selected' : '') + '>Net 30 days</option><option ' + (e.paymentTerms === 'Net 45 days' ? 'selected' : '') + '>Net 45 days</option><option ' + (e.paymentTerms === 'Advance Payment' ? 'selected' : '') + '>Advance Payment</option></select>')}
-          </div>
-
-          <!-- Line Items -->
-          <div class="mt-3">
-            <div class="flex items-center justify-between mb-1.5">
-              <label class="form-label mb-0">Line Items</label>
-              <button onclick="addLineItem()" class="text-[10px] font-semibold text-primary hover:underline flex items-center gap-1">
-                ${iconPlus()} Add Item
-              </button>
-            </div>
-            <div class="border border-gray-200 rounded-lg overflow-hidden">
-              <table class="w-full text-xs" id="lineItemsTable">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th class="px-2 py-1.5 text-left font-semibold text-gray-600">Item</th>
-                    <th class="px-2 py-1.5 text-center font-semibold text-gray-600">Qty</th>
-                    <th class="px-2 py-1.5 text-center font-semibold text-gray-600">Rate</th>
-                    <th class="px-2 py-1.5 text-center font-semibold text-gray-600" style="width:36px;">Action</th>
-                  </tr>
-                </thead>
-                <tbody id="lineItemsBody">
-                  ${lineItemsHtml || '<tr><td colspan="4" class="text-center py-3 text-gray-400 text-xs">No items added. Click "Add Item" to add products/services.</td></tr>'}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Footer Fields -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3">
-            ${fld('Discount (%)', '<input type="number" class="form-input" id="f_discount" value="' + e.discount + '" placeholder="0" onchange="calcPOTotal()">')}
-            ${fld('Tax Rate (%)', '<select class="form-input" id="f_tax" onchange="calcPOTotal()"><option ' + (e.tax == 0 ? 'selected' : '') + '>0</option><option ' + (e.tax == 5 ? 'selected' : '') + '>5</option><option ' + (e.tax == 12 ? 'selected' : '') + '>12</option><option ' + (e.tax == 18 ? 'selected' : '') + '>18</option><option ' + (e.tax == 28 ? 'selected' : '') + '>28</option></select>')}
-            ${fld('Total Amount', '<input type="text" class="form-input" id="f_total" value="' + (e.total ? formatCurrency(e.total, e.currency) : '0') + '" disabled style="font-weight:bold;color:#6da84c;">')}
-            ${fld('Status', '<select class="form-input" id="f_status"><option ' + (e.status === 'draft' ? 'selected' : '') + ' value="draft">Draft</option><option ' + (e.status === 'sent' ? 'selected' : '') + ' value="sent">Sent</option><option ' + (e.status === 'partial' ? 'selected' : '') + ' value="partial">Partially Received</option><option ' + (e.status === 'received' ? 'selected' : '') + ' value="received">Received</option></select>')}
-          </div>
-
-          ${fld('Notes', '<textarea rows="2" class="form-input" id="f_notes" placeholder="Additional notes">' + (e.notes || '') + '</textarea>')}
-        </div>
-        ${modalFooter(isEdit ? 'Update Purchase Order' : 'Save Purchase Order', 'onclick="savePO(\'' + (isEdit ? e.id : '') + '\')"')}
-      `;
-
-      openModal(modalContent, { width: 'max-w-4xl' });
-      setTimeout(function() { calcPOTotal(); }, 100);
-    }
-
-    // =============================================================
-    // LINE ITEM FUNCTIONS
-    // =============================================================
-
-    function addLineItem() {
-      var tbody = document.getElementById('lineItemsBody');
-      if (!tbody) return;
-      var emptyRow = tbody.querySelector('tr td[colspan]');
-      if (emptyRow) tbody.innerHTML = '';
-
-      var idx = tbody.children.length;
-      var row = document.createElement('tr');
-      row.className = 'border-b border-gray-100 line-item-row';
-      row.innerHTML = `
-        <td class="px-2 py-1">
-          <select class="form-input text-[10px] item-select" data-idx="${idx}">
-            ${items.map(function(it) { return '<option value="' + it.id + '">' + it.name + '</option>'; }).join('')}
-          </select>
-        </td>
-        <td class="px-2 py-1">
-          <input type="number" class="form-input text-[10px] item-qty" value="1" data-idx="${idx}" placeholder="Qty" onchange="calcPOTotal()">
-        </td>
-        <td class="px-2 py-1">
-          <input type="number" class="form-input text-[10px] item-rate" value="0" data-idx="${idx}" placeholder="Rate" onchange="calcPOTotal()">
-        </td>
-        <td class="px-2 py-1 text-center">
-          <button onclick="removeLineItem(this)" class="text-red-500 hover:text-red-700 transition">${iconX()}</button>
-        </td>
-      `;
-      tbody.appendChild(row);
-
-      var select = row.querySelector('.item-select');
-      select.addEventListener('change', function() {
-        var selectedItem = items.find(function(it) { return it.id === this.value; });
-        var rateInput = this.closest('tr').querySelector('.item-rate');
-        if (selectedItem && rateInput) {
-          rateInput.value = selectedItem.price;
-          calcPOTotal();
-        }
-      });
-      select.dispatchEvent(new Event('change'));
-    }
-
-    function removeLineItem(btn) {
-      var row = btn.closest('tr');
-      if (row) row.remove();
-      var tbody = document.getElementById('lineItemsBody');
-      if (tbody && tbody.children.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" class="text-center py-3 text-gray-400 text-xs">No items added. Click "Add Item" to add products/services.</td></tr>';
-      }
-      calcPOTotal();
-    }
-
-    function updateVendorDetails() {
-      var vendorId = document.getElementById('f_vendor').value;
-      var vendor = vendors.find(function(v) { return v.id === vendorId; });
-      // Currency can be auto-set based on vendor (for foreign vendors)
-    }
-
-    function updateCurrency() {
-      var currency = document.getElementById('f_currency').value;
-      var rates = { INR: 1, USD: 83.5, EUR: 90.2, GBP: 105.8, AED: 22.7 };
-      document.getElementById('f_exchangeRate').value = rates[currency] || 1;
-      calcPOTotal();
-    }
-
-    function calcPOTotal() {
-      var rows = document.querySelectorAll('#lineItemsBody .line-item-row');
-      var subtotal = 0;
-      rows.forEach(function(row) {
-        var qty = parseFloat(row.querySelector('.item-qty').value) || 0;
-        var rate = parseFloat(row.querySelector('.item-rate').value) || 0;
-        subtotal += qty * rate;
-      });
-
-      var discount = parseFloat(document.getElementById('f_discount').value) || 0;
-      var tax = parseFloat(document.getElementById('f_tax').value) || 0;
-      var exchangeRate = parseFloat(document.getElementById('f_exchangeRate').value) || 1;
-      var currency = document.getElementById('f_currency').value;
-
-      var discountAmt = subtotal * (discount / 100);
-      var afterDiscount = subtotal - discountAmt;
-      var taxAmt = afterDiscount * (tax / 100);
-      var total = afterDiscount + taxAmt;
-
-      var currencySymbol = getCurrencySymbol(currency);
-      document.getElementById('f_total').value = currencySymbol + Number(total).toLocaleString('en-IN');
-
-      var totalINR = total * exchangeRate;
-      document.getElementById('f_inrEquivalent').value = '₹' + Number(totalINR).toLocaleString('en-IN');
-
-      return total;
-    }
-
-    // =============================================================
-    // SAVE / DELETE PURCHASE ORDER
-    // =============================================================
-
-    function savePO(existingId) {
-      var number = document.getElementById('f_number').value;
-      var date = document.getElementById('f_date').value;
-      var vendorId = document.getElementById('f_vendor').value;
-      var expectedDelivery = document.getElementById('f_delivery').value;
-      var currency = document.getElementById('f_currency').value;
-      var exchangeRate = parseFloat(document.getElementById('f_exchangeRate').value) || 1;
-      var paymentTerms = document.getElementById('f_paymentTerms').value;
-      var status = document.getElementById('f_status').value;
-      var discount = parseFloat(document.getElementById('f_discount').value) || 0;
-      var tax = parseFloat(document.getElementById('f_tax').value) || 0;
-      var notes = document.getElementById('f_notes').value || '';
-
-      if (!date || !vendorId || !expectedDelivery) {
-        showToast('Please fill all required fields (Date, Vendor, Expected Delivery)', 'error');
-        return;
-      }
-
-      var itemsData = [];
-      var rows = document.querySelectorAll('#lineItemsBody .line-item-row');
-      rows.forEach(function(row) {
-        var itemId = row.querySelector('.item-select').value;
-        var qty = parseFloat(row.querySelector('.item-qty').value) || 0;
-        var rate = parseFloat(row.querySelector('.item-rate').value) || 0;
-        if (qty > 0 && rate > 0) {
-          var item = items.find(function(it) { return it.id === itemId; });
-          itemsData.push({
-            itemId: itemId,
-            name: item ? item.name : '',
-            qty: qty,
-            rate: rate,
-            gst: item ? item.gst : 18,
-            unit: item ? item.unit : 'Pcs'
-          });
-        }
-      });
-
-      if (itemsData.length === 0) {
-        showToast('Please add at least one item to the purchase order', 'error');
-        return;
-      }
-
-      var subtotal = itemsData.reduce(function(sum, item) { return sum + (item.qty * item.rate); }, 0);
-      var discountAmt = subtotal * (discount / 100);
-      var afterDiscount = subtotal - discountAmt;
-      var taxAmt = afterDiscount * (tax / 100);
-      var total = afterDiscount + taxAmt;
-      var totalINR = total * exchangeRate;
-
-      var vendor = vendors.find(function(v) { return v.id === vendorId; });
-      var vendorName = vendor ? vendor.name : '';
-
-      // Initialize receivedQty
-      var receivedQty = {};
-      itemsData.forEach(function(item) {
-        receivedQty[item.itemId] = 0;
-      });
-
-      if (existingId) {
-        var po = purchaseOrders.find(function(x) { return x.id === existingId; });
-        if (po) {
-          po.number = number;
-          po.date = date;
-          po.vendorId = vendorId;
-          po.vendorName = vendorName;
-          po.vendorGST = vendor ? vendor.gstin : '';
-          po.vendorState = vendor ? vendor.state : '';
-          po.vendorStateCode = vendor ? vendor.stateCode : '';
-          po.expectedDelivery = expectedDelivery;
-          po.paymentTerms = paymentTerms;
-          po.currency = currency;
-          po.exchangeRate = exchangeRate;
-          po.items = itemsData;
-          po.discount = discount;
-          po.tax = tax;
-          po.total = total;
-          po.totalINR = totalINR;
-          po.status = status;
-          po.notes = notes;
-          // Preserve received quantities
-          if (po.receivedQty) {
-            Object.keys(po.receivedQty).forEach(function(key) {
-              if (receivedQty.hasOwnProperty(key)) {
-                receivedQty[key] = po.receivedQty[key] || 0;
-              }
-            });
-          }
-          po.receivedQty = receivedQty;
-          showToast('Purchase Order updated successfully', 'success');
-        }
-      } else {
-        var newPO = {
-          id: 'PO-' + String(nextPONo++).padStart(3, '0'),
-          number: number || 'PO/25-26/' + String(purchaseOrders.length + 1).padStart(3, '0'),
-          date: date,
-          vendorId: vendorId,
-          vendorName: vendorName,
-          vendorGST: vendor ? vendor.gstin : '',
-          vendorState: vendor ? vendor.state : '',
-          vendorStateCode: vendor ? vendor.stateCode : '',
-          expectedDelivery: expectedDelivery,
-          paymentTerms: paymentTerms,
-          currency: currency,
-          exchangeRate: exchangeRate,
-          items: itemsData,
-          discount: discount,
-          tax: tax,
-          total: total,
-          totalINR: totalINR,
-          status: status,
-          receivedQty: receivedQty,
-          notes: notes,
-          createdAt: date
-        };
-        purchaseOrders.unshift(newPO);
-        showToast('Purchase Order created successfully', 'success');
-      }
-
-      closeModal();
-      renderPO();
-    }
-
-    function delPO(id) {
-      var po = purchaseOrders.find(function(x) { return x.id === id; });
-      if (!po) return;
-
-      var modalContent = `
-        ${modalHeader('Delete Purchase Order', po.number)}
-        <div class="px-5 py-4 text-sm text-gray-600">
-          <p>Are you sure you want to permanently delete <b class="text-gray-800">${po.number}</b>?</p>
-          <p class="text-gray-400 text-[11px] mt-1">This action cannot be undone. All associated data will be removed.</p>
-          <p class="text-amber-600 text-[11px] mt-2">Total Value: ${formatCurrency(po.total, po.currency)}</p>
-        </div>
-        ${modalFooter('Delete', 'onclick="confirmDeletePO(\'' + id + '\')"', '')}
-      `;
-      openModal(modalContent, { width: 'max-w-md' });
-    }
-
-    function confirmDeletePO(id) {
-      purchaseOrders = purchaseOrders.filter(function(x) { return x.id !== id; });
-      closeModal();
-      renderPO();
-      showToast('Purchase Order deleted successfully', 'warning');
-    }
-
-    // =============================================================
-    // ACTIONS
-    // =============================================================
-
-    function sendPO(id) {
-      var po = purchaseOrders.find(function(x) { return x.id === id; });
-      if (!po) return;
-      po.status = 'sent';
-      renderPO();
-      showToast('Purchase Order ' + po.number + ' sent to vendor!', 'success');
-    }
-
-    function receivePO(id) {
-      var po = purchaseOrders.find(function(x) { return x.id === id; });
-      if (!po) return;
-
-      // Simple receive - mark all items as received
-      var allReceived = true;
-      po.items.forEach(function(item) {
-        if (po.receivedQty[item.itemId] === undefined) {
-          po.receivedQty[item.itemId] = 0;
-        }
-        if (po.receivedQty[item.itemId] < item.qty) {
-          po.receivedQty[item.itemId] = item.qty;
-          allReceived = false;
-        }
-      });
-
-      // Check if all items are fully received
-      var fullyReceived = true;
-      po.items.forEach(function(item) {
-        if ((po.receivedQty[item.itemId] || 0) < item.qty) {
-          fullyReceived = false;
-        }
-      });
-
-      if (fullyReceived) {
-        po.status = 'received';
-        showToast('All items received for ' + po.number + '!', 'success');
-      } else {
-        po.status = 'partial';
-        showToast('Items marked as received for ' + po.number + ' (Partial)', 'info');
-      }
-
-      renderPO();
-    }
-
-    // =============================================================
-    // SEARCH
-    // =============================================================
-
-    (function addSearchToTopbar() {
-      var searchContainer = document.querySelector('.app-main header');
-      if (searchContainer) {
-        var searchHtml = `
-          <div class="hidden sm:flex flex-1 max-w-[420px] relative ml-4">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">${iconSearch()}</span>
-            <input type="text" id="searchInput" placeholder="Search purchase orders by number, vendor…"
-              onkeyup="filterPO()"
-              class="w-full border border-gray-200 bg-gray-50 focus:bg-white rounded-lg pl-9 pr-3 py-1.5 text-xs outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition placeholder:text-gray-400">
-          </div>
-        `;
-        var headerContent = searchContainer.innerHTML;
-        var hamburgerIndex = headerContent.indexOf('lg:hidden');
-        if (hamburgerIndex !== -1) {
-          var firstDivEnd = headerContent.indexOf('</div>', hamburgerIndex) + 6;
-          var before = headerContent.substring(0, firstDivEnd);
-          var after = headerContent.substring(firstDivEnd);
-          searchContainer.innerHTML = before + searchHtml + after;
-        }
-      }
-    })();
-
-    // =============================================================
-    // INIT
-    // =============================================================
-
-    var company = {
-      name: 'Kunash Media Pvt. Ltd.',
-      address: '401, Creative Hub, BKC, Bandra East, Mumbai - 400051',
-      gstin: '27AABCU1234D1ZP',
-      phone: '+91-9876543210'
-    };
-
-    renderPO();
-
-    console.log('📄 Purchase Orders Module Loaded Successfully');
-    console.log('📊 Total POs:', purchaseOrders.length);
-    console.log('📌 Status: Draft(' + purchaseOrders.filter(function(po) { return po.status === 'draft'; }).length +
-      '), Sent(' + purchaseOrders.filter(function(po) { return po.status === 'sent'; }).length +
-      '), Received(' + purchaseOrders.filter(function(po) { return po.status === 'received'; }).length + ')');
-    console.log('🌐 Multi-Currency Support (Enhancement #2) enabled');
-
   </script>
+  <script src="/purchase-orders/purchase.js"></script>
 
 </body>
 </html>
