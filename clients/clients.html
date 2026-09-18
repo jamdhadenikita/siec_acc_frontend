@@ -71,6 +71,9 @@
   }
   .form-label .required { color: #ef4444; margin-left: 2px; }
   .form-hint { font-size: 10.5px; color: #9ca3af; margin-top: 3px; }
+  .form-field { display: flex; flex-direction: column; }
+  .form-radio-row { display: flex; align-items: center; gap: 16px; margin-top: 4px; }
+  .form-radio-row label { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; }
 
   .badge {
     display: inline-flex;
@@ -101,27 +104,90 @@
   .badge-dot-purple { background: #8b5cf6; }
 
   .stat-card {
+    border: 1px solid #6da84c;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
   .stat-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   }
+  .stat-icon-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
 
   .table-row-hover:hover {
     background: #f8fafc;
   }
 
+  /* Mini filter/pagination controls */
+  .mini-select {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 12px;
+    background: #fafafa;
+    color: #374151;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .mini-select:focus { border-color: #6da84c; }
+  .btn-reset {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4b5563;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .btn-reset:hover { background: #f8fafc; border-color: #d1d5db; color: #1f2937; }
+  .btn-page {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .btn-page:hover:not(:disabled) { border-color: #6da84c; color: #6da84c; }
+  .btn-page:disabled { opacity: 0.4; cursor: not-allowed; }
+
   .modal-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     transition: all 0.2s ease;
-    padding: 8px 14px;
+    padding: 9px 14px;
     font-size: 12px;
     font-weight: 500;
+    line-height: 1;
     border-bottom: 2px solid transparent;
     color: #6b7280;
     cursor: pointer;
     background: transparent;
+    white-space: nowrap;
   }
+  .modal-tab-btn svg { flex-shrink: 0; }
   .modal-tab-btn.active {
     color: #6da84c;
     border-bottom-color: #6da84c;
@@ -204,6 +270,10 @@
     color: #fff;
     flex-shrink: 0;
   }
+
+  @media (max-width: 640px) {
+    .form-grid-2, .form-grid-3 { grid-template-columns: 1fr !important; }
+  }
 </style>
 </head>
 
@@ -238,45 +308,6 @@
               <p class="text-[13px] text-gray-500 mt-1">Customer master with GST details, addresses, credit limits, transactions and statements.</p>
             </div>
             <div class="flex gap-2.5 flex-wrap">
-              <!-- Filter Button -->
-              <div class="relative inline-block" data-dd-trigger>
-                <button onclick="toggleFilterDD()" class="inline-flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[13px] font-semibold px-4 py-2.5 rounded-lg transition">
-                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 6h18M7 12h10M11 18h2"/>
-                  </svg>
-                  Filter
-                  <span id="filterBadge" class="hidden text-[10px] bg-primary text-white px-1.5 py-0.5 rounded-full">0</span>
-                </button>
-                <div id="filterDD" data-dd-menu class="hidden absolute top-full left-0 mt-2 w-60 bg-white border border-gray-200 rounded-xl shadow-lg p-3 z-50">
-                  <div class="mb-3">
-                    <label class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Status</label>
-                    <select id="filterStatus" onchange="filterCustomers()" class="form-input text-[12px]">
-                      <option value="all">All Status</option>
-                      <option value="active">Active</option>
-                      <option value="inactive">Inactive</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">GST Registered</label>
-                    <select id="filterGST" onchange="filterCustomers()" class="form-input text-[12px]">
-                      <option value="all">All</option>
-                      <option value="yes">Registered</option>
-                      <option value="no">Unregistered</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Customer Type</label>
-                    <select id="filterType" onchange="filterCustomers()" class="form-input text-[12px]">
-                      <option value="all">All Types</option>
-                      <option value="business">Business</option>
-                      <option value="individual">Individual</option>
-                      <option value="government">Government</option>
-                    </select>
-                  </div>
-                  <button onclick="clearFilters()" class="text-[12px] text-primary font-semibold hover:underline">Clear Filters</button>
-                </div>
-              </div>
-
               <!-- Add Customer Button -->
               <button onclick="openAddCustomer()" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-[13px] font-semibold px-4 py-2.5 rounded-lg transition shadow-sm">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -289,21 +320,33 @@
 
           <!-- Stats Cards -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-6">
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
-              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Clients</div>
-              <div class="text-[22px] font-bold text-gray-900" id="totalCustomers">0</div>
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-primary-soft text-primary"><i class="fa-solid fa-users"></i></div>
+              <div>
+                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Clients</div>
+                <div class="text-[22px] font-bold text-gray-900" id="totalCustomers">0</div>
+              </div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
-              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Active</div>
-              <div class="text-[22px] font-bold text-green-600" id="activeCustomers">0</div>
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-green-50 text-green-600"><i class="fa-solid fa-circle-check"></i></div>
+              <div>
+                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Active</div>
+                <div class="text-[22px] font-bold text-green-600" id="activeCustomers">0</div>
+              </div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
-              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">GST Registered</div>
-              <div class="text-[22px] font-bold text-blue-600" id="gstCustomers">0</div>
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-blue-50 text-blue-600"><i class="fa-solid fa-file-invoice"></i></div>
+              <div>
+                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">GST Registered</div>
+                <div class="text-[22px] font-bold text-blue-600" id="gstCustomers">0</div>
+              </div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 stat-card">
-              <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Receivable</div>
-              <div class="text-[22px] font-bold text-amber-600" id="totalReceivable">₹0</div>
+            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+              <div class="stat-icon-wrap bg-amber-50 text-amber-600"><i class="fa-solid fa-sack-dollar"></i></div>
+              <div>
+                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Receivable</div>
+                <div class="text-[18px] font-bold text-amber-600" id="totalReceivable">₹0</div>
+              </div>
             </div>
           </div>
 
@@ -397,6 +440,15 @@
     function iconCredit() {
       return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`;
     }
+    function iconRefresh() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-3.02-6.7"/><path d="M21 4v6h-6"/></svg>`;
+    }
+    function iconChevronLeft() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>`;
+    }
+    function iconChevronRight() {
+      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>`;
+    }
 
     // ---------- Toast System ----------
     function showToast(message, kind) {
@@ -426,7 +478,7 @@
       root.innerHTML = `
         <div class="fixed inset-0 z-[100] flex items-center justify-center p-4" id="modalOverlay">
           <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]" id="modalBackdrop"></div>
-          <div class="relative bg-white rounded-2xl shadow-2xl w-full ${opts.width || 'max-w-3xl'} max-h-[92vh] overflow-hidden animate-modal">
+          <div class="relative bg-white rounded-2xl shadow-2xl w-full ${opts.width || 'max-w-3xl'} max-h-[92vh] flex flex-col animate-modal">
             ${innerHtml}
           </div>
         </div>`;
@@ -442,31 +494,31 @@
 
     function modalHeader(title, subtitle) {
       return `
-        <div class="flex items-start justify-between px-6 py-5 border-b border-gray-100 sticky top-0 bg-white z-10">
+        <div class="flex items-start justify-between px-6 py-5 border-b border-gray-100 shrink-0">
           <div>
             <h3 class="text-lg font-bold text-gray-900">${title}</h3>
             ${subtitle ? '<p class="text-xs text-gray-500 mt-0.5">' + subtitle + '</p>' : ''}
           </div>
-          <button onclick="closeModal()" class="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition">${iconX()}</button>
+          <button onclick="closeModal()" class="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition shrink-0">${iconX()}</button>
         </div>`;
     }
 
     function modalFooter(saveLabel, onSaveAttr, extraBtns) {
       return `
-        <div class="flex items-center justify-between gap-2 px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl sticky bottom-0">
+        <div class="flex items-center justify-between gap-2 px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl shrink-0">
           <div>${extraBtns || ''}</div>
-          <div class="flex gap-2">
+          <div class="flex gap-2 ml-auto">
             <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Cancel</button>
-            <button ${onSaveAttr} class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-primary hover:bg-primary-dark transition shadow-sm flex items-center gap-1.5">
+            <button ${onSaveAttr} class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-primary hover:bg-primary-dark transition shadow-sm inline-flex items-center gap-1.5">
               ${iconSave()} ${saveLabel}
             </button>
           </div>
         </div>`;
     }
 
-    function fld(label, inputHtml, hint) {
+    function fld(label, inputHtml, hint, extraClass) {
       return `
-        <div class="mb-3">
+        <div class="form-field ${extraClass || ''}">
           <label class="form-label">${label}</label>
           ${inputHtml}
           ${hint ? '<div class="form-hint">' + hint + '</div>' : ''}
@@ -482,13 +534,6 @@
       }
     });
 
-    function toggleFilterDD() {
-      var menu = document.getElementById('filterDD');
-      var isHidden = menu.classList.contains('hidden');
-      document.querySelectorAll('[data-dd-menu]').forEach(function(m) { m.classList.add('hidden'); });
-      if (isHidden) menu.classList.remove('hidden');
-    }
-
     // ---------- Helpers ----------
     function money(n) { return '₹' + Number(n).toLocaleString('en-IN'); }
 
@@ -499,7 +544,7 @@
     }
 
     function rowActionsHtml(editFn, delFn, viewFn) {
-      var html = '<div class="flex gap-1">';
+      var html = '<div class="flex gap-1 justify-end">';
       if (viewFn) {
         html += '<button onclick="' + viewFn + '" class="btn-icon-action" title="View">' + iconEye() + '</button>';
       }
@@ -511,7 +556,7 @@
 
     function panelWrap(titleHtml, bodyHtml, extraHead) {
       return `
-        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+        <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm overflow-hidden">
           <div class="flex items-center justify-between gap-3 flex-wrap px-5 py-4 border-b border-gray-100">
             <div class="font-bold text-[14.5px] text-gray-800 flex items-center gap-2">${titleHtml}</div>
             ${extraHead || ''}
@@ -520,9 +565,11 @@
         </div>`;
     }
 
-    function tableHtml(cols, rowsHtml) {
-      var colHeaders = cols.map(function(c) {
-        return '<th class="text-left text-[11px] font-bold uppercase tracking-wide text-gray-500 px-4 py-3 whitespace-nowrap">' + c + '</th>';
+    function tableHtml(cols, rowsHtml, aligns) {
+      aligns = aligns || [];
+      var colHeaders = cols.map(function(c, i) {
+        var align = aligns[i] || 'left';
+        return '<th class="text-' + align + ' text-[11px] font-bold uppercase tracking-wide text-gray-500 px-4 py-3 whitespace-nowrap">' + c + '</th>';
       }).join('');
       return `
         <div class="overflow-x-auto">
@@ -532,6 +579,33 @@
             </thead>
             <tbody id="tbody-anchor">${rowsHtml}</tbody>
           </table>
+        </div>`;
+    }
+
+    function paginationHtml(totalItems, page, size) {
+      var totalPages = Math.max(1, Math.ceil(totalItems / size));
+      page = Math.min(Math.max(1, page), totalPages);
+      var start = totalItems === 0 ? 0 : (page - 1) * size + 1;
+      var end = Math.min(page * size, totalItems);
+
+      var maxButtons = 5;
+      var startPage = Math.max(1, page - Math.floor(maxButtons / 2));
+      var endPage = Math.min(totalPages, startPage + maxButtons - 1);
+      startPage = Math.max(1, endPage - maxButtons + 1);
+
+      var pageBtns = '';
+      for (var i = startPage; i <= endPage; i++) {
+        pageBtns += '<button onclick="goToPage(' + i + ')" class="btn-page' + (i === page ? ' !bg-primary !border-primary !text-white' : '') + '">' + i + '</button>';
+      }
+
+      return `
+        <div class="flex items-center justify-between gap-3 flex-wrap px-5 py-3.5 border-t border-gray-100">
+          <div class="text-[12px] text-gray-500">Showing <b class="text-gray-700">${start}</b>–<b class="text-gray-700">${end}</b> of <b class="text-gray-700">${totalItems}</b> clients</div>
+          <div class="flex items-center gap-1.5">
+            <button onclick="goToPage(${page - 1})" class="btn-page" ${page <= 1 ? 'disabled' : ''}>${iconChevronLeft()}</button>
+            ${pageBtns}
+            <button onclick="goToPage(${page + 1})" class="btn-page" ${page >= totalPages ? 'disabled' : ''}>${iconChevronRight()}</button>
+          </div>
         </div>`;
     }
 
@@ -721,6 +795,10 @@
 
     var nextCustomerNo = 9;
 
+    // Pagination state
+    var currentPage = 1;
+    var pageSize = 25;
+
     // =============================================================
     // FUNCTIONS
     // =============================================================
@@ -742,12 +820,15 @@
       document.getElementById('totalReceivable').textContent = money(total);
     }
 
+    // Single source of truth for the active filter selections (survives table re-renders)
+    var activeFilters = { status: 'all', gst: 'all', type: 'all' };
+
     function getFilteredCustomers() {
       var searchInput = document.getElementById('searchInput');
       var q = searchInput ? searchInput.value.toLowerCase() : '';
-      var status = document.getElementById('filterStatus').value || 'all';
-      var gst = document.getElementById('filterGST').value || 'all';
-      var type = document.getElementById('filterType').value || 'all';
+      var status = activeFilters.status;
+      var gst = activeFilters.gst;
+      var type = activeFilters.type;
 
       return customers.filter(function(c) {
         var matchSearch = c.name.toLowerCase().indexOf(q) !== -1 ||
@@ -762,11 +843,48 @@
       });
     }
 
+    // Filter toolbar shown inside the table panel header
+    function filtersToolbarHtml() {
+      return `
+        <div class="flex items-center gap-2 flex-wrap">
+          <select id="filterStatus" onchange="filterCustomers()" class="mini-select">
+            <option value="all">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+          <select id="filterGST" onchange="filterCustomers()" class="mini-select">
+            <option value="all">All GST</option>
+            <option value="yes">Registered</option>
+            <option value="no">Unregistered</option>
+          </select>
+          <select id="filterType" onchange="filterCustomers()" class="mini-select">
+            <option value="all">All Types</option>
+            <option value="business">Business</option>
+            <option value="individual">Individual</option>
+            <option value="government">Government</option>
+          </select>
+          <select id="pageSizeSelect" onchange="changePageSize(this.value)" class="mini-select">
+            <option value="10">10 / page</option>
+            <option value="25" selected>25 / page</option>
+            <option value="50">50 / page</option>
+            <option value="100">100 / page</option>
+          </select>
+          <button onclick="resetFilters()" class="btn-reset" title="Reset all filters &amp; search">
+            ${iconRefresh()} Reset
+          </button>
+        </div>`;
+    }
+
     function renderCustomers() {
       var filtered = getFilteredCustomers();
+      var totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+
+      var paged = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
       var rowsHtml = '';
-      if (filtered.length === 0) {
+      if (paged.length === 0) {
         rowsHtml = `
           <tr>
             <td colspan="8" class="text-center py-10 text-gray-400 text-sm">
@@ -776,16 +894,15 @@
             </td>
           </tr>`;
       } else {
-        rowsHtml = filtered.map(function(c) {
-          var statusBadge = c.status === 'active' ? badge('Active', 'green') : badge('Inactive', 'gray');
+        rowsHtml = paged.map(function(c) {
+          var statusBadgeHtml = c.status === 'active' ? badge('Active', 'green') : badge('Inactive', 'gray');
           var gstBadge = c.gstRegistered ? badge('GST Registered', 'blue') : badge('Unregistered', 'amber');
           var typeBadge = c.customerType === 'business' ? badge('Business', 'purple') :
                           c.customerType === 'government' ? badge('Government', 'blue') :
                           badge('Individual', 'gray');
-          var statusColor = c.status === 'active' ? '#22c55e' : '#94a3b8';
           return `
             <tr class="border-b border-gray-100 table-row-hover">
-              <td class="px-4 py-3">
+              <td class="px-4 py-3 align-middle">
                 <div class="flex items-center gap-3">
                   <div class="customer-avatar" style="background:${c.color}">${getInitials(c.name)}</div>
                   <div>
@@ -794,13 +911,13 @@
                   </div>
                 </div>
               </td>
-              <td class="px-4 py-3 text-gray-600">${c.companyName || '—'}</td>
-              <td class="px-4 py-3">${typeBadge}</td>
-              <td class="px-4 py-3 font-mono text-[12px] text-gray-500">${c.gstin || '—'}</td>
-              <td class="px-4 py-3">${gstBadge}</td>
-              <td class="px-4 py-3 font-mono font-semibold text-amber-600">${money(c.receivable)}</td>
-              <td class="px-4 py-3">${statusBadge}</td>
-              <td class="px-4 py-3">${rowActionsHtml(
+              <td class="px-4 py-3 align-middle text-gray-600">${c.companyName || '—'}</td>
+              <td class="px-4 py-3 align-middle text-center">${typeBadge}</td>
+              <td class="px-4 py-3 align-middle font-mono text-[12px] text-gray-500">${c.gstin || '—'}</td>
+              <td class="px-4 py-3 align-middle text-center">${gstBadge}</td>
+              <td class="px-4 py-3 align-middle font-mono font-semibold text-amber-600 text-right">${money(c.receivable)}</td>
+              <td class="px-4 py-3 align-middle text-center">${statusBadgeHtml}</td>
+              <td class="px-4 py-3 align-middle">${rowActionsHtml(
                 "editCustomer('"+c.id+"')",
                 "delCustomer('"+c.id+"')",
                 "viewCustomer('"+c.id+"')"
@@ -809,26 +926,62 @@
         }).join('');
       }
 
+      var bodyHtml = tableHtml(
+        ['Client', 'Company', 'Type', 'GSTIN', 'GST Status', 'Receivable', 'Status', 'Actions'],
+        rowsHtml,
+        ['left', 'left', 'center', 'left', 'center', 'right', 'center', 'right']
+      ) + paginationHtml(filtered.length, currentPage, pageSize);
+
       var panelHtml = panelWrap(
         'All Clients <span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + filtered.length + '</span>',
-        tableHtml(['Client', 'Company', 'Type', 'GSTIN', 'GST Status', 'Receivable', 'Status', 'Actions'], rowsHtml),
-        '<div class="flex items-center gap-2"><span class="text-[11px] text-gray-400">Show:</span><select id="pageSizeSelect" onchange="renderCustomers()" class="text-[12px] border border-gray-200 rounded-lg px-2 py-1 bg-white outline-none"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select></div>'
+        bodyHtml,
+        filtersToolbarHtml()
       );
 
       document.getElementById('customersPanel').innerHTML = panelHtml;
+
+      // restore filter selections after re-render
+      var st = document.getElementById('filterStatus'); if (st) st.value = activeFilters.status;
+      var gs = document.getElementById('filterGST'); if (gs) gs.value = activeFilters.gst;
+      var ty = document.getElementById('filterType'); if (ty) ty.value = activeFilters.type;
+      var ps = document.getElementById('pageSizeSelect'); if (ps) ps.value = String(pageSize);
+
       renderStats();
     }
 
-    function filterCustomers() { renderCustomers(); }
+    function filterCustomers() {
+      var st = document.getElementById('filterStatus');
+      var gs = document.getElementById('filterGST');
+      var ty = document.getElementById('filterType');
+      if (st) activeFilters.status = st.value;
+      if (gs) activeFilters.gst = gs.value;
+      if (ty) activeFilters.type = ty.value;
+      currentPage = 1;
+      renderCustomers();
+    }
 
-    function clearFilters() {
-      document.getElementById('filterStatus').value = 'all';
-      document.getElementById('filterGST').value = 'all';
-      document.getElementById('filterType').value = 'all';
+    function changePageSize(val) {
+      pageSize = parseInt(val, 10) || 25;
+      currentPage = 1;
+      renderCustomers();
+    }
+
+    function goToPage(p) {
+      var filtered = getFilteredCustomers();
+      var totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+      if (p < 1 || p > totalPages) return;
+      currentPage = p;
+      renderCustomers();
+    }
+
+    function resetFilters() {
+      activeFilters = { status: 'all', gst: 'all', type: 'all' };
+      pageSize = 25;
+      currentPage = 1;
       var searchInput = document.getElementById('searchInput');
       if (searchInput) searchInput.value = '';
       renderCustomers();
-      toggleFilterDD();
+      showToast('Filters reset', 'info');
     }
 
     // =============================================================
@@ -848,8 +1001,8 @@
 
       var modalContent = `
         ${modalHeader('Client Details — ' + c.name, c.id)}
-        <div class="px-6 py-4 modal-scroll">
-          <div class="flex items-center gap-4 mb-4">
+        <div class="px-6 py-5 modal-scroll">
+          <div class="flex items-center gap-4 mb-5">
             <div class="customer-avatar" style="background:${c.color}; width:48px; height:48px; font-size:18px;">${getInitials(c.name)}</div>
             <div>
               <div class="text-lg font-semibold">${c.name}</div>
@@ -857,7 +1010,7 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-4 text-sm border-t border-gray-100 pt-4">
+          <div class="grid grid-cols-2 form-grid-2 gap-x-6 gap-y-4 text-sm border-t border-gray-100 pt-5">
             <div><span class="text-gray-500">Client ID</span><br><span class="font-mono font-semibold">${c.id}</span></div>
             <div><span class="text-gray-500">Status</span><br>${c.status === 'active' ? badge('Active', 'green') : badge('Inactive', 'gray')}</div>
             <div><span class="text-gray-500">Client Type</span><br>${c.customerType === 'business' ? badge('Business', 'purple') : c.customerType === 'government' ? badge('Government', 'blue') : badge('Individual', 'gray')}</div>
@@ -873,7 +1026,7 @@
             <div><span class="text-gray-500">Total Receivable</span><br><span class="font-semibold text-amber-600">${money(c.receivable)}</span></div>
           </div>
 
-          <div class="mt-3 text-[11px] text-gray-400 flex items-center gap-1">
+          <div class="mt-4 text-[11px] text-gray-400 flex items-center gap-1.5">
             ${iconInfo()} Created on ${c.createdAt}
           </div>
         </div>
@@ -910,63 +1063,59 @@
 
       var modalContent = `
         ${modalHeader(isEdit ? 'Edit Client' : 'Add New Client', isEdit ? e.id : 'Create a new client master record')}
-        <div class="px-6 py-4 modal-scroll">
-          <div class="flex border-b border-gray-200 mb-4 gap-1" id="modalTabs">
+        <div class="px-6 py-5 modal-scroll">
+          <div class="flex border-b border-gray-200 mb-5 gap-1 overflow-x-auto" id="modalTabs">
             <button class="modal-tab-btn active" data-tab="tab-basic">
-              ${iconUser()} Basic Info
+              ${iconUser()}<span>Basic Info</span>
             </button>
             <button class="modal-tab-btn" data-tab="tab-address">
-              ${iconLocation()} Address
+              ${iconLocation()}<span>Address</span>
             </button>
             <button class="modal-tab-btn" data-tab="tab-tax">
-              ${iconGST()} Tax & GST
+              ${iconGST()}<span>Tax &amp; GST</span>
             </button>
             <button class="modal-tab-btn" data-tab="tab-payment">
-              ${iconCredit()} Payment & Credit
+              ${iconCredit()}<span>Payment &amp; Credit</span>
             </button>
           </div>
 
           <div id="tab-basic" class="modal-tab-panel active">
-            <div class="grid grid-cols-2 gap-3">
-              ${fld('Client Name *', '<input id="f_name" value="' + e.name + '" placeholder="e.g. XYZ Retail Store" class="' + inputBase() + '">')}
+            <div class="grid grid-cols-2 form-grid-2 gap-x-4 gap-y-4">
+              ${fld('Client Name <span class="required">*</span>', '<input id="f_name" value="' + e.name + '" placeholder="e.g. XYZ Retail Store" class="' + inputBase() + '">')}
               ${fld('Company Name', '<input id="f_company" value="' + (e.companyName || '') + '" placeholder="Company legal name" class="' + inputBase() + '">')}
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-              ${fld('Client Type', '<select id="f_type" class="' + inputBase() + '"><option ' + (e.customerType === 'business' ? 'selected' : '') + ' value="business">Business</option><option ' + (e.customerType === 'individual' ? 'selected' : '') + ' value="individual">Individual</option><option ' + (e.customerType === 'government' ? 'selected' : '') + ' value="government">Government</option></select>')}
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-              ${fld('Email *', '<input id="f_email" type="email" value="' + e.email + '" placeholder="client@domain.com" class="' + inputBase() + '">')}
-              ${fld('Phone *', '<input id="f_phone" value="' + e.phone + '" placeholder="+91-XXXXXXXXXX" class="' + inputBase() + '">')}
+              ${fld('Client Type', '<select id="f_type" class="' + inputBase() + '"><option ' + (e.customerType === 'business' ? 'selected' : '') + ' value="business">Business</option><option ' + (e.customerType === 'individual' ? 'selected' : '') + ' value="individual">Individual</option><option ' + (e.customerType === 'government' ? 'selected' : '') + ' value="government">Government</option></select>', null, 'col-span-2')}
+              ${fld('Email <span class="required">*</span>', '<input id="f_email" type="email" value="' + e.email + '" placeholder="client@domain.com" class="' + inputBase() + '">')}
+              ${fld('Phone <span class="required">*</span>', '<input id="f_phone" value="' + e.phone + '" placeholder="+91-XXXXXXXXXX" class="' + inputBase() + '">')}
             </div>
           </div>
 
           <div id="tab-address" class="modal-tab-panel">
-            <div>
-              ${fld('Billing Address *', '<textarea id="f_billingAddress" rows="2" class="' + inputBase() + '" placeholder="Street address">' + (e.billingAddress || '') + '</textarea>')}
-            </div>
-            <div>
+            <div class="grid grid-cols-1 gap-y-4 mb-4">
+              ${fld('Billing Address <span class="required">*</span>', '<textarea id="f_billingAddress" rows="2" class="' + inputBase() + '" placeholder="Street address">' + (e.billingAddress || '') + '</textarea>')}
               ${fld('Shipping Address', '<textarea id="f_shippingAddress" rows="2" class="' + inputBase() + '" placeholder="Shipping address (if different)">' + (e.shippingAddress || '') + '</textarea>')}
             </div>
-            <div class="grid grid-cols-3 gap-3">
+            <div class="grid grid-cols-3 form-grid-3 gap-x-4 gap-y-4">
               ${fld('City', '<input id="f_city" value="' + (e.city || '') + '" placeholder="City" class="' + inputBase() + '">')}
               ${fld('State', '<select id="f_state" class="' + inputBase() + '" onchange="updateCustomerStateCode()">' + stateOptions.map(function(s) { return '<option ' + (s === e.state ? 'selected' : '') + '>' + s + '</option>'; }).join('') + '</select>')}
               ${fld('State Code', '<input id="f_stateCode" value="' + (e.stateCode || '27') + '" class="' + inputBase() + '" disabled>')}
+              ${fld('Pincode', '<input id="f_pincode" value="' + (e.pincode || '') + '" placeholder="6-digit PIN" class="' + inputBase() + '">')}
             </div>
-            ${fld('Pincode', '<input id="f_pincode" value="' + (e.pincode || '') + '" placeholder="6-digit PIN" class="' + inputBase() + '">')}
           </div>
 
           <div id="tab-tax" class="modal-tab-panel">
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-2 form-grid-2 gap-x-4 gap-y-4 mb-4">
               ${fld('GSTIN', '<input id="f_gstin" value="' + (e.gstin || '') + '" placeholder="15-digit GSTIN" class="' + inputBase() + '">', 'Format: 2-digit state code + 10-digit PAN + 3-digit entity code')}
               ${fld('PAN', '<input id="f_pan" value="' + (e.pan || '') + '" placeholder="10-digit PAN" class="' + inputBase() + '">')}
             </div>
-            ${fld('GST Registered?', '<div class="flex items-center gap-4 mt-1"><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="gstReg" value="true" ' + (e.gstRegistered ? 'checked' : '') + '> <span class="font-medium">Yes</span></label><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="gstReg" value="false" ' + (!e.gstRegistered ? 'checked' : '') + '> <span class="font-medium">No</span></label></div>')}
+            ${fld('GST Registered?', '<div class="form-radio-row"><label><input type="radio" name="gstReg" value="true" ' + (e.gstRegistered ? 'checked' : '') + '> <span class="font-medium">Yes</span></label><label><input type="radio" name="gstReg" value="false" ' + (!e.gstRegistered ? 'checked' : '') + '> <span class="font-medium">No</span></label></div>')}
           </div>
 
           <div id="tab-payment" class="modal-tab-panel">
-            ${fld('Payment Terms *', '<select id="f_paymentTerms" class="' + inputBase() + '"><option ' + (e.paymentTerms === 'Net 7 days' ? 'selected' : '') + '>Net 7 days</option><option ' + (e.paymentTerms === 'Net 15 days' ? 'selected' : '') + '>Net 15 days</option><option ' + (e.paymentTerms === 'Net 30 days' ? 'selected' : '') + '>Net 30 days</option><option ' + (e.paymentTerms === 'Net 45 days' ? 'selected' : '') + '>Net 45 days</option><option ' + (e.paymentTerms === 'Net 60 days' ? 'selected' : '') + '>Net 60 days</option><option ' + (e.paymentTerms === 'Advance Payment' ? 'selected' : '') + '>Advance Payment</option><option ' + (e.paymentTerms === 'Cash on Delivery' ? 'selected' : '') + '>Cash on Delivery</option></select>')}
-            ${fld('Credit Limit (₹)', '<input id="f_creditLimit" type="number" value="' + (e.creditLimit || '') + '" placeholder="e.g. 100000" class="' + inputBase() + '">', 'Set 0 for no credit limit')}
-            ${fld('Status', '<div class="flex items-center gap-4 mt-1"><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="customerStatus" value="active" ' + (e.status === 'active' ? 'checked' : '') + '> <span class="font-medium">Active</span></label><label class="flex items-center gap-2 text-[13px]"><input type="radio" name="customerStatus" value="inactive" ' + (e.status === 'inactive' ? 'checked' : '') + '> <span class="font-medium">Inactive</span></label></div>')}
+            <div class="grid grid-cols-2 form-grid-2 gap-x-4 gap-y-4 mb-4">
+              ${fld('Payment Terms <span class="required">*</span>', '<select id="f_paymentTerms" class="' + inputBase() + '"><option ' + (e.paymentTerms === 'Net 7 days' ? 'selected' : '') + '>Net 7 days</option><option ' + (e.paymentTerms === 'Net 15 days' ? 'selected' : '') + '>Net 15 days</option><option ' + (e.paymentTerms === 'Net 30 days' ? 'selected' : '') + '>Net 30 days</option><option ' + (e.paymentTerms === 'Net 45 days' ? 'selected' : '') + '>Net 45 days</option><option ' + (e.paymentTerms === 'Net 60 days' ? 'selected' : '') + '>Net 60 days</option><option ' + (e.paymentTerms === 'Advance Payment' ? 'selected' : '') + '>Advance Payment</option><option ' + (e.paymentTerms === 'Cash on Delivery' ? 'selected' : '') + '>Cash on Delivery</option></select>')}
+              ${fld('Credit Limit (₹)', '<input id="f_creditLimit" type="number" value="' + (e.creditLimit || '') + '" placeholder="e.g. 100000" class="' + inputBase() + '">', 'Set 0 for no credit limit')}
+            </div>
+            ${fld('Status', '<div class="form-radio-row"><label><input type="radio" name="customerStatus" value="active" ' + (e.status === 'active' ? 'checked' : '') + '> <span class="font-medium">Active</span></label><label><input type="radio" name="customerStatus" value="inactive" ' + (e.status === 'inactive' ? 'checked' : '') + '> <span class="font-medium">Inactive</span></label></div>')}
           </div>
         </div>
         ${modalFooter(isEdit ? 'Update Client' : 'Save Client', 'onclick="saveCustomer(\'' + (isEdit ? e.id : '') + '\')"')}
@@ -1110,7 +1259,7 @@
 
       var modalContent = `
         ${modalHeader('Delete Client', c.name)}
-        <div class="px-6 py-4 text-sm text-gray-600">
+        <div class="px-6 py-5 text-sm text-gray-600">
           <p>Are you sure you want to permanently delete <b class="text-gray-800">${c.name}</b>?</p>
           <p class="text-gray-400 text-[12px] mt-1">This action cannot be undone. All associated transactions will be affected.</p>
           ${c.receivable > 0 ? '<p class="text-amber-600 text-[12px] mt-2">⚠️ This client has outstanding receivable of ' + money(c.receivable) + '</p>' : ''}
