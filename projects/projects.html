@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <title>Projects — Aquilon ERP</title>
 
-<!-- ANTI-FLICKER SCRIPT -->
 <script>
   (function () {
     try {
@@ -22,7 +21,6 @@
   })();
 </script>
 
-<!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -37,12 +35,9 @@
   };
 </script>
 
-<!-- Shell styling -->
 <link rel="stylesheet" href="/assets/css/nav-sidebar.css" />
 
-<!-- Page-specific styles (EXACTLY Products page patterns) -->
 <style>
-  /* Form styles */
   .form-input {
     width: 100%;
     border: 1px solid #e5e7eb;
@@ -59,42 +54,19 @@
     box-shadow: 0 0 0 3px rgba(109, 168, 76, 0.15);
     background: #ffffff;
   }
-  .form-input:disabled {
-    background: #f3f4f6;
-    cursor: not-allowed;
-  }
-  .form-label {
-    font-size: 11.5px;
-    font-weight: 600;
-    color: #374151;
-    display: block;
-    margin-bottom: 4px;
-  }
+  .form-input:disabled { background: #f3f4f6; cursor: not-allowed; }
+  .form-label { font-size: 11.5px; font-weight: 600; color: #374151; display: block; margin-bottom: 4px; }
   .form-label .required { color: #ef4444; margin-left: 2px; }
   .form-hint { font-size: 10.5px; color: #9ca3af; margin-top: 3px; }
 
-  /* Badge */
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 20px;
-  }
+  .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
   .badge-green { background: #dcfce7; color: #166534; }
   .badge-amber { background: #fef3c7; color: #92400e; }
   .badge-red { background: #fee2e2; color: #991b1b; }
   .badge-gray { background: #f1f5f9; color: #475569; }
   .badge-blue { background: #dbeafe; color: #1e40af; }
   .badge-purple { background: #ede9fe; color: #5b21b6; }
-  .badge-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    display: inline-block;
-  }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
   .badge-dot-green { background: #22c55e; }
   .badge-dot-amber { background: #f59e0b; }
   .badge-dot-red { background: #ef4444; }
@@ -102,482 +74,325 @@
   .badge-dot-blue { background: #3b82f6; }
   .badge-dot-purple { background: #8b5cf6; }
 
-  /* Stat card */
-  .stat-card {
-    border: 1px solid #7dc057;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-  .stat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  }
-  .stat-icon-wrap {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-  }
+  .stat-card { border: 1px solid #7dc057; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); }
+  .stat-icon-wrap { width: 36px; height: 36px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; font-size: 15px; }
 
-  /* Table row hover */
-  .table-row-hover:hover {
-    background: #f8fafc;
-  }
+  .table-row-hover:hover { background: #f8fafc; }
 
-  /* Modal tabs */
-  .modal-tab-btn {
-    transition: all 0.2s ease;
-    padding: 8px 14px;
-    font-size: 12px;
-    font-weight: 500;
-    border-bottom: 2px solid transparent;
-    color: #6b7280;
-    cursor: pointer;
-    background: transparent;
-    display: flex;
-    gap: 6px;
-  }
-  .modal-tab-btn.active {
-    color: #6da84c;
-    border-bottom-color: #6da84c;
-  }
-  .modal-tab-btn:hover:not(.active) {
-    color: #1f2937;
-    border-bottom-color: #d1d5db;
-  }
-  .modal-tab-panel { display: none; }
-  .modal-tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
-
-  /* Page tabs */
   .page-tab-btn {
-    transition: all 0.2s ease;
-    padding: 10px 18px;
-    font-size: 13px;
-    font-weight: 500;
-    border-bottom: 2px solid transparent;
-    color: #6b7280;
-    cursor: pointer;
-    background: transparent;
-    white-space: nowrap;
+    transition: all 0.2s ease; padding: 10px 18px; font-size: 13px; font-weight: 500;
+    border-bottom: 2px solid transparent; color: #6b7280; cursor: pointer; background: transparent; white-space: nowrap;
   }
-  .page-tab-btn.active {
-    color: #6da84c;
-    border-bottom-color: #6da84c;
-    font-weight: 600;
-  }
-  .page-tab-btn:hover:not(.active) {
-    color: #1f2937;
-    border-bottom-color: #d1d5db;
-  }
+  .page-tab-btn.active { color: #6da84c; border-bottom-color: #6da84c; font-weight: 600; }
+  .page-tab-btn:hover:not(.active) { color: #1f2937; border-bottom-color: #d1d5db; }
   .page-tab-panel { display: none; }
   .page-tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes modalIn {
-    from { opacity: 0; transform: scale(0.96) translateY(6px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.96) translateY(6px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(8px); } to { opacity: 1; transform: translateX(0); } }
   .animate-modal { animation: modalIn 0.18s ease; }
+  .animate-slidein { animation: slideIn 0.22s ease; }
 
-  /* Action buttons */
   .btn-icon-action {
-    transition: all 0.15s ease;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #94a3b8;
-    background: transparent;
-    border: none;
-    cursor: pointer;
+    transition: all 0.15s ease; width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; color: #94a3b8; background: transparent; border: none; cursor: pointer;
   }
-  .btn-icon-action:hover {
-    background: #f1f5f9;
-    color: #6da84c;
-  }
-  .btn-icon-action.danger:hover {
-    background: #fee2e2;
-    color: #ef4444;
-  }
+  .btn-icon-action:hover { background: #f1f5f9; color: #6da84c; }
+  .btn-icon-action.danger:hover { background: #fee2e2; color: #ef4444; }
 
-  /* Toast */
-  .toast {
-    animation: fadeIn 0.2s ease;
-  }
+  .toast { animation: fadeIn 0.2s ease; }
   .toast-success { background: #16a34a; }
   .toast-error { background: #dc2626; }
   .toast-warning { background: #f59e0b; }
   .toast-info { background: #6da84c; }
 
-  /* Scrollbar for modal */
-  .modal-scroll {
-    max-height: 60vh;
-    overflow-y: auto;
-  }
-  .modal-scroll::-webkit-scrollbar {
-    width: 4px;
-  }
-  .modal-scroll::-webkit-scrollbar-thumb {
-    background: #d1d5db;
-    border-radius: 4px;
-  }
+  .modal-scroll { max-height: 60vh; overflow-y: auto; }
+  .modal-scroll::-webkit-scrollbar { width: 4px; }
+  .modal-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
 
-  /* Empty state */
-  .empty-icon-svg {
-    opacity: 0.2;
-    width: 48px;
-    height: 48px;
-    color: #94a3b8;
-  }
+  .empty-icon-svg { opacity: 0.2; width: 48px; height: 48px; color: #94a3b8; }
 
-  /* Project card */
-  .project-card {
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 14px 16px;
-    background: #ffffff;
-    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
-    cursor: pointer;
-  }
-  .project-card:hover {
-    border-color: #6da84c;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    transform: translateY(-1px);
-  }
-  .project-card.selected {
-    border-color: #6da84c;
-    background: #f8fdf5;
-    box-shadow: 0 0 0 3px rgba(109, 168, 76, 0.15);
-  }
-  .project-card .proj-name {
-    font-size: 13px;
-    font-weight: 700;
-    color: #1a1a2e;
-  }
-  .project-card .proj-customer {
-    font-size: 11px;
-    color: #6b7280;
-  }
-  .project-card .proj-budget {
-    font-size: 12px;
-    font-weight: 600;
-    color: #6da84c;
-  }
+  /* Project row (table, list view) */
+  .project-row { cursor: pointer; transition: background 0.15s; }
+  .project-row:hover { background: #f8fafc; }
+  .proj-name-link { font-size: 13px; font-weight: 700; color: #1a1a2e; cursor: pointer; }
+  .proj-name-link:hover { color: #6da84c; text-decoration: underline; }
+  .proj-customer-sm { font-size: 11px; color: #6b7280; }
 
-  /* Progress bar */
-  .progress-bar {
-    height: 6px;
-    border-radius: 3px;
-    background: #e5e7eb;
-    overflow: hidden;
-    margin-top: 6px;
-  }
-  .progress-bar .fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 0.6s ease;
-  }
+  .progress-bar { height: 6px; border-radius: 3px; background: #e5e7eb; overflow: hidden; margin-top: 6px; }
+  .progress-bar .fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
   .progress-bar .fill-green { background: #22c55e; }
   .progress-bar .fill-amber { background: #f59e0b; }
   .progress-bar .fill-blue { background: #3b82f6; }
 
-  /* Document file item */
   .doc-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 12px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    background: #ffffff;
-    transition: border-color 0.2s, background 0.15s;
+    display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid #e5e7eb;
+    border-radius: 8px; background: #ffffff; transition: border-color 0.2s, background 0.15s;
   }
-  .doc-item:hover {
-    border-color: #6da84c;
-    background: #f8fafc;
-  }
+  .doc-item:hover { border-color: #6da84c; background: #f8fafc; }
   .doc-item .doc-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #eef5e8;
-    color: #6da84c;
-    flex-shrink: 0;
+    width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center;
+    background: #eef5e8; color: #6da84c; flex-shrink: 0;
   }
-  .doc-item .doc-name {
-    font-size: 12px;
-    font-weight: 600;
-    color: #1a1a2e;
-  }
-  .doc-item .doc-meta {
-    font-size: 10px;
-    color: #6b7280;
-  }
+  .doc-item .doc-name { font-size: 12px; font-weight: 600; color: #1a1a2e; }
+  .doc-item .doc-meta { font-size: 10px; color: #6b7280; }
 
-  /* Report table (for Overview & Budget) */
-  .report-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
+  .report-table { width: 100%; border-collapse: collapse; font-size: 13px; }
   .report-table th {
-    background: #f8fafc;
-    text-align: left;
-    padding: 8px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: #6b7280;
-    border-bottom: 2px solid #e5e7eb;
+    background: #f8fafc; text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em; color: #6b7280; border-bottom: 2px solid #e5e7eb;
   }
-  .report-table td {
-    padding: 8px 10px;
-    border-bottom: 1px solid #f1f5f9;
-  }
+  .report-table td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; }
   .report-table .text-right { text-align: right; }
-  .report-table .total-row {
-    border-top: 2px solid #e5e7eb;
-    border-bottom: 2px solid #e5e7eb;
-    font-weight: 700;
-    background: #f8fafc;
+  .report-table .total-row { border-top: 2px solid #e5e7eb; border-bottom: 2px solid #e5e7eb; font-weight: 700; background: #f8fafc; }
+  .report-table .grand-total { font-weight: 700; color: #6da84c; background: #eef5e8; }
+
+  /* ===== PROJECT DETAIL VIEW (Zoho-style) ===== */
+  .back-btn {
+    width: 34px; height: 34px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;
+    color: #4b5563; background: #f1f5f9; border: none; cursor: pointer; transition: all 0.15s;
   }
-  .report-table .grand-total {
-    font-weight: 700;
-    color: #6da84c;
-    background: #eef5e8;
+  .back-btn:hover { background: #e5e7eb; color: #1a1a2e; }
+
+  .detail-info-panel {
+    background: #fafbfc;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
   }
+  .detail-info-panel .info-row { padding: 14px 18px; border-bottom: 1px solid #eef0f2; }
+  .detail-info-panel .info-row:last-child { border-bottom: none; }
+  .detail-info-label { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 3px; }
+  .detail-info-value { font-size: 13.5px; font-weight: 600; color: #1a1a2e; }
+  .detail-info-value.link { color: #1985bf; cursor: pointer; }
+  .detail-info-value.link:hover { text-decoration: underline; }
+
+  .no-scrollbar::-webkit-scrollbar {
+  display: none;               /* Chrome, Safari, Edge (Chromium) */
+}
 </style>
 </head>
 
 <body class="bg-gray-50 text-gray-800 antialiased">
 
   <div class="flex min-h-screen">
-    <!-- Sidebar gets injected here by nav-sidebar.js -->
     <div id="sidebar-root"></div>
 
     <div class="app-main flex-1 flex flex-col min-w-0">
-      <!-- Top bar gets injected here -->
       <div id="topbar-root"></div>
 
-      <!-- ========================================================== -->
-      <!-- ============= PAGE CONTENT STARTS HERE ==================== -->
-      <!-- ========================================================== -->
       <main class="p-4 sm:p-6 lg:p-8">
 
-        <!-- Toast Container -->
         <div id="toastWrap" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2 items-end"></div>
-
-        <!-- Modal Root -->
         <div id="modalRoot"></div>
 
         <div class="max-w-7xl mx-auto">
 
-          <!-- ===== PAGE HEADER (Products-style) ===== -->
-          <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
-            <div>
-              <div class="text-[11px] font-semibold tracking-wide uppercase text-primary">Operations</div>
-              <h1 class="text-[24px] sm:text-[28px] font-bold tracking-tight text-gray-900">Project Management</h1>
-              <p class="text-[13px] text-gray-500 mt-1">Project overview, sales, purchases, expenses, timesheets, budgets and documents.</p>
+          <!-- ===================================================== -->
+          <!-- ================ LIST VIEW (default) ================= -->
+          <!-- ===================================================== -->
+          <div id="listView">
+
+            <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
+              <div>
+                <div class="text-[11px] font-semibold tracking-wide uppercase text-primary">Operations</div>
+                <h1 class="text-[24px] sm:text-[28px] font-bold tracking-tight text-gray-900">Project Management</h1>
+                <p class="text-[13px] text-gray-500 mt-1">Project overview, sales, purchases, expenses, timesheets, budgets and documents.</p>
+              </div>
+              <div class="flex gap-2.5 flex-wrap">
+                <button onclick="exportProjectReport()" class="inline-flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[13px] font-semibold px-4 py-2.5 rounded-lg transition shadow-sm">
+                  <i class="fa-solid fa-download"></i> Export
+                </button>
+                <button onclick="openAddProject()" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-[13px] font-semibold px-4 py-2.5 rounded-lg transition shadow-sm">
+                  <i class="fa-solid fa-plus"></i> New Project
+                </button>
+              </div>
             </div>
-            <div class="flex gap-2.5 flex-wrap">
-              <button onclick="exportProjectReport()" class="inline-flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[13px] font-semibold px-4 py-2.5 rounded-lg transition shadow-sm">
-                <i class="fa-solid fa-download"></i>
-                Export
+
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3.5 mb-6">
+              <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+                <div class="stat-icon-wrap bg-primary-soft text-primary"><i class="fa-solid fa-folder-tree"></i></div>
+                <div>
+                  <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Projects</div>
+                  <div class="text-[22px] font-bold text-gray-900" id="totalProjects">0</div>
+                </div>
+              </div>
+              <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+                <div class="stat-icon-wrap bg-blue-50 text-blue-600"><i class="fa-solid fa-play"></i></div>
+                <div>
+                  <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Active</div>
+                  <div class="text-[22px] font-bold text-blue-600" id="activeProjects">0</div>
+                </div>
+              </div>
+              <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+                <div class="stat-icon-wrap bg-green-50 text-green-600"><i class="fa-solid fa-check-circle"></i></div>
+                <div>
+                  <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Completed</div>
+                  <div class="text-[22px] font-bold text-green-600" id="completedProjects">0</div>
+                </div>
+              </div>
+              <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+                <div class="stat-icon-wrap bg-primary-soft text-primary"><i class="fa-solid fa-sack-dollar"></i></div>
+                <div>
+                  <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Budget</div>
+                  <div class="text-[18px] font-bold text-primary" id="totalBudget">₹0</div>
+                </div>
+              </div>
+              <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
+                <div class="stat-icon-wrap bg-amber-50 text-amber-600"><i class="fa-solid fa-chart-line"></i></div>
+                <div>
+                  <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Profit</div>
+                  <div class="text-[18px] font-bold text-amber-600" id="totalProfit">₹0</div>
+                </div>
+              </div>
+            </div>
+
+            <div id="projectsList" class="mb-6"></div>
+
+          </div>
+          <!-- ===================== END LIST VIEW ===================== -->
+
+          <!-- ===================================================== -->
+          <!-- ============== DETAIL VIEW (hidden by default) ======== -->
+          <!-- ===================================================== -->
+          <div id="detailView" class="hidden animate-slidein">
+
+            <!-- Header with back arrow -->
+            <div class="flex flex-wrap items-center gap-3 mb-5">
+              <button class="back-btn" onclick="backToList()" title="Back to Projects">
+                <i class="fa-solid fa-arrow-left"></i>
               </button>
-              <button onclick="openAddProject()" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white text-[13px] font-semibold px-4 py-2.5 rounded-lg transition shadow-sm">
-                <i class="fa-solid fa-plus"></i>
-                New Project
-              </button>
+              <h1 class="text-[22px] sm:text-[26px] font-bold tracking-tight text-gray-900" id="detailProjectName">Project Name</h1>
+              <div id="detailStatusBadge"></div>
+              <div class="flex-1"></div>
+              <div class="flex gap-2 flex-wrap">
+                <button onclick="editSelectedProject()" class="inline-flex items-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[13px] font-semibold px-3.5 py-2 rounded-lg transition shadow-sm">
+                  <i class="fa-solid fa-pen"></i> Edit
+                </button>
+                <button onclick="deleteSelectedProject()" class="inline-flex items-center gap-2 bg-white border border-gray-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 text-gray-700 text-[13px] font-semibold px-3.5 py-2 rounded-lg transition shadow-sm">
+                  <i class="fa-solid fa-trash"></i> Delete
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-5">
+
+              <!-- Left info panel (Zoho-style) -->
+              <div class="detail-info-panel h-fit">
+                <div class="info-row">
+                  <div class="detail-info-label">Project Code</div>
+                  <div class="detail-info-value" id="di_code">—</div>
+                </div>
+                <div class="info-row">
+                  <div class="detail-info-label">Customer</div>
+                  <div class="detail-info-value link" id="di_customer">—</div>
+                </div>
+                <div class="info-row">
+                  <div class="detail-info-label">Project Manager</div>
+                  <div class="detail-info-value" id="di_pm">—</div>
+                </div>
+                <div class="info-row">
+                  <div class="detail-info-label">Start Date</div>
+                  <div class="detail-info-value" id="di_start">—</div>
+                </div>
+                <div class="info-row">
+                  <div class="detail-info-label">End Date</div>
+                  <div class="detail-info-value" id="di_end">—</div>
+                </div>
+                <div class="info-row">
+                  <div class="detail-info-label">Progress</div>
+                  <div class="detail-info-value" id="di_progress">—</div>
+                  <div class="progress-bar" style="margin-top:8px;">
+                    <div class="fill fill-blue" id="di_progress_fill" style="width:0%;"></div>
+                  </div>
+                </div>
+                <div class="info-row">
+                  <div class="detail-info-label">Total Budget</div>
+                  <div class="detail-info-value text-primary" id="di_budget">—</div>
+                </div>
+                <div class="info-row">
+                  <div class="detail-info-label">Net Profit</div>
+                  <div class="detail-info-value" id="di_profit">—</div>
+                </div>
+                <div class="info-row">
+                  <div class="detail-info-label">Description</div>
+                  <div class="detail-info-value text-[12.5px] font-medium text-gray-600" id="di_desc" style="font-weight:500;">—</div>
+                </div>
+                <div class="info-row" id="di_hold_row" style="display:none;">
+                  <div class="detail-info-label text-amber-500">Hold Reason</div>
+                  <div class="detail-info-value text-amber-600 text-[12.5px]" id="di_hold" style="font-weight:500;">—</div>
+                </div>
+              </div>
+
+              <!-- Right side: Tabs + content -->
+              <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm overflow-hidden">
+               <div class="flex overflow-x-auto no-scrollbar border-b border-gray-200 px-4 pt-2 gap-1" id="projTabs">
+                  <button class="page-tab-btn active" data-tab="tab-overview"><i class="fa-solid fa-chart-pie mr-1.5"></i>Overview</button>
+                  <button class="page-tab-btn" data-tab="tab-sales"><i class="fa-solid fa-cart-shopping mr-1.5"></i>Sales</button>
+                  <button class="page-tab-btn" data-tab="tab-purchases"><i class="fa-solid fa-truck-fast mr-1.5"></i>Purchases</button>
+                  <button class="page-tab-btn" data-tab="tab-expenses"><i class="fa-solid fa-receipt mr-1.5"></i>Expenses</button>
+                  <button class="page-tab-btn" data-tab="tab-timesheet"><i class="fa-solid fa-clock mr-1.5"></i>Timesheet</button>
+                  <button class="page-tab-btn" data-tab="tab-budget"><i class="fa-solid fa-chart-simple mr-1.5"></i>Budget</button>
+                  <button class="page-tab-btn" data-tab="tab-journals"><i class="fa-solid fa-book mr-1.5"></i>Journals</button>
+                  <button class="page-tab-btn" data-tab="tab-documents"><i class="fa-solid fa-folder-open mr-1.5"></i>Documents</button>
+                  <button class="page-tab-btn" data-tab="tab-activity"><i class="fa-solid fa-list-check mr-1.5"></i>Activity</button>
+                </div>
+
+                <div class="p-5">
+                  <div id="tab-overview" class="page-tab-panel active"><div id="overviewPanel"></div></div>
+                  <div id="tab-sales" class="page-tab-panel"><div id="salesPanel"></div></div>
+                  <div id="tab-purchases" class="page-tab-panel"><div id="purchasesPanel"></div></div>
+                  <div id="tab-expenses" class="page-tab-panel"><div id="expensesPanel"></div></div>
+                  <div id="tab-timesheet" class="page-tab-panel"><div id="timesheetPanel"></div></div>
+                  <div id="tab-budget" class="page-tab-panel"><div id="budgetPanel"></div></div>
+                  <div id="tab-journals" class="page-tab-panel"><div id="journalsPanel"></div></div>
+                  <div id="tab-documents" class="page-tab-panel"><div id="documentsPanel"></div></div>
+                  <div id="tab-activity" class="page-tab-panel"><div id="activityPanel"></div></div>
+                </div>
+              </div>
+
             </div>
           </div>
-
-          <!-- ===== STATS CARDS (Products-style, green border) ===== -->
-          <div class="grid grid-cols-2 md:grid-cols-5 gap-3.5 mb-6">
-            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
-              <div class="stat-icon-wrap bg-primary-soft text-primary"><i class="fa-solid fa-folder-tree"></i></div>
-              <div>
-                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Projects</div>
-                <div class="text-[22px] font-bold text-gray-900" id="totalProjects">0</div>
-              </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
-              <div class="stat-icon-wrap bg-blue-50 text-blue-600"><i class="fa-solid fa-play"></i></div>
-              <div>
-                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Active</div>
-                <div class="text-[22px] font-bold text-blue-600" id="activeProjects">0</div>
-              </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
-              <div class="stat-icon-wrap bg-green-50 text-green-600"><i class="fa-solid fa-check-circle"></i></div>
-              <div>
-                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Completed</div>
-                <div class="text-[22px] font-bold text-green-600" id="completedProjects">0</div>
-              </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
-              <div class="stat-icon-wrap bg-primary-soft text-primary"><i class="fa-solid fa-sack-dollar"></i></div>
-              <div>
-                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Budget</div>
-                <div class="text-[18px] font-bold text-primary" id="totalBudget">₹0</div>
-              </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm p-4 stat-card flex items-center gap-3">
-              <div class="stat-icon-wrap bg-amber-50 text-amber-600"><i class="fa-solid fa-chart-line"></i></div>
-              <div>
-                <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500">Total Profit</div>
-                <div class="text-[18px] font-bold text-amber-600" id="totalProfit">₹0</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ===== PROJECTS LIST (cards) ===== -->
-          <div id="projectsList" class="mb-6"></div>
-
-          <!-- ===== TABS CARD (Products-style green border) ===== -->
-          <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm overflow-hidden">
-            <div class="flex overflow-x-auto border-b border-gray-200 px-4 pt-2 gap-1" id="projTabs">
-              <button class="page-tab-btn active" data-tab="tab-overview">
-                <i class="fa-solid fa-chart-pie mr-1.5"></i>
-                Overview
-              </button>
-              <button class="page-tab-btn" data-tab="tab-sales">
-                <i class="fa-solid fa-cart-shopping mr-1.5"></i>
-                Sales
-              </button>
-              <button class="page-tab-btn" data-tab="tab-purchases">
-                <i class="fa-solid fa-truck-fast mr-1.5"></i>
-                Purchases
-              </button>
-              <button class="page-tab-btn" data-tab="tab-expenses">
-                <i class="fa-solid fa-receipt mr-1.5"></i>
-                Expenses
-              </button>
-              <button class="page-tab-btn" data-tab="tab-timesheet">
-                <i class="fa-solid fa-clock mr-1.5"></i>
-                Timesheet
-              </button>
-              <button class="page-tab-btn" data-tab="tab-budget">
-                <i class="fa-solid fa-chart-simple mr-1.5"></i>
-                Budget
-              </button>
-              <button class="page-tab-btn" data-tab="tab-journals">
-                <i class="fa-solid fa-book mr-1.5"></i>
-                Journals
-              </button>
-              <button class="page-tab-btn" data-tab="tab-documents">
-                <i class="fa-solid fa-folder-open mr-1.5"></i>
-                Documents
-              </button>
-              <button class="page-tab-btn" data-tab="tab-activity">
-                <i class="fa-solid fa-list-check mr-1.5"></i>
-                Activity
-              </button>
-            </div>
-
-            <div class="p-5">
-              <div id="tab-overview" class="page-tab-panel active"><div id="overviewPanel"></div></div>
-              <div id="tab-sales" class="page-tab-panel"><div id="salesPanel"></div></div>
-              <div id="tab-purchases" class="page-tab-panel"><div id="purchasesPanel"></div></div>
-              <div id="tab-expenses" class="page-tab-panel"><div id="expensesPanel"></div></div>
-              <div id="tab-timesheet" class="page-tab-panel"><div id="timesheetPanel"></div></div>
-              <div id="tab-budget" class="page-tab-panel"><div id="budgetPanel"></div></div>
-              <div id="tab-journals" class="page-tab-panel"><div id="journalsPanel"></div></div>
-              <div id="tab-documents" class="page-tab-panel"><div id="documentsPanel"></div></div>
-              <div id="tab-activity" class="page-tab-panel"><div id="activityPanel"></div></div>
-            </div>
-          </div>
+          <!-- ===================== END DETAIL VIEW ===================== -->
 
         </div>
       </main>
-      <!-- ========================================================== -->
-      <!-- ============= PAGE CONTENT ENDS HERE ====================== -->
-      <!-- ========================================================== -->
     </div>
   </div>
 
-  <!-- ========================================================== -->
-  <!-- SCRIPTS -->
-  <!-- ========================================================== -->
-
   <script src="/assets/js/nav-sidebar.js"></script>
   <script>
-    // =============================================================
-    // NAV-SIDEBAR INIT
-    // =============================================================
     NavSidebar.init({
       basePath: "",
       activePage: "projects",
       pageTitle: "Projects",
-      user: {
-        name: "Admin",
-        role: "Super Admin",
-        avatarUrl: "",
-      },
+      user: { name: "Admin", role: "Super Admin", avatarUrl: "" },
     });
 
     // =============================================================
-    // SVG ICONS (Products-style)
+    // SVG ICONS
     // =============================================================
-    function iconEdit() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
-    }
-    function iconTrash() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>`;
-    }
-    function iconEye() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
-    }
-    function iconX() {
-      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
-    }
-    function iconSave() {
-      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>`;
-    }
-    function iconBox() {
-      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>`;
-    }
-    function iconSearch() {
-      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>`;
-    }
-    function iconDocument() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6"/></svg>`;
-    }
-    function iconPdf() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M9 15h6"/><path d="M9 11h6"/></svg>`;
-    }
-    function iconImage() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>`;
-    }
-    function iconDownload() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>`;
-    }
-    function iconInfo() {
-      return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>`;
-    }
+    function iconEdit() { return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`; }
+    function iconTrash() { return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>`; }
+    function iconEye() { return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`; }
+    function iconX() { return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>`; }
+    function iconSave() { return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>`; }
+    function iconBox() { return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>`; }
+    function iconSearch() { return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>`; }
+    function iconDocument() { return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6"/></svg>`; }
+    function iconPdf() { return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6"/><path d="M9 15h6"/><path d="M9 11h6"/></svg>`; }
+    function iconImage() { return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>`; }
+    function iconDownload() { return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>`; }
+    function iconInfo() { return `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>`; }
 
     // =============================================================
-    // TOAST (Products-style)
+    // TOAST
     // =============================================================
     function showToast(message, kind) {
       kind = kind || 'success';
       var wrap = document.getElementById('toastWrap');
-      var colors = {
-        success: 'bg-green-600',
-        info: 'bg-primary',
-        warning: 'bg-amber-600',
-        error: 'bg-red-600'
-      };
+      var colors = { success: 'bg-green-600', info: 'bg-primary', warning: 'bg-amber-600', error: 'bg-red-600' };
       var el = document.createElement('div');
       el.className = 'toast ' + colors[kind] + ' text-white text-sm font-semibold px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 max-w-xs';
       el.innerHTML = '<span>' + message + '</span>';
@@ -590,7 +405,7 @@
     }
 
     // =============================================================
-    // MODAL (Products-style)
+    // MODAL
     // =============================================================
     function openModal(innerHtml, opts) {
       opts = opts || {};
@@ -607,8 +422,7 @@
     }
 
     function closeModal() {
-      var root = document.getElementById('modalRoot');
-      root.innerHTML = '';
+      document.getElementById('modalRoot').innerHTML = '';
       document.body.style.overflow = '';
     }
 
@@ -637,18 +451,11 @@
     }
 
     function fld(label, inputHtml, hint) {
-      return `
-        <div class="mb-3">
-          <label class="form-label">${label}</label>
-          ${inputHtml}
-          ${hint ? '<div class="form-hint">' + hint + '</div>' : ''}
-        </div>`;
+      return `<div class="mb-3"><label class="form-label">${label}</label>${inputHtml}${hint ? '<div class="form-hint">' + hint + '</div>' : ''}</div>`;
     }
 
-    function inputBase() { return "form-input"; }
-
     // =============================================================
-    // HELPERS (Products-style)
+    // HELPERS
     // =============================================================
     function money(n) { return '₹' + Number(n || 0).toLocaleString('en-IN'); }
 
@@ -659,38 +466,15 @@
     }
 
     function statusBadge(status) {
-      var map = {
-        active: 'blue',
-        completed: 'green',
-        onhold: 'amber',
-        cancelled: 'red',
-        pending: 'gray',
-        paid: 'green',
-        partial: 'amber',
-        sent: 'blue',
-        received: 'green',
-        approved: 'green'
-      };
+      var map = { active: 'blue', completed: 'green', onhold: 'amber', cancelled: 'red', pending: 'gray', paid: 'green', partial: 'amber', sent: 'blue', received: 'green', approved: 'green' };
       var label = status.charAt(0).toUpperCase() + status.slice(1);
       if (status === 'onhold') label = 'On Hold';
       return badge(label, map[status] || 'gray');
     }
 
-    function rowActionsHtml(editFn, delFn, viewFn) {
-      var html = '<div class="flex gap-1 justify-end">';
-      if (viewFn) {
-        html += '<button onclick="' + viewFn + '" class="btn-icon-action" title="View">' + iconEye() + '</button>';
-      }
-      html += '<button onclick="' + editFn + '" class="btn-icon-action" title="Edit">' + iconEdit() + '</button>';
-      html += '<button onclick="' + delFn + '" class="btn-icon-action danger" title="Delete">' + iconTrash() + '</button>';
-      html += '</div>';
-      return html;
-    }
-
-    // Products page ka panelWrap — same green border
     function panelWrap(titleHtml, bodyHtml, extraHead) {
       return `
-        <div class="bg-white border border-[#6da84c] rounded-xl shadow-sm overflow-hidden">
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
           <div class="flex items-center justify-between gap-3 flex-wrap px-5 py-4 border-b border-gray-100">
             <div class="font-bold text-[14.5px] text-gray-800 flex items-center gap-2">${titleHtml}</div>
             ${extraHead || ''}
@@ -699,7 +483,6 @@
         </div>`;
     }
 
-    // Products page ka tableHtml — sticky header + fixed height
     function tableHtml(cols, rowsHtml) {
       var colHeaders = cols.map(function(c) {
         return '<th class="text-left text-[11px] font-bold uppercase tracking-wide text-gray-500 px-4 py-3 whitespace-nowrap">' + c + '</th>';
@@ -707,10 +490,8 @@
       return `
         <div class="overflow-auto h-[370px]">
           <table class="w-full text-[13px]">
-            <thead class="sticky top-0">
-              <tr class="bg-gray-50 border-b border-gray-200">${colHeaders}</tr>
-            </thead>
-            <tbody id="tbody-anchor">${rowsHtml}</tbody>
+            <thead class="sticky top-0"><tr class="bg-gray-50 border-b border-gray-200">${colHeaders}</tr></thead>
+            <tbody>${rowsHtml}</tbody>
           </table>
         </div>`;
     }
@@ -724,76 +505,39 @@
         btn.addEventListener('click', function() {
           tabs.forEach(function(b) { b.classList.remove('active'); });
           this.classList.add('active');
-          var panels = document.querySelectorAll('.page-tab-panel');
-          panels.forEach(function(p) { p.classList.remove('active'); });
+          document.querySelectorAll('.page-tab-panel').forEach(function(p) { p.classList.remove('active'); });
           document.getElementById(this.dataset.tab).classList.add('active');
         });
       });
     });
 
     // =============================================================
-    // DATA (same as before)
+    // DATA
     // =============================================================
     var projects = [{
-      id: 'PRJ-001',
-      name: 'Operation & Supervision — WHE',
-      code: '26LW069',
-      customer: 'Sustro Speciality Oils Pvt Ltd',
-      status: 'active',
-      startDate: '2025-11-01',
-      endDate: '2026-06-30',
-      progress: 62,
-      budget: 500000,
-      actualCost: 310000,
-      revenue: 450000,
-      profit: 140000,
-      pm: 'Rajesh Sharma',
-      description: 'Operation and supervision contract for WHE'
+      id: 'PRJ-001', name: 'Operation & Supervision — WHE', code: '26LW069',
+      customer: 'Sustro Speciality Oils Pvt Ltd', status: 'active',
+      startDate: '2025-11-01', endDate: '2026-06-30', progress: 62,
+      budget: 500000, actualCost: 310000, revenue: 450000, profit: 140000,
+      pm: 'Rajesh Sharma', description: 'Operation and supervision contract for WHE'
     }, {
-      id: 'PRJ-002',
-      name: 'Odor Control Unit — Retrofit',
-      code: '26LW070',
-      customer: 'XYZ Technologies',
-      status: 'active',
-      startDate: '2025-12-15',
-      endDate: '2026-05-31',
-      progress: 31,
-      budget: 350000,
-      actualCost: 120000,
-      revenue: 200000,
-      profit: 80000,
-      pm: 'Priya Patel',
-      description: 'Retrofit of odor control unit'
+      id: 'PRJ-002', name: 'Odor Control Unit — Retrofit', code: '26LW070',
+      customer: 'XYZ Technologies', status: 'active',
+      startDate: '2025-12-15', endDate: '2026-05-31', progress: 31,
+      budget: 350000, actualCost: 120000, revenue: 200000, profit: 80000,
+      pm: 'Priya Patel', description: 'Retrofit of odor control unit'
     }, {
-      id: 'PRJ-003',
-      name: 'Dual Media Filter — Phase II',
-      code: '26LW071',
-      customer: 'ABC Distributor Group',
-      status: 'completed',
-      startDate: '2025-08-01',
-      endDate: '2026-01-15',
-      progress: 100,
-      budget: 750000,
-      actualCost: 720000,
-      revenue: 950000,
-      profit: 230000,
-      pm: 'Rajesh Sharma',
-      description: 'Dual media filter installation phase II'
+      id: 'PRJ-003', name: 'Dual Media Filter — Phase II', code: '26LW071',
+      customer: 'ABC Distributor Group', status: 'completed',
+      startDate: '2025-08-01', endDate: '2026-01-15', progress: 100,
+      budget: 750000, actualCost: 720000, revenue: 950000, profit: 230000,
+      pm: 'Rajesh Sharma', description: 'Dual media filter installation phase II'
     }, {
-      id: 'PRJ-004',
-      name: 'Site Survey & Consulting',
-      code: '26LW072',
-      customer: 'Global Exports Ltd.',
-      status: 'onhold',
-      startDate: '2026-01-10',
-      endDate: '2026-08-31',
-      progress: 15,
-      budget: 150000,
-      actualCost: 25000,
-      revenue: 0,
-      profit: -25000,
-      pm: 'Amit Kumar',
-      description: 'Site survey and consulting services',
+      id: 'PRJ-004', name: 'Site Survey & Consulting', code: '26LW072',
+      customer: 'Global Exports Ltd.', status: 'onhold',
+      startDate: '2026-01-10', endDate: '2026-08-31', progress: 15,
+      budget: 150000, actualCost: 25000, revenue: 0, profit: -25000,
+      pm: 'Amit Kumar', description: 'Site survey and consulting services',
       holdReason: 'Client requested hold for 2 months'
     }];
 
@@ -856,7 +600,7 @@
       { id: 'ACT-004', date: '2026-02-05', user: 'Rajesh Sharma', action: 'Uploaded Document', detail: 'Site photos uploaded', projectId: 'PRJ-001' }
     ];
 
-    var selectedProjectId = 'PRJ-001';
+    var selectedProjectId = null;
 
     // =============================================================
     // RENDER STATS
@@ -876,46 +620,60 @@
     }
 
     // =============================================================
-    // RENDER PROJECTS (cards)
+    // RENDER PROJECTS (list/table view)
     // =============================================================
     function renderProjects() {
-      var cardsHtml = projects.map(function(p) {
+      var rowsHtml = projects.map(function(p) {
         var progressFill = p.status === 'completed' ? 'fill-green' : (p.status === 'onhold' ? 'fill-amber' : 'fill-blue');
-        var isSelected = p.id === selectedProjectId;
         return `
-          <div class="project-card ${isSelected ? 'selected' : ''}" onclick="selectProject('${p.id}')">
-            <div class="flex items-start justify-between mb-2">
-              <div>
-                <div class="proj-name">${p.name}</div>
-                <div class="proj-customer">${p.customer} · ${p.code}</div>
-              </div>
-              ${statusBadge(p.status)}
-            </div>
-            <div class="flex justify-between text-[11px] text-gray-500 mb-1">
-              <span>Progress</span>
-              <span class="font-semibold text-gray-700">${p.progress}%</span>
-            </div>
-            <div class="progress-bar">
-              <div class="fill ${progressFill}" style="width:${p.progress}%;"></div>
-            </div>
-            <div class="flex justify-between mt-2 text-[11px]">
-              <span>Budget: <span class="proj-budget">${money(p.budget)}</span></span>
-              <span>Profit: <span class="${p.profit >= 0 ? 'text-green-600' : 'text-red-600'} font-semibold">${money(p.profit)}</span></span>
-            </div>
-          </div>`;
+          <tr class="project-row border-b border-gray-100" onclick="openProjectDetail('${p.id}')">
+            <td class="px-4 py-3">
+              <div class="proj-name-link">${p.name}</div>
+              <div class="proj-customer-sm">${p.customer}</div>
+            </td>
+            <td class="px-4 py-3 text-xs text-gray-500 font-mono">${p.code}</td>
+            <td class="px-4 py-3">${statusBadge(p.status)}</td>
+            <td class="px-4 py-3" style="min-width:120px;">
+              <div class="flex justify-between text-[11px] text-gray-500 mb-1"><span>${p.progress}%</span></div>
+              <div class="progress-bar"><div class="fill ${progressFill}" style="width:${p.progress}%;"></div></div>
+            </td>
+            <td class="px-4 py-3 font-mono font-semibold text-right text-primary">${money(p.budget)}</td>
+            <td class="px-4 py-3 font-mono font-semibold text-right ${p.profit >= 0 ? 'text-green-600' : 'text-red-600'}">${money(p.profit)}</td>
+            <td class="px-4 py-3 text-right">
+              <button onclick="event.stopPropagation(); openProjectDetail('${p.id}')" class="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:text-primary-dark">
+                View Details ${iconEye()}
+              </button>
+            </td>
+          </tr>`;
       }).join('');
 
-      document.getElementById('projectsList').innerHTML = `
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">${cardsHtml}</div>
-      `;
+      document.getElementById('projectsList').innerHTML = panelWrap(
+        '<i class="fa-solid fa-folder-tree text-primary"></i> All Projects',
+        tableHtml(['Project', 'Code', 'Status', 'Progress', 'Budget', 'Profit', ''], rowsHtml),
+        '<span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full">' + projects.length + '</span>'
+      );
     }
 
-    function selectProject(id) {
+    // =============================================================
+    // VIEW SWITCHING (List <-> Detail)
+    // =============================================================
+    function openProjectDetail(id) {
       selectedProjectId = id;
       var p = projects.find(function(x) { return x.id === id; });
       if (!p) return;
-      showToast('Selected project: ' + p.name, 'info');
-      renderProjects();
+
+      document.getElementById('listView').classList.add('hidden');
+      var dv = document.getElementById('detailView');
+      dv.classList.remove('hidden');
+      dv.classList.remove('animate-slidein');
+      void dv.offsetWidth; // restart animation
+      dv.classList.add('animate-slidein');
+
+      // Reset to first tab
+      document.querySelectorAll('#projTabs .page-tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === 0); });
+      document.querySelectorAll('.page-tab-panel').forEach(function(pnl, i) { pnl.classList.toggle('active', i === 0); });
+
+      renderDetailHeader(p);
       renderOverview();
       renderSales();
       renderPurchases();
@@ -925,6 +683,68 @@
       renderJournals();
       renderDocuments();
       renderActivity();
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function backToList() {
+      document.getElementById('detailView').classList.add('hidden');
+      document.getElementById('listView').classList.remove('hidden');
+      selectedProjectId = null;
+      renderProjects();
+      renderStats();
+    }
+
+    function renderDetailHeader(p) {
+      document.getElementById('detailProjectName').textContent = p.name;
+      document.getElementById('detailStatusBadge').innerHTML = statusBadge(p.status);
+
+      document.getElementById('di_code').textContent = p.code;
+      document.getElementById('di_customer').textContent = p.customer;
+      document.getElementById('di_pm').textContent = p.pm;
+      document.getElementById('di_start').textContent = p.startDate;
+      document.getElementById('di_end').textContent = p.endDate;
+      document.getElementById('di_progress').textContent = p.progress + '%';
+      document.getElementById('di_progress_fill').style.width = p.progress + '%';
+      document.getElementById('di_progress_fill').className = 'fill ' + (p.status === 'completed' ? 'fill-green' : (p.status === 'onhold' ? 'fill-amber' : 'fill-blue'));
+      document.getElementById('di_budget').textContent = money(p.budget);
+      var profitEl = document.getElementById('di_profit');
+      profitEl.textContent = money(p.profit);
+      profitEl.className = 'detail-info-value ' + (p.profit >= 0 ? 'text-green-600' : 'text-red-600');
+      document.getElementById('di_desc').textContent = p.description || '—';
+
+      var holdRow = document.getElementById('di_hold_row');
+      if (p.holdReason) {
+        holdRow.style.display = '';
+        document.getElementById('di_hold').textContent = p.holdReason;
+      } else {
+        holdRow.style.display = 'none';
+      }
+    }
+
+    function editSelectedProject() {
+      showToast('Edit project — coming soon!', 'info');
+    }
+
+    function deleteSelectedProject() {
+      var p = projects.find(function(x) { return x.id === selectedProjectId; });
+      if (!p) return;
+      var modalContent = `
+        ${modalHeader('Delete Project', p.name)}
+        <div class="px-6 py-4 text-sm text-gray-600">
+          <p>Are you sure you want to permanently delete <b class="text-gray-800">${p.name}</b>?</p>
+          <p class="text-gray-400 text-[12px] mt-1">This action cannot be undone.</p>
+        </div>
+        ${modalFooter('Delete', 'onclick="confirmDeleteProject()"', '')}
+      `;
+      openModal(modalContent, { width: 'max-w-md' });
+    }
+
+    function confirmDeleteProject() {
+      projects = projects.filter(function(x) { return x.id !== selectedProjectId; });
+      closeModal();
+      backToList();
+      showToast('Project deleted', 'warning');
     }
 
     // =============================================================
@@ -934,50 +754,21 @@
       var p = projects.find(function(x) { return x.id === selectedProjectId; });
       if (!p) return;
 
-      var progressFill = p.status === 'completed' ? 'fill-green' : (p.status === 'onhold' ? 'fill-amber' : 'fill-blue');
-
       var html = `
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div>
-            <h3 class="text-[14px] font-bold text-gray-800 mb-3 flex items-center gap-2">
-              <i class="fa-solid fa-circle-info text-primary"></i>
-              Project Details
-            </h3>
-            <table class="report-table">
-              <tbody>
-                <tr><td class="text-gray-500">Project Code</td><td class="text-right font-semibold">${p.code}</td></tr>
-                <tr><td class="text-gray-500">Customer</td><td class="text-right font-semibold">${p.customer}</td></tr>
-                <tr><td class="text-gray-500">Project Manager</td><td class="text-right font-semibold">${p.pm}</td></tr>
-                <tr><td class="text-gray-500">Start Date</td><td class="text-right font-semibold">${p.startDate}</td></tr>
-                <tr><td class="text-gray-500">End Date</td><td class="text-right font-semibold">${p.endDate}</td></tr>
-                <tr><td class="text-gray-500">Status</td><td class="text-right">${statusBadge(p.status)}</td></tr>
-                <tr><td class="text-gray-500">Progress</td><td class="text-right font-semibold">${p.progress}%</td></tr>
-                <tr><td class="text-gray-500">Description</td><td class="text-right text-xs">${p.description}</td></tr>
-                ${p.holdReason ? '<tr><td class="text-gray-500">Hold Reason</td><td class="text-right text-xs text-amber-600">' + p.holdReason + '</td></tr>' : ''}
-              </tbody>
-            </table>
-            <div class="mt-3">
-              <div class="progress-bar" style="height:10px;">
-                <div class="fill ${progressFill}" style="width:${p.progress}%;height:100%;"></div>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <h3 class="text-[14px] font-bold text-gray-800 mb-3 flex items-center gap-2">
-              <i class="fa-solid fa-chart-line text-primary"></i>
-              Financial Summary
-            </h3>
-            <table class="report-table">
-              <tbody>
-                <tr><td class="text-gray-500">Total Budget</td><td class="text-right font-mono font-semibold">${money(p.budget)}</td></tr>
-                <tr><td class="text-gray-500">Revenue Generated</td><td class="text-right font-mono font-semibold text-primary">${money(p.revenue)}</td></tr>
-                <tr><td class="text-gray-500">Actual Cost</td><td class="text-right font-mono font-semibold text-red-600">${money(p.actualCost)}</td></tr>
-                <tr class="total-row"><td class="text-right font-bold">Net Profit</td><td class="text-right font-mono font-bold ${p.profit >= 0 ? 'text-green-600' : 'text-red-600'}">${money(p.profit)}</td></tr>
-                <tr><td class="text-gray-500">Margin</td><td class="text-right font-semibold">${p.revenue > 0 ? ((p.profit / p.revenue) * 100).toFixed(1) : 0}%</td></tr>
-              </tbody>
-            </table>
-          </div>
+        <div>
+          <h3 class="text-[14px] font-bold text-gray-800 mb-3 flex items-center gap-2">
+            
+            Financial Summary
+          </h3>
+          <table class="report-table">
+            <tbody>
+              <tr><td class="text-gray-500">Total Budget</td><td class="text-right font-mono font-semibold">${money(p.budget)}</td></tr>
+              <tr><td class="text-gray-500">Revenue Generated</td><td class="text-right font-mono font-semibold text-primary">${money(p.revenue)}</td></tr>
+              <tr><td class="text-gray-500">Actual Cost</td><td class="text-right font-mono font-semibold text-red-600">${money(p.actualCost)}</td></tr>
+              <tr class="total-row"><td class="text-right font-bold">Net Profit</td><td class="text-right font-mono font-bold ${p.profit >= 0 ? 'text-green-600' : 'text-red-600'}">${money(p.profit)}</td></tr>
+              <tr><td class="text-gray-500">Margin</td><td class="text-right font-semibold">${p.revenue > 0 ? ((p.profit / p.revenue) * 100).toFixed(1) : 0}%</td></tr>
+            </tbody>
+          </table>
         </div>
       `;
 
@@ -1102,8 +893,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
             <h3 class="text-[14px] font-bold text-gray-800 mb-3 flex items-center gap-2">
-              <i class="fa-solid fa-chart-simple text-primary"></i>
-              Budget Breakdown
+              <i class="fa-solid fa-chart-simple text-primary"></i> Budget Breakdown
             </h3>
             <table class="report-table">
               <tbody>
@@ -1118,8 +908,7 @@
           </div>
           <div>
             <h3 class="text-[14px] font-bold text-gray-800 mb-3 flex items-center gap-2">
-              <i class="fa-solid fa-gauge-high text-primary"></i>
-              Budget Utilization
+              <i class="fa-solid fa-gauge-high text-primary"></i> Budget Utilization
             </h3>
             <div class="progress-bar" style="height:12px;">
               <div class="fill ${usagePct > 90 ? 'fill-amber' : 'fill-blue'}" style="width:${Math.min(usagePct, 100)}%;height:100%;"></div>
@@ -1129,19 +918,13 @@
               <span class="text-gray-500">${money(b.actualCost)} / ${money(b.totalBudget)}</span>
             </div>
             <div class="mt-4 p-3 bg-primary-soft rounded-lg text-xs text-gray-600 border border-primary/20">
-              <div class="flex items-start gap-2">
-                ${iconInfo()}
-                <span>Budget alerts trigger automatically when usage exceeds thresholds.</span>
-              </div>
+              <div class="flex items-start gap-2">${iconInfo()}<span>Budget alerts trigger automatically when usage exceeds thresholds.</span></div>
             </div>
           </div>
         </div>
       `;
 
-      document.getElementById('budgetPanel').innerHTML = panelWrap(
-        '<i class="fa-solid fa-chart-simple text-primary"></i> Budget Configuration & Variance',
-        html
-      );
+      document.getElementById('budgetPanel').innerHTML = panelWrap('<i class="fa-solid fa-chart-simple text-primary"></i> Budget Configuration & Variance', html);
     }
 
     // =============================================================
@@ -1169,15 +952,13 @@
     }
 
     // =============================================================
-    // RENDER DOCUMENTS (Enhancement #5)
+    // RENDER DOCUMENTS
     // =============================================================
     function renderDocuments() {
       var docs = projectDocuments.filter(function(d) { return d.projectId === selectedProjectId; });
 
       var typeFilter = document.getElementById('docTypeFilter') ? document.getElementById('docTypeFilter').value : 'all';
-      if (typeFilter !== 'all') {
-        docs = docs.filter(function(d) { return d.type === typeFilter; });
-      }
+      if (typeFilter !== 'all') docs = docs.filter(function(d) { return d.type === typeFilter; });
 
       var docsHtml = docs.map(function(d) {
         var iconHtml = (d.type === 'Invoice' || d.type === 'Purchase Bill' || d.type === 'Purchase Order') ? iconDocument() :
@@ -1212,26 +993,18 @@
         <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
           <div class="flex items-center gap-2">
             <label class="form-label mb-0">Filter by Type</label>
-            <select id="docTypeFilter" class="form-input text-[12px] max-w-xs" onchange="renderDocuments()">
-              ${filterOptions}
-            </select>
+            <select id="docTypeFilter" class="form-input text-[12px] max-w-xs" onchange="renderDocuments()">${filterOptions}</select>
           </div>
           <button onclick="uploadDocument()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[12px] font-semibold px-3.5 py-2 rounded-lg transition shadow-sm">
             <i class="fa-solid fa-plus"></i> Upload Document
           </button>
         </div>
-
-        <div class="space-y-2" id="docsList">
-          ${docsHtml}
-        </div>
-
+        <div class="space-y-2" id="docsList">${docsHtml}</div>
         <div class="mt-3 p-3 bg-primary-soft rounded-lg text-xs text-gray-600 border border-primary/20">
           <div class="flex items-start gap-2">
             ${iconInfo()}
-            <div>
-              <b>Enhancement #5 — Project-Wise Document Management</b><br>
-              All Purchase Orders, Purchase Bills, Sales Invoices, Delivery Challans and Packing Lists auto-appear here. Manually uploaded documents (contracts, site photos) also stay linked.
-            </div>
+            <div><b>Enhancement #5 — Project-Wise Document Management</b><br>
+            All Purchase Orders, Purchase Bills, Sales Invoices, Delivery Challans and Packing Lists auto-appear here. Manually uploaded documents (contracts, site photos) also stay linked.</div>
           </div>
         </div>
       `;
@@ -1268,9 +1041,7 @@
     // =============================================================
     // DOCUMENT ACTIONS
     // =============================================================
-    function uploadDocument() {
-      showToast('Document upload — coming soon!', 'info');
-    }
+    function uploadDocument() { showToast('Document upload — coming soon!', 'info'); }
 
     function downloadDocument(id) {
       var d = projectDocuments.find(function(x) { return x.id === id; });
@@ -1299,7 +1070,7 @@
     }
 
     // =============================================================
-    // PROJECT ACTIONS
+    // PROJECT ACTIONS (Add New)
     // =============================================================
     function openAddProject() {
       var modalContent = `
@@ -1332,17 +1103,13 @@
       }
       var newProject = {
         id: 'PRJ-' + String(projects.length + 1).padStart(3, '0'),
-        name: name,
-        code: code,
-        customer: customer,
+        name: name, code: code, customer: customer,
         status: document.getElementById('p_status').value,
         startDate: document.getElementById('p_start').value,
         endDate: document.getElementById('p_end').value,
         progress: 0,
         budget: parseFloat(document.getElementById('p_budget').value) || 0,
-        actualCost: 0,
-        revenue: 0,
-        profit: 0,
+        actualCost: 0, revenue: 0, profit: 0,
         pm: document.getElementById('p_pm').value || '—',
         description: document.getElementById('p_desc').value || ''
       };
@@ -1355,35 +1122,30 @@
 
     function exportProjectReport() {
       showToast('Exporting project report...', 'info');
-      setTimeout(function() {
-        showToast('Report exported successfully!', 'success');
-      }, 1200);
+      setTimeout(function() { showToast('Report exported successfully!', 'success'); }, 1200);
     }
 
     // =============================================================
-    // SEARCH (Products-style — added to topbar)
+    // SEARCH (list view only)
     // =============================================================
     var searchDebounceTimer = null;
 
     function onSearchInput() {
       clearTimeout(searchDebounceTimer);
-      searchDebounceTimer = setTimeout(function() {
-        filterProjects();
-      }, 300);
+      searchDebounceTimer = setTimeout(function() { filterProjects(); }, 300);
     }
 
     function filterProjects() {
       var input = document.getElementById('searchInput');
       if (!input) return;
       var q = input.value.trim().toLowerCase();
-      var cards = document.querySelectorAll('.project-card');
-      cards.forEach(function(c) {
-        var text = c.textContent.toLowerCase();
-        c.style.display = (q.length < 2 || text.indexOf(q) !== -1) ? '' : 'none';
+      var rows = document.querySelectorAll('.project-row');
+      rows.forEach(function(r) {
+        var text = r.textContent.toLowerCase();
+        r.style.display = (q.length < 2 || text.indexOf(q) !== -1) ? '' : 'none';
       });
     }
 
-    // Add search input to top bar (Products-style)
     (function addSearchToTopbar() {
       var searchContainer = document.querySelector('.app-main header');
       if (searchContainer) {
@@ -1407,27 +1169,16 @@
     })();
 
     // =============================================================
-    // INIT
+    // INIT (list view only, detail view stays hidden)
     // =============================================================
     renderProjects();
     renderStats();
-    renderOverview();
-    renderSales();
-    renderPurchases();
-    renderExpenses();
-    renderTimesheet();
-    renderBudget();
-    renderJournals();
-    renderDocuments();
-    renderActivity();
 
     console.log('Projects Module Loaded Successfully');
     console.log('Total Projects:', projects.length);
-    console.log('Active:', projects.filter(function(p) { return p.status === 'active'; }).length);
-    console.log('Documents:', projectDocuments.length);
-    console.log('Enhancement #5 — Project-Wise Document Management enabled');
+    console.log('Enhancement — Zoho-style Project Detail View enabled');
 
   </script>
 
 </body>
-</html> 
+</html>
