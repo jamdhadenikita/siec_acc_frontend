@@ -639,11 +639,13 @@
             </td>
             <td class="px-4 py-3 font-mono font-semibold text-right text-primary">${money(p.budget)}</td>
             <td class="px-4 py-3 font-mono font-semibold text-right ${p.profit >= 0 ? 'text-green-600' : 'text-red-600'}">${money(p.profit)}</td>
-            <td class="px-4 py-3 text-right">
-              <button onclick="event.stopPropagation(); openProjectDetail('${p.id}')" class="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:text-primary-dark">
-                View Details ${iconEye()}
-              </button>
-            </td>
+           <td class="px-4 py-3">
+            <div class="flex gap-1 justify-end" onclick="event.stopPropagation();">
+              <button onclick="openProjectDetail('${p.id}')" class="btn-icon-action" title="View">${iconEye()}</button>
+              <button onclick="editProjectFromList('${p.id}')" class="btn-icon-action" title="Edit">${iconEdit()}</button>
+              <button onclick="deleteProjectFromList('${p.id}')" class="btn-icon-action danger" title="Delete">${iconTrash()}</button>
+            </div>
+          </td>
           </tr>`;
       }).join('');
 
@@ -722,9 +724,10 @@
       }
     }
 
-    function editSelectedProject() {
-      showToast('Edit project — coming soon!', 'info');
-    }
+  function editSelectedProject() {
+  var p = projects.find(function(x) { return x.id === selectedProjectId; });
+  if (p) openProjectForm(p);
+}
 
     function deleteSelectedProject() {
       var p = projects.find(function(x) { return x.id === selectedProjectId; });
@@ -746,6 +749,28 @@
       backToList();
       showToast('Project deleted', 'warning');
     }
+
+    function deleteProjectFromList(id) {
+  var p = projects.find(function(x) { return x.id === id; });
+  if (!p) return;
+  var modalContent = `
+    ${modalHeader('Delete Project', p.name)}
+    <div class="px-6 py-4 text-sm text-gray-600">
+      <p>Are you sure you want to permanently delete <b class="text-gray-800">${p.name}</b>?</p>
+      <p class="text-gray-400 text-[12px] mt-1">This action cannot be undone.</p>
+    </div>
+    ${modalFooter('Delete', 'onclick="confirmDeleteProjectFromList(\'' + id + '\')"', '')}
+  `;
+  openModal(modalContent, { width: 'max-w-md' });
+}
+
+function confirmDeleteProjectFromList(id) {
+  projects = projects.filter(function(x) { return x.id !== id; });
+  closeModal();
+  renderProjects();
+  renderStats();
+  showToast('Project deleted', 'warning');
+}
 
     // =============================================================
     // RENDER OVERVIEW
@@ -1072,53 +1097,94 @@
     // =============================================================
     // PROJECT ACTIONS (Add New)
     // =============================================================
-    function openAddProject() {
-      var modalContent = `
-        ${modalHeader('New Project', 'Create a new project')}
-        <div class="px-6 py-4 modal-scroll">
-          <div class="grid grid-cols-2 gap-3">
-            ${fld('Project Name <span class="required">*</span>', '<input type="text" class="form-input" id="p_name" placeholder="Project name">')}
-            ${fld('Project Code <span class="required">*</span>', '<input type="text" class="form-input" id="p_code" placeholder="e.g. 26LW073">')}
-            ${fld('Customer <span class="required">*</span>', '<input type="text" class="form-input" id="p_customer" placeholder="Customer name">')}
-            ${fld('Project Manager', '<input type="text" class="form-input" id="p_pm" placeholder="PM name">')}
-            ${fld('Start Date', '<input type="date" class="form-input" id="p_start" value="' + new Date().toISOString().split('T')[0] + '">')}
-            ${fld('End Date', '<input type="date" class="form-input" id="p_end">')}
-            ${fld('Total Budget (₹)', '<input type="number" class="form-input" id="p_budget" placeholder="0.00">')}
-            ${fld('Status', '<select class="form-input" id="p_status"><option value="active">Active</option><option value="pending">Pending</option><option value="onhold">On Hold</option><option value="completed">Completed</option></select>')}
-          </div>
-          ${fld('Description', '<textarea rows="2" class="form-input" id="p_desc" placeholder="Project description"></textarea>')}
-        </div>
-        ${modalFooter('Create Project', 'onclick="saveProject()"')}
-      `;
-      openModal(modalContent, { width: 'max-w-2xl' });
-    }
+   function openAddProject() {
+  openProjectForm(null);
+}
 
-    function saveProject() {
-      var name = document.getElementById('p_name').value.trim();
-      var code = document.getElementById('p_code').value.trim();
-      var customer = document.getElementById('p_customer').value.trim();
-      if (!name || !code || !customer) {
-        showToast('Please fill required fields (Name, Code, Customer)', 'error');
-        return;
-      }
-      var newProject = {
-        id: 'PRJ-' + String(projects.length + 1).padStart(3, '0'),
-        name: name, code: code, customer: customer,
-        status: document.getElementById('p_status').value,
-        startDate: document.getElementById('p_start').value,
-        endDate: document.getElementById('p_end').value,
-        progress: 0,
-        budget: parseFloat(document.getElementById('p_budget').value) || 0,
-        actualCost: 0, revenue: 0, profit: 0,
-        pm: document.getElementById('p_pm').value || '—',
-        description: document.getElementById('p_desc').value || ''
-      };
-      projects.unshift(newProject);
-      closeModal();
-      renderProjects();
-      renderStats();
-      showToast('Project created successfully', 'success');
+function editProjectFromList(id) {
+  var p = projects.find(function(x) { return x.id === id; });
+  if (p) openProjectForm(p);
+}
+
+function openProjectForm(existing) {
+  var isEdit = !!existing;
+  var e = existing || {
+    name: '', code: '', customer: '', pm: '',
+    startDate: new Date().toISOString().split('T')[0],
+    endDate: '', budget: '', status: 'active', description: ''
+  };
+
+  var modalContent = `
+    ${modalHeader(isEdit ? 'Edit Project' : 'New Project', isEdit ? e.code : 'Create a new project')}
+    <div class="px-6 py-4 modal-scroll">
+      <div class="grid grid-cols-2 gap-3">
+        ${fld('Project Name <span class="required">*</span>', '<input type="text" class="form-input" id="p_name" value="' + e.name + '" placeholder="Project name">')}
+        ${fld('Project Code <span class="required">*</span>', '<input type="text" class="form-input" id="p_code" value="' + e.code + '" placeholder="e.g. 26LW073">')}
+        ${fld('Customer <span class="required">*</span>', '<input type="text" class="form-input" id="p_customer" value="' + e.customer + '" placeholder="Customer name">')}
+        ${fld('Project Manager', '<input type="text" class="form-input" id="p_pm" value="' + (e.pm || '') + '" placeholder="PM name">')}
+        ${fld('Start Date', '<input type="date" class="form-input" id="p_start" value="' + e.startDate + '">')}
+        ${fld('End Date', '<input type="date" class="form-input" id="p_end" value="' + (e.endDate || '') + '">')}
+        ${fld('Total Budget (₹)', '<input type="number" class="form-input" id="p_budget" value="' + e.budget + '" placeholder="0.00">')}
+        ${fld('Status', '<select class="form-input" id="p_status">' +
+          ['active','pending','onhold','completed'].map(function(s) {
+            return '<option value="' + s + '" ' + (e.status === s ? 'selected' : '') + '>' + (s === 'onhold' ? 'On Hold' : s.charAt(0).toUpperCase() + s.slice(1)) + '</option>';
+          }).join('') + '</select>')}
+      </div>
+      ${fld('Description', '<textarea rows="2" class="form-input" id="p_desc" placeholder="Project description">' + (e.description || '') + '</textarea>')}
+    </div>
+    ${modalFooter(isEdit ? 'Update Project' : 'Create Project', 'onclick="saveProject(\'' + (isEdit ? e.id : '') + '\')"')}
+  `;
+  openModal(modalContent, { width: 'max-w-2xl' });
+}
+
+function saveProject(existingId) {
+  var name = document.getElementById('p_name').value.trim();
+  var code = document.getElementById('p_code').value.trim();
+  var customer = document.getElementById('p_customer').value.trim();
+  if (!name || !code || !customer) {
+    showToast('Please fill required fields (Name, Code, Customer)', 'error');
+    return;
+  }
+
+  if (existingId) {
+    var p = projects.find(function(x) { return x.id === existingId; });
+    if (p) {
+      p.name = name;
+      p.code = code;
+      p.customer = customer;
+      p.pm = document.getElementById('p_pm').value || '—';
+      p.startDate = document.getElementById('p_start').value;
+      p.endDate = document.getElementById('p_end').value;
+      p.budget = parseFloat(document.getElementById('p_budget').value) || 0;
+      p.status = document.getElementById('p_status').value;
+      p.description = document.getElementById('p_desc').value || '';
+      showToast('Project updated successfully', 'success');
+
+      // If this project's detail view is currently open, refresh it too
+      if (selectedProjectId === existingId) renderDetailHeader(p);
     }
+  } else {
+    var newProject = {
+      id: 'PRJ-' + String(projects.length + 1).padStart(3, '0'),
+      name: name, code: code, customer: customer,
+      status: document.getElementById('p_status').value,
+      startDate: document.getElementById('p_start').value,
+      endDate: document.getElementById('p_end').value,
+      progress: 0,
+      budget: parseFloat(document.getElementById('p_budget').value) || 0,
+      actualCost: 0, revenue: 0, profit: 0,
+      pm: document.getElementById('p_pm').value || '—',
+      description: document.getElementById('p_desc').value || ''
+    };
+    projects.unshift(newProject);
+    showToast('Project created successfully', 'success');
+  }
+
+  closeModal();
+  renderProjects();
+  renderStats();
+}
+
 
     function exportProjectReport() {
       showToast('Exporting project report...', 'info');
