@@ -189,6 +189,14 @@
     '        </a>',
     '      </li>',
 
+      '      <li class="sidebar-nav-item">',
+    '        <a href="/projects/projects.html" class="sidebar-nav-link" data-page="projects">',
+    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-folder"></i></span>',
+    '          <span class="sidebar-nav-label">Projects</span>',
+    '          <span class="sidebar-tooltip">Projects</span>',
+    '        </a>',
+    '      </li>',
+
     /* ============ TOOLS ============ */
     '      <li class="sidebar-nav-divider" role="separator"></li>',
     '      <li class="sidebar-nav-heading"><span>Tools</span></li>',
@@ -272,21 +280,6 @@
     '        </a>',
     '      </li>',
 
-    '      <li class="sidebar-nav-item">',
-    '        <a href="/goods-receipt/goods-receipt.html" class="sidebar-nav-link" data-page="goods-receipt">',
-    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-clipboard-check"></i></span>',
-    '          <span class="sidebar-nav-label">Goods Receipt</span>',
-    '          <span class="sidebar-tooltip">Goods Receipt</span>',
-    '        </a>',
-    '      </li>',
-
-    '      <li class="sidebar-nav-item">',
-    '        <a href="/purchase-bills/purchase-bills.html" class="sidebar-nav-link" data-page="purchase-bills">',
-    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-file-invoice-dollar"></i></span>',
-    '          <span class="sidebar-nav-label">Purchase Bills</span>',
-    '          <span class="sidebar-tooltip">Purchase Bills</span>',
-    '        </a>',
-    '      </li>',
 
     '      <li class="sidebar-nav-item">',
     '        <a href="/vendor-payments/vendor-payments.html" class="sidebar-nav-link" data-page="vendor-payments">',
@@ -316,13 +309,7 @@
     '        </a>',
     '      </li>',
 
-    '      <li class="sidebar-nav-item">',
-    '        <a href="/projects/projects.html" class="sidebar-nav-link" data-page="projects">',
-    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-folder"></i></span>',
-    '          <span class="sidebar-nav-label">Projects</span>',
-    '          <span class="sidebar-tooltip">Projects</span>',
-    '        </a>',
-    '      </li>',
+  
 
     // '      <li class="sidebar-nav-item">',
     // '        <a href="/timetracking/timesheet.html" class="sidebar-nav-link" data-page="timetracking">',
