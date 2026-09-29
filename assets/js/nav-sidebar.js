@@ -4,8 +4,8 @@
  * all interactions (collapse/expand, mobile off-canvas, profile menu,
  * logout confirmation overlay, active-link highlighting).
  *
- * Also defines window.Auth — the admin login/logout/session module.
- * Login uses http-only cookies set by the backend (admin_token,
+
+* Login uses http-only cookies set by the backend (admin_token,
  * refresh_token), so the browser handles the token automatically as
  * long as every request uses `credentials: "include"`. JS never reads
  * or stores the token itself — only the non-sensitive admin info
@@ -324,13 +324,13 @@
     '        </a>',
     '      </li>',
 
-    '      <li class="sidebar-nav-item">',
-    '        <a href="/timetracking/timesheet.html" class="sidebar-nav-link" data-page="timetracking">',
-    '          <span class="sidebar-nav-icon"><i class="fa-solid fa-clock"></i></span>',
-    '          <span class="sidebar-nav-label">Time Tracking</span>',
-    '          <span class="sidebar-tooltip">Time Tracking</span>',
-    '        </a>',
-    '      </li>',
+    // '      <li class="sidebar-nav-item">',
+    // '        <a href="/timetracking/timesheet.html" class="sidebar-nav-link" data-page="timetracking">',
+    // '          <span class="sidebar-nav-icon"><i class="fa-solid fa-clock"></i></span>',
+    // '          <span class="sidebar-nav-label">Time Tracking</span>',
+    // '          <span class="sidebar-tooltip">Time Tracking</span>',
+    // '        </a>',
+    // '      </li>',
 
     /* ============ FINANCE ============ */
     '      <li class="sidebar-nav-divider" role="separator"></li>',
