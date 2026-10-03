@@ -7,8 +7,10 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
 <link rel="manifest" href="/favicon_io/site.webmanifest">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<title>Banking — Aquilon ERP</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+<title>Banking &amp; Reconciliation — Aquilon ERP</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <script>
   (function () {
@@ -38,52 +40,29 @@
 <link rel="stylesheet" href="/assets/css/nav-sidebar.css" />
 
 <style>
-  body {
-    font-size: 12px;
-    background: #f3f4f6;
-  }
+  body { font-size: 12px; background: #f3f4f6; }
 
   .form-input {
-    width: 100%;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    padding: 5px 10px;
-    font-size: 11px;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    background: #fafafa;
-    color: #1a1a2e;
+    width: 100%; border: 1px solid #e5e7eb; border-radius: 6px;
+    padding: 6px 10px; font-size: 12px; outline: none;
+    transition: all 0.2s; background: #fafafa; color: #1a1a2e;
   }
   .form-input:focus {
     border-color: #6da84c;
     box-shadow: 0 0 0 3px rgba(109, 168, 76, 0.12);
     background: #ffffff;
   }
-  .form-input:disabled {
-    background: #f3f4f6;
-    cursor: not-allowed;
-  }
-
   .form-label {
-    font-size: 10px;
-    font-weight: 600;
-    color: #374151;
-    display: block;
-    margin-bottom: 3px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    font-size: 10px; font-weight: 600; color: #374151;
+    display: block; margin-bottom: 3px;
+    text-transform: uppercase; letter-spacing: 0.04em;
   }
   .form-label .required { color: #ef4444; margin-left: 2px; }
-  .form-hint { font-size: 9.5px; color: #9ca3af; margin-top: 2px; }
+  .form-hint { font-size: 10px; color: #9ca3af; margin-top: 2px; }
 
   .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 12px;
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 12px;
   }
   .badge-green { background: #dcfce7; color: #166534; }
   .badge-amber { background: #fef3c7; color: #92400e; }
@@ -91,12 +70,7 @@
   .badge-gray { background: #f1f5f9; color: #475569; }
   .badge-blue { background: #dbeafe; color: #1e40af; }
   .badge-purple { background: #ede9fe; color: #5b21b6; }
-  .badge-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    display: inline-block;
-  }
+  .badge-dot { width: 5px; height: 5px; border-radius: 50%; display: inline-block; }
   .badge-dot-green { background: #22c55e; }
   .badge-dot-amber { background: #f59e0b; }
   .badge-dot-red { background: #ef4444; }
@@ -113,53 +87,25 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   }
   .stat-card .stat-label {
-    font-size: 9px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #6b7280;
+    font-size: 9px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; color: #6b7280;
   }
   .stat-card .stat-value {
-    font-size: 17px;
-    font-weight: 700;
-    color: #1a1a2e;
-    margin-top: 2px;
+    font-size: 17px; font-weight: 700; color: #1a1a2e; margin-top: 2px;
   }
 
-  .table-row-hover:hover {
-    background: #f8fafc;
-  }
+  .table-row-hover:hover { background: #f8fafc; }
 
   .btn-icon-action {
-    transition: all 0.15s ease;
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #94a3b8;
-    background: transparent;
-    border: none;
-    cursor: pointer;
+    transition: all 0.15s ease; width: 28px; height: 28px; border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #94a3b8; background: transparent; border: none; cursor: pointer;
   }
-  .btn-icon-action:hover {
-    background: #f1f5f9;
-    color: #6da84c;
-  }
-  .btn-icon-action.danger:hover {
-    background: #fee2e2;
-    color: #ef4444;
-  }
-  .btn-icon-action.primary:hover {
-    background: #eef5e8;
-    color: #6da84c;
-  }
+  .btn-icon-action:hover { background: #f1f5f9; color: #6da84c; }
+  .btn-icon-action.danger:hover { background: #fee2e2; color: #ef4444; }
+  .btn-icon-action.primary:hover { background: #eef5e8; color: #6da84c; }
 
-  .toast {
-    animation: fadeIn 0.2s ease;
-    font-size: 12px;
-  }
+  .toast { animation: fadeIn 0.2s ease; font-size: 12px; }
   .toast-success { background: #16a34a; }
   .toast-error { background: #dc2626; }
   .toast-warning { background: #f59e0b; }
@@ -175,125 +121,113 @@
   }
   .animate-modal { animation: modalIn 0.18s ease; }
 
-  .modal-scroll {
-    max-height: 55vh;
-    overflow-y: auto;
-  }
-  .modal-scroll::-webkit-scrollbar {
-    width: 4px;
-  }
-  .modal-scroll::-webkit-scrollbar-thumb {
-    background: #d1d5db;
-    border-radius: 4px;
-  }
+  .modal-scroll { max-height: 60vh; overflow-y: auto; }
+  .modal-scroll::-webkit-scrollbar { width: 4px; }
+  .modal-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
 
-  .empty-icon-svg {
-    opacity: 0.2;
-    width: 40px;
-    height: 40px;
-    color: #94a3b8;
-  }
+  .empty-icon-svg { opacity: 0.2; width: 40px; height: 40px; color: #94a3b8; }
 
-  .page-title {
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  .page-subtitle {
-    font-size: 12px;
-    color: #6b7280;
-  }
+  .page-title { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+  .page-subtitle { font-size: 12px; color: #6b7280; }
   .page-breadcrumb {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #6da84c;
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #6da84c;
   }
 
-  table th {
-    font-size: 9.5px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #6b7280;
-    padding: 8px 12px;
+  /* Hero bank card — single */
+  .hero-bank {
+    background: linear-gradient(135deg, #0f2a1a, #1a3a28);
+    border-radius: 14px;
+    padding: 22px 26px;
+    color: white;
+    position: relative;
+    overflow: hidden;
   }
-  table td {
-    font-size: 12px;
-    padding: 8px 12px;
+  .hero-bank::after {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(109,168,76,0.18) 0%, transparent 70%);
+    top: -100px; right: -100px;
   }
-  table td .font-mono {
-    font-size: 11px;
+  .hero-bank .hb-label {
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: rgba(255,255,255,0.5);
   }
-
-  .modal-title {
-    font-size: 16px;
-    font-weight: 700;
+  .hero-bank .hb-name {
+    font-size: 18px; font-weight: 700;
   }
-  .modal-subtitle {
-    font-size: 11px;
-    color: #6b7280;
+  .hero-bank .hb-number {
+    font-size: 11px; color: rgba(255,255,255,0.6); font-family: monospace;
   }
-
-  .filter-btn {
-    font-size: 11px;
-    padding: 5px 12px;
+  .hero-bank .hb-balance {
+    font-size: 32px; font-weight: 700; margin-top: 6px;
   }
-  .filter-btn svg {
-    width: 14px;
-    height: 14px;
+  .hero-bank .hb-sub {
+    font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 2px;
   }
-
-  /* Bank Account Card */
-  .bank-account-card {
-    border: 1px solid #e5e7eb;
+  .hero-bank .hb-stat {
+    background: rgba(255,255,255,0.06);
     border-radius: 10px;
-    padding: 14px 16px;
-    background: #ffffff;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    padding: 10px 14px;
+    position: relative; z-index: 1;
   }
-  .bank-account-card:hover {
-    border-color: #6da84c;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  .hero-bank .hb-stat-label {
+    font-size: 9px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; color: rgba(255,255,255,0.55);
   }
-  .bank-account-card .bank-name {
-    font-size: 13px;
-    font-weight: 600;
-    color: #1a1a2e;
-  }
-  .bank-account-card .bank-balance {
-    font-size: 18px;
-    font-weight: 700;
-    color: #6da84c;
-  }
-  .bank-account-card .bank-details {
-    font-size: 10px;
-    color: #6b7280;
+  .hero-bank .hb-stat-value {
+    font-size: 15px; font-weight: 700; margin-top: 2px;
   }
 
-  /* Reconciliation */
-  .recon-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 6px 10px;
-    border-radius: 6px;
-    border: 1px solid #e5e7eb;
-    margin-bottom: 4px;
-    transition: background 0.15s;
+  /* Reconciliation row */
+  .recon-row { border-left: 3px solid transparent; }
+  .recon-row.matched { border-left-color: #22c55e; }
+  .recon-row.unmatched { border-left-color: #f59e0b; }
+
+  /* Tab buttons */
+  .page-tab-btn {
+    transition: all 0.2s ease; padding: 10px 16px; font-size: 12px;
+    font-weight: 500; border-bottom: 2px solid transparent;
+    color: #6b7280; cursor: pointer; background: transparent; white-space: nowrap;
   }
-  .recon-item:hover {
-    background: #f8fafc;
+  .page-tab-btn.active {
+    color: #6da84c; border-bottom-color: #6da84c; font-weight: 600;
   }
-  .recon-item.matched {
-    border-color: #22c55e;
-    background: #f0fdf4;
+  .page-tab-btn:hover:not(.active) { color: #1f2937; border-bottom-color: #d1d5db; }
+  .page-tab-panel { display: none; }
+  .page-tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
+
+  /* Inline filter */
+  .inline-filter-select {
+    border: 1px solid #e5e7eb; background: #fff; color: #374151;
+    font-size: 11px; font-weight: 600; border-radius: 8px;
+    padding: 6px 10px; outline: none; cursor: pointer; max-width: 160px;
   }
-  .recon-item.unmatched {
-    border-color: #ef4444;
-    background: #fef2f2;
+  .inline-filter-select:focus {
+    border-color: #6da84c;
+    box-shadow: 0 0 0 3px rgba(109, 168, 76, 0.15);
   }
+
+  /* Upload area */
+  .upload-area {
+    border: 2px dashed #d1d5db; border-radius: 12px;
+    padding: 30px 20px; text-align: center;
+    transition: all 0.2s; cursor: pointer; background: #fafafa;
+  }
+  .upload-area:hover {
+    border-color: #6da84c; background: #f8fdf5;
+  }
+
+  /* Match panel */
+  .match-panel {
+    border: 2px dashed #d1d5db; border-radius: 10px;
+    padding: 12px; background: #fafbfc;
+    transition: all 0.15s ease;
+  }
+  .match-panel:hover { border-color: #6da84c; }
+  .match-panel.best { border-color: #22c55e; background: #f0fdf4; }
 </style>
 </head>
 
@@ -310,99 +244,77 @@
         <div id="toastWrap" class="fixed bottom-5 right-5 z-[200] flex flex-col gap-2 items-end"></div>
         <div id="modalRoot"></div>
 
-        <div class="max-w-7xl mx-auto">
+        <div class="max-w-[1400px] mx-auto">
 
           <!-- ===== PAGE HEADER ===== -->
           <div class="flex flex-wrap items-start justify-between gap-3 mb-4">
             <div>
               <div class="page-breadcrumb">Finance</div>
-              <h1 class="page-title text-gray-900">Banking</h1>
-              <p class="page-subtitle mt-0.5">Manage bank accounts, transactions, transfers, and reconciliation.</p>
+              <h1 class="page-title text-gray-900">Banking &amp; Reconciliation</h1>
+              <p class="page-subtitle mt-0.5">Import bank statement, match transactions with ERP records, and keep your book reconciled.</p>
             </div>
             <div class="flex gap-2 flex-wrap">
-              <button onclick="openAddAccount()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[11px] font-semibold px-3 py-2 rounded-lg transition shadow-sm">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M12 5v14M5 12h14"/>
-                </svg>
-                Add Account
+              <button onclick="openEditBankDetails()" class="inline-flex items-center gap-1.5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[11px] font-semibold px-3 py-2 rounded-lg transition">
+                <i class="fa-solid fa-gear"></i> Bank Details
               </button>
-              <button onclick="openAddTransaction()" class="inline-flex items-center gap-1.5 bg-secondary hover:bg-secondary-dark text-white text-[11px] font-semibold px-3 py-2 rounded-lg transition shadow-sm">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                  <path d="M7 10l5 5 5-5"/>
-                  <path d="M12 15V3"/>
-                </svg>
-                New Transaction
+              <button onclick="openImportStatement()" class="inline-flex items-center gap-1.5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-[11px] font-semibold px-3 py-2 rounded-lg transition">
+                <i class="fa-solid fa-upload"></i> Import Statement
+              </button>
+              <button onclick="autoReconcileAll()" class="inline-flex items-center gap-1.5 bg-secondary hover:bg-secondary-dark text-white text-[11px] font-semibold px-3 py-2 rounded-lg transition shadow-sm">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Auto-Reconcile
               </button>
             </div>
           </div>
 
-          <!-- ===== STATS CARDS ===== -->
+          <!-- ===== HERO BANK CARD (single account) ===== -->
+          <div class="hero-bank mb-4" id="heroBankCard"></div>
+
+          <!-- ===== SUMMARY STATS ===== -->
           <div class="grid grid-cols-2 md:grid-cols-5 gap-2.5 mb-4">
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Total Balance</div>
-              <div class="stat-value text-primary" id="totalBalance">₹0</div>
+              <div class="stat-label">Statement Txns</div>
+              <div class="stat-value" id="totalBankTxns">0</div>
             </div>
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Accounts</div>
-              <div class="stat-value" id="totalAccounts">0</div>
+              <div class="stat-label">Reconciled</div>
+              <div class="stat-value text-green-600" id="totalReconciled">0</div>
             </div>
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Transactions</div>
-              <div class="stat-value" id="totalTransactions">0</div>
+              <div class="stat-label">Unreconciled</div>
+              <div class="stat-value text-amber-600" id="totalUnreconciled">0</div>
             </div>
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Deposits</div>
-              <div class="stat-value text-green-600" id="totalDeposits">₹0</div>
+              <div class="stat-label">Recon. %</div>
+              <div class="stat-value text-primary" id="reconPercent">0%</div>
             </div>
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm stat-card">
-              <div class="stat-label">Withdrawals</div>
-              <div class="stat-value text-red-600" id="totalWithdrawals">₹0</div>
+              <div class="stat-label">Last Import</div>
+              <div class="stat-value text-sm" id="lastImport">—</div>
             </div>
           </div>
 
-          <!-- ===== TABS: Accounts, Transactions, Reconciliation ===== -->
+          <!-- ===== MAIN TABS ===== -->
           <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-            <div class="flex overflow-x-auto border-b border-gray-200 px-4 pt-2 gap-1" id="bankTabs">
-              <button class="page-tab-btn active" data-tab="tab-accounts">
-                <svg class="w-3.5 h-3.5 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M3 21h18"/>
-                  <path d="M5 21V10M10 21V10M14 21V10M19 21V10"/>
-                  <path d="M2 10l10-6 10 6"/>
-                </svg>
-                Accounts
+            <div class="flex overflow-x-auto border-b border-gray-200 px-4 pt-2 gap-1" id="bankingTabs">
+              <button class="page-tab-btn active" data-tab="tab-recon">
+                <i class="fa-solid fa-code-compare mr-1.5"></i> Reconciliation
               </button>
               <button class="page-tab-btn" data-tab="tab-transactions">
-                <svg class="w-3.5 h-3.5 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                  <path d="M7 10l5 5 5-5"/>
-                  <path d="M12 15V3"/>
-                </svg>
-                Transactions
+                <i class="fa-solid fa-list mr-1.5"></i> Bank Transactions
               </button>
-              <button class="page-tab-btn" data-tab="tab-reconciliation">
-                <svg class="w-3.5 h-3.5 inline mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 5v14M5 12h14"/>
-                </svg>
-                Reconciliation
+              <button class="page-tab-btn" data-tab="tab-rules">
+                <i class="fa-solid fa-gavel mr-1.5"></i> Bank Rules
+              </button>
+              <button class="page-tab-btn" data-tab="tab-reports">
+                <i class="fa-solid fa-chart-bar mr-1.5"></i> Reports
               </button>
             </div>
 
             <div class="p-5">
-              <!-- ===== TAB 1: ACCOUNTS ===== -->
-              <div id="tab-accounts" class="page-tab-panel active">
-                <div id="accountsPanel"></div>
-              </div>
-
-              <!-- ===== TAB 2: TRANSACTIONS ===== -->
-              <div id="tab-transactions" class="page-tab-panel">
-                <div id="transactionsPanel"></div>
-              </div>
-
-              <!-- ===== TAB 3: RECONCILIATION ===== -->
-              <div id="tab-reconciliation" class="page-tab-panel">
-                <div id="reconciliationPanel"></div>
-              </div>
+              <div id="tab-recon" class="page-tab-panel active"><div id="reconPanel"></div></div>
+              <div id="tab-transactions" class="page-tab-panel"><div id="transactionsPanel"></div></div>
+              <div id="tab-rules" class="page-tab-panel"><div id="rulesPanel"></div></div>
+              <div id="tab-reports" class="page-tab-panel"><div id="reportsPanel"></div></div>
             </div>
           </div>
 
@@ -414,8 +326,8 @@
   <!-- ========================================================== -->
   <!-- SCRIPTS -->
   <!-- ========================================================== -->
-
   <script src="/assets/js/nav-sidebar.js"></script>
+
   <script>
     // =============================================================
     // NAV-SIDEBAR INIT
@@ -424,55 +336,8 @@
       basePath: "",
       activePage: "banking",
       pageTitle: "Banking",
-      user: {
-        name: "Admin",
-        role: "Super Admin",
-        avatarUrl: "",
-      },
+      user: { name: "Admin", role: "Super Admin", avatarUrl: "" },
     });
-
-    // =============================================================
-    // SVG ICONS
-    // =============================================================
-    function iconPlus() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>`;
-    }
-    function iconEdit() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
-    }
-    function iconTrash() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>`;
-    }
-    function iconEye() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
-    }
-    function iconX() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
-    }
-    function iconFilter() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h2"/></svg>`;
-    }
-    function iconSave() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>`;
-    }
-    function iconInfo() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>`;
-    }
-    function iconDocument() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6"/></svg>`;
-    }
-    function iconSearch() {
-      return `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>`;
-    }
-    function iconBank() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V10M10 21V10M14 21V10M19 21V10"/><path d="M2 10l10-6 10 6"/></svg>`;
-    }
-    function iconTransfer() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16l-4-4 4-4"/><path d="M21 12h-12"/></svg>`;
-    }
-    function iconReconcile() {
-      return `<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>`;
-    }
 
     // =============================================================
     // TOAST
@@ -480,12 +345,7 @@
     function showToast(message, kind) {
       kind = kind || 'success';
       var wrap = document.getElementById('toastWrap');
-      var colors = {
-        success: 'bg-green-600',
-        info: 'bg-primary',
-        warning: 'bg-amber-600',
-        error: 'bg-red-600'
-      };
+      var colors = { success:'bg-green-600', info:'bg-primary', warning:'bg-amber-600', error:'bg-red-600' };
       var el = document.createElement('div');
       el.className = 'toast ' + colors[kind] + ' text-white font-semibold px-3 py-2 rounded-lg shadow-lg flex items-center gap-2 max-w-xs';
       el.innerHTML = '<span>' + message + '</span>';
@@ -506,7 +366,7 @@
       root.innerHTML = `
         <div class="fixed inset-0 z-[100] flex items-center justify-center p-3" id="modalOverlay">
           <div class="absolute inset-0 bg-black/40 backdrop-blur-[1px]" id="modalBackdrop"></div>
-          <div class="relative bg-white rounded-xl shadow-2xl w-full ${opts.width || 'max-w-4xl'} max-h-[92vh] overflow-hidden animate-modal">
+          <div class="relative bg-white rounded-xl shadow-2xl w-full ${opts.width || 'max-w-2xl'} max-h-[92vh] overflow-hidden animate-modal">
             ${innerHtml}
           </div>
         </div>`;
@@ -515,8 +375,7 @@
     }
 
     function closeModal() {
-      var root = document.getElementById('modalRoot');
-      root.innerHTML = '';
+      document.getElementById('modalRoot').innerHTML = '';
       document.body.style.overflow = '';
     }
 
@@ -524,10 +383,12 @@
       return `
         <div class="flex items-start justify-between px-5 py-3.5 border-b border-gray-100 sticky top-0 bg-white z-10">
           <div>
-            <h3 class="modal-title text-gray-900">${title}</h3>
-            ${subtitle ? '<p class="modal-subtitle mt-0.5">' + subtitle + '</p>' : ''}
+            <h3 class="text-base font-bold text-gray-900">${title}</h3>
+            ${subtitle ? '<p class="text-[11px] text-gray-500 mt-0.5">' + subtitle + '</p>' : ''}
           </div>
-          <button onclick="closeModal()" class="w-7 h-7 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition">${iconX()}</button>
+          <button onclick="closeModal()" class="w-7 h-7 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
         </div>`;
     }
 
@@ -538,7 +399,7 @@
           <div class="flex gap-2">
             <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Cancel</button>
             <button ${onSaveAttr} class="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-primary-dark transition shadow-sm flex items-center gap-1.5">
-              ${iconSave()} ${saveLabel}
+              <i class="fa-solid fa-floppy-disk"></i> ${saveLabel}
             </button>
           </div>
         </div>`;
@@ -553,729 +414,876 @@
         </div>`;
     }
 
-    function inputBase() { return "form-input"; }
+    // =============================================================
+    // HELPERS
+    // =============================================================
+    function money(n) { return '₹' + Number(n || 0).toLocaleString('en-IN', { maximumFractionDigits: 2 }); }
+
+    function formatDate(d) {
+      if (!d) return '—';
+      var date = new Date(d);
+      if (isNaN(date.getTime())) return d;
+      return date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function statusBadge(status) {
+      var map = { reconciled: 'green', matched: 'green', unmatched: 'amber', pending: 'amber', cleared: 'blue', bounced: 'red', manual: 'purple' };
+      var labels = { reconciled: 'Reconciled', matched: 'Matched', unmatched: 'Unmatched', pending: 'Pending', cleared: 'Cleared', bounced: 'Bounced', manual: 'Manual' };
+      return '<span class="badge badge-' + (map[status] || 'gray') + '">' + (labels[status] || status) + '</span>';
+    }
 
     // =============================================================
-    // PAGE TABS
+    // SINGLE BANK ACCOUNT
     // =============================================================
-    document.addEventListener('DOMContentLoaded', function() {
-      var tabs = document.querySelectorAll('#bankTabs .page-tab-btn');
-      tabs.forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          tabs.forEach(function(b) { b.classList.remove('active'); });
+    var bankAccount = {
+      id: 'BA-001',
+      name: 'Kunash Media — Current Account',
+      bankName: 'HDFC Bank',
+      accountNumber: '50100XXXXXX1234',
+      ifsc: 'HDFC0000123',
+      branch: 'BKC, Mumbai',
+      type: 'Current',
+      currency: 'INR',
+      openingBalance: 750000,
+      currentBalance: 783450,
+      lastImportAt: null
+    };
+
+    // Bank statement transactions (imported from bank)
+    var bankTransactions = [
+      { id: 'BT-001', date: '2026-01-25', description: 'NEFT CR XYZ RETAIL STORE', reference: 'NEFT-20260125-001', debit: 0, credit: 100000, balance: 850000, matched: true, matchedWith: 'CP-001', matchType: 'receipt' },
+      { id: 'BT-002', date: '2026-01-27', description: 'NEFT DR GLOBAL IMPORTS INC', reference: 'NEFT-20260127-045', debit: 50000, credit: 0, balance: 800000, matched: true, matchedWith: 'VP-001', matchType: 'payment' },
+      { id: 'BT-003', date: '2026-01-28', description: 'UPI CR RAHUL SHARMA', reference: 'UPI-9876543210-1234', debit: 0, credit: 63700, balance: 863700, matched: true, matchedWith: 'CP-002', matchType: 'receipt' },
+      { id: 'BT-004', date: '2026-02-01', description: 'IMPS DR TECH COMPONENTS', reference: 'IMPS-20260201-078', debit: 95000, credit: 0, balance: 768700, matched: false, matchedWith: null, matchType: null },
+      { id: 'BT-005', date: '2026-02-05', description: 'BANK CHARGES', reference: 'CHG-20260205', debit: 250, credit: 0, balance: 768450, matched: false, matchedWith: null, matchType: null },
+      { id: 'BT-006', date: '2026-02-08', description: 'NEFT CR PRIYA PATEL', reference: 'NEFT-20260208-022', debit: 0, credit: 15000, balance: 783450, matched: false, matchedWith: null, matchType: null },
+      { id: 'BT-007', date: '2026-02-10', description: 'IMPS DR ABC PROPERTIES', reference: 'IMPS-20260210-101', debit: 85000, credit: 0, balance: 698450, matched: false, matchedWith: null, matchType: null }
+    ];
+
+    // ERP records that can be matched
+    var erpRecords = [
+      { id: 'CP-001', type: 'receipt',  label: 'RCPT/25-26/001 — XYZ Retail Store', amount: 100000, date: '2026-01-25', ref: 'NEFT-20260125-001' },
+      { id: 'CP-002', type: 'receipt',  label: 'RCPT/25-26/002 — Rahul Sharma', amount: 63700, date: '2026-01-28', ref: 'UPI-9876543210-1234' },
+      { id: 'CP-003', type: 'receipt',  label: 'RCPT/25-26/003 — Global Exports Ltd.', amount: 3799, date: '2026-02-01', ref: 'NEFT-20260201-005' },
+      { id: 'CP-005', type: 'receipt',  label: 'RCPT/25-26/005 — Priya Patel', amount: 15000, date: '2026-02-08', ref: 'CASH-001' },
+      { id: 'VP-001', type: 'payment',  label: 'PAY/25-26/001 — Global Imports Inc.', amount: 50000, date: '2026-01-27', ref: 'NEFT-20260127-045' },
+      { id: 'VP-002', type: 'payment',  label: 'PAY/25-26/002 — Tech Components Ltd.', amount: 95000, date: '2026-02-01', ref: 'IMPS-20260201-078' },
+      { id: 'EXP-001', type: 'expense', label: 'EXP-001 — Office Rent', amount: 85000, date: '2026-02-10', ref: 'IMPS-20260210-101' },
+      { id: 'EXP-005', type: 'expense', label: 'EXP-005 — Utilities (MSEB)', amount: 18750, date: '2026-02-12', ref: '' }
+    ];
+
+    // Bank rules
+    var bankRules = [
+      { id: 'R-001', name: 'NEFT Receipts', condition: 'Description contains "NEFT CR"', action: 'Categorize as Receipts', matchType: 'receipt', enabled: true },
+      { id: 'R-002', name: 'NEFT Payments', condition: 'Description contains "NEFT DR"', action: 'Categorize as Payments', matchType: 'payment', enabled: true },
+      { id: 'R-003', name: 'Bank Charges', condition: 'Description contains "CHARGES"', action: 'Categorize as Expense: Bank Charges', matchType: 'expense', enabled: true },
+      { id: 'R-004', name: 'UPI Transactions', condition: 'Description contains "UPI"', action: 'Auto-match by reference', matchType: 'auto', enabled: true },
+      { id: 'R-005', name: 'Salary Payments', condition: 'Description contains "SALARY"', action: 'Categorize as Expense: Salaries', matchType: 'expense', enabled: false }
+    ];
+
+    // =============================================================
+    // RENDER HERO BANK CARD
+    // =============================================================
+    function renderHeroBank() {
+      var matched = bankTransactions.filter(function (t) { return t.matched; }).length;
+      var unmatched = bankTransactions.length - matched;
+
+      var html = `
+        <div class="flex flex-wrap items-start justify-between gap-4 mb-4" style="position:relative;z-index:1;">
+          <div>
+            <div class="hb-label">${bankAccount.type} Account</div>
+            <div class="hb-name">${bankAccount.name}</div>
+            <div class="hb-number">${bankAccount.bankName} · ${bankAccount.accountNumber} · IFSC ${bankAccount.ifsc}</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="hb-label">Current Balance</div>
+            <div class="hb-balance">${money(bankAccount.currentBalance)}</div>
+            <div class="hb-sub">Opening Balance: ${money(bankAccount.openingBalance)}</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3" style="position:relative;z-index:1;">
+          <div class="hb-stat">
+            <div class="hb-stat-label">Total Transactions</div>
+            <div class="hb-stat-value">${bankTransactions.length}</div>
+          </div>
+          <div class="hb-stat">
+            <div class="hb-stat-label">Reconciled</div>
+            <div class="hb-stat-value" style="color:#86efac;">${matched}</div>
+          </div>
+          <div class="hb-stat">
+            <div class="hb-stat-label">Unreconciled</div>
+            <div class="hb-stat-value" style="color:#fcd34d;">${unmatched}</div>
+          </div>
+          <div class="hb-stat">
+            <div class="hb-stat-label">Last Import</div>
+            <div class="hb-stat-value" style="font-size:12px;">${bankAccount.lastImportAt ? formatDate(bankAccount.lastImportAt) : 'Never'}</div>
+          </div>
+        </div>
+      `;
+      document.getElementById('heroBankCard').innerHTML = html;
+    }
+
+    // =============================================================
+    // RENDER STATS
+    // =============================================================
+    function renderStats() {
+      var matched = bankTransactions.filter(function (t) { return t.matched; }).length;
+      var unmatched = bankTransactions.length - matched;
+      var percent = bankTransactions.length > 0 ? Math.round(matched / bankTransactions.length * 100) : 0;
+
+      document.getElementById('totalBankTxns').textContent = bankTransactions.length;
+      document.getElementById('totalReconciled').textContent = matched;
+      document.getElementById('totalUnreconciled').textContent = unmatched;
+      document.getElementById('reconPercent').textContent = percent + '%';
+      document.getElementById('lastImport').textContent = bankAccount.lastImportAt ? formatDate(bankAccount.lastImportAt) : 'Never';
+
+      renderHeroBank();
+    }
+
+    // =============================================================
+    // RENDER RECONCILIATION
+    // =============================================================
+    function renderReconciliation() {
+      var matched = bankTransactions.filter(function (t) { return t.matched; });
+      var unmatched = bankTransactions.filter(function (t) { return !t.matched; });
+
+      var matchedHtml = matched.length === 0 ?
+        '<tr><td colspan="6" class="text-center py-6 text-gray-400 text-xs">No matched transactions yet</td></tr>' :
+        matched.map(function (t) {
+          var erpRef = erpRecords.find(function (r) { return r.id === t.matchedWith; });
+          return `
+            <tr class="recon-row matched border-b border-gray-100">
+              <td class="px-3 py-2.5 text-xs text-gray-500">${formatDate(t.date)}</td>
+              <td class="px-3 py-2.5">
+                <div class="text-xs font-semibold text-gray-800">${t.description}</div>
+                <div class="text-[10px] text-gray-400 font-mono">${t.reference}</div>
+              </td>
+              <td class="px-3 py-2.5 text-right font-mono text-xs ${t.debit > 0 ? 'text-red-600' : 'text-green-600'}">
+                ${t.debit > 0 ? '-' + money(t.debit) : '+' + money(t.credit)}
+              </td>
+              <td class="px-3 py-2.5">
+                <div class="text-xs font-semibold text-gray-800">${erpRef ? erpRef.label : '—'}</div>
+                <div class="text-[10px] text-gray-400">${erpRef ? erpRef.type : ''}</div>
+              </td>
+              <td class="px-3 py-2.5 text-center">${statusBadge('reconciled')}</td>
+              <td class="px-3 py-2.5 text-center">
+                <button onclick="unmatchTransaction('${t.id}')" class="btn-icon-action" title="Unmatch">
+                  <i class="fa-solid fa-link-slash"></i>
+                </button>
+              </td>
+            </tr>`;
+        }).join('');
+
+      var unmatchedHtml = unmatched.length === 0 ?
+        '<tr><td colspan="6" class="text-center py-6 text-green-600 text-xs font-semibold">🎉 All transactions reconciled!</td></tr>' :
+        unmatched.map(function (t) {
+          var suggestions = findSuggestedMatches(t);
+          return `
+            <tr class="recon-row unmatched border-b border-gray-100">
+              <td class="px-3 py-2.5 text-xs text-gray-500">${formatDate(t.date)}</td>
+              <td class="px-3 py-2.5">
+                <div class="text-xs font-semibold text-gray-800">${t.description}</div>
+                <div class="text-[10px] text-gray-400 font-mono">${t.reference}</div>
+              </td>
+              <td class="px-3 py-2.5 text-right font-mono text-xs ${t.debit > 0 ? 'text-red-600' : 'text-green-600'}">
+                ${t.debit > 0 ? '-' + money(t.debit) : '+' + money(t.credit)}
+              </td>
+              <td class="px-3 py-2.5">
+                ${suggestions.length > 0 ?
+                  '<div class="text-[10px] text-amber-600 font-semibold">' + suggestions.length + ' suggestion(s)</div>' :
+                  '<div class="text-[10px] text-gray-400">No matches found</div>'}
+              </td>
+              <td class="px-3 py-2.5 text-center">${statusBadge('unmatched')}</td>
+              <td class="px-3 py-2.5 text-center">
+                <button onclick="openMatchModal('${t.id}')" class="btn-icon-action primary" title="Match">
+                  <i class="fa-solid fa-link"></i>
+                </button>
+              </td>
+            </tr>`;
+        }).join('');
+
+      var html = `
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+          <!-- MATCHED -->
+          <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+            <div class="px-4 py-2.5 border-b border-gray-100 bg-green-50 flex items-center justify-between">
+              <div class="text-xs font-bold text-green-800">
+                <i class="fa-solid fa-circle-check mr-1.5"></i>Reconciled (${matched.length})
+              </div>
+            </div>
+            <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
+              <table class="w-full text-xs">
+                <thead class="bg-gray-50 sticky top-0">
+                  <tr>
+                    <th class="px-3 py-2 text-left text-[9.5px] uppercase tracking-wide text-gray-500">Date</th>
+                    <th class="px-3 py-2 text-left text-[9.5px] uppercase tracking-wide text-gray-500">Bank Txn</th>
+                    <th class="px-3 py-2 text-right text-[9.5px] uppercase tracking-wide text-gray-500">Amount</th>
+                    <th class="px-3 py-2 text-left text-[9.5px] uppercase tracking-wide text-gray-500">ERP Record</th>
+                    <th class="px-3 py-2 text-center text-[9.5px] uppercase tracking-wide text-gray-500">Status</th>
+                    <th class="px-3 py-2 text-center text-[9.5px] uppercase tracking-wide text-gray-500" style="width:50px;">Act</th>
+                  </tr>
+                </thead>
+                <tbody>${matchedHtml}</tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- UNMATCHED -->
+          <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+            <div class="px-4 py-2.5 border-b border-gray-100 bg-amber-50 flex items-center justify-between">
+              <div class="text-xs font-bold text-amber-800">
+                <i class="fa-solid fa-circle-exclamation mr-1.5"></i>Unreconciled (${unmatched.length})
+              </div>
+            </div>
+            <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
+              <table class="w-full text-xs">
+                <thead class="bg-gray-50 sticky top-0">
+                  <tr>
+                    <th class="px-3 py-2 text-left text-[9.5px] uppercase tracking-wide text-gray-500">Date</th>
+                    <th class="px-3 py-2 text-left text-[9.5px] uppercase tracking-wide text-gray-500">Bank Txn</th>
+                    <th class="px-3 py-2 text-right text-[9.5px] uppercase tracking-wide text-gray-500">Amount</th>
+                    <th class="px-3 py-2 text-left text-[9.5px] uppercase tracking-wide text-gray-500">Suggestions</th>
+                    <th class="px-3 py-2 text-center text-[9.5px] uppercase tracking-wide text-gray-500">Status</th>
+                    <th class="px-3 py-2 text-center text-[9.5px] uppercase tracking-wide text-gray-500" style="width:50px;">Act</th>
+                  </tr>
+                </thead>
+                <tbody>${unmatchedHtml}</tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="mt-3 p-3 bg-primary-soft rounded-lg border border-primary/20 text-[11px] text-gray-600">
+          <div class="flex items-start gap-2">
+            <i class="fa-solid fa-circle-info text-primary mt-0.5"></i>
+            <div>
+              <b>How to reconcile:</b> Bank transactions on the right don't have matching ERP records yet.
+              Click the <i class="fa-solid fa-link"></i> icon to match manually, or use <b>Auto-Reconcile</b>.
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('reconPanel').innerHTML = html;
+    }
+
+    // =============================================================
+    // MATCH SUGGESTIONS
+    // =============================================================
+    function findSuggestedMatches(bankTxn) {
+      var amount = bankTxn.credit > 0 ? bankTxn.credit : bankTxn.debit;
+
+      return erpRecords.filter(function (r) {
+        // Already matched?
+        var alreadyMatched = bankTransactions.some(function (bt) { return bt.matchedWith === r.id; });
+        if (alreadyMatched) return false;
+        // Amount match (within 5%)
+        if (Math.abs(r.amount - amount) > 5) return false;
+        return true;
+      }).map(function (r) {
+        var score = 0;
+        if (r.ref && r.ref === bankTxn.reference) score += 100;
+        if (Math.abs(r.amount - amount) < 1) score += 50;
+        if (r.date === bankTxn.date) score += 30;
+        return { record: r, score: score };
+      }).sort(function (a, b) { return b.score - a.score; });
+    }
+
+    // =============================================================
+    // MATCH MODAL
+    // =============================================================
+    function openMatchModal(bankTxnId) {
+      var txn = bankTransactions.find(function (t) { return t.id === bankTxnId; });
+      if (!txn) return;
+
+      var suggestions = findSuggestedMatches(txn);
+      var amount = txn.credit > 0 ? txn.credit : txn.debit;
+
+      var suggestionsHtml = suggestions.length === 0 ?
+        '<div class="text-center py-6 text-gray-400 text-xs">No ERP records found matching this transaction.<br>You can create a new record instead.</div>' :
+        suggestions.map(function (s, idx) {
+          var r = s.record;
+          var isBest = idx === 0 && s.score >= 80;
+          return `
+            <div class="match-panel ${isBest ? 'best' : ''} mb-2 cursor-pointer" onclick="confirmMatch('${txn.id}', '${r.id}')">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="text-xs font-semibold text-gray-800">${r.label}</div>
+                  <div class="text-[10px] text-gray-500 mt-0.5">${formatDate(r.date)} · ${r.type} ${r.ref ? '· ' + r.ref : ''}</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-sm font-bold text-primary">${money(r.amount)}</div>
+                  ${isBest ? '<div class="text-[9px] text-green-600 font-bold mt-0.5">BEST MATCH</div>' : ''}
+                </div>
+              </div>
+            </div>`;
+        }).join('');
+
+      var html = `
+        ${modalHeader('Match Bank Transaction', txn.description)}
+        <div class="px-5 py-4 modal-scroll">
+
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-4">
+            <div class="text-[10px] font-bold uppercase tracking-wide text-gray-500 mb-1">Bank Transaction</div>
+            <div class="flex justify-between items-center">
+              <div>
+                <div class="text-xs text-gray-500">${formatDate(txn.date)} · ${txn.reference}</div>
+                <div class="text-sm font-semibold text-gray-800 mt-0.5">${txn.description}</div>
+              </div>
+              <div class="text-lg font-bold ${txn.debit > 0 ? 'text-red-600' : 'text-green-600'}">
+                ${txn.debit > 0 ? '-' : '+'}${money(amount)}
+              </div>
+            </div>
+          </div>
+
+          <div class="text-[10px] font-bold uppercase tracking-wide text-gray-500 mb-2">Suggested ERP Records</div>
+          ${suggestionsHtml}
+
+          <div class="mt-4 pt-3 border-t border-gray-100">
+            <button onclick="createFromBankTxn('${txn.id}')" class="w-full inline-flex items-center justify-center gap-1.5 bg-white border border-dashed border-gray-300 hover:border-primary hover:bg-primary-soft text-gray-700 hover:text-primary text-[11px] font-semibold px-3 py-2.5 rounded-lg transition">
+              <i class="fa-solid fa-plus"></i>
+              Create New ERP Record from This Transaction
+            </button>
+          </div>
+        </div>
+        ${modalFooter('Close', 'onclick="closeModal()"')}
+      `;
+
+      openModal(html, { width: 'max-w-2xl' });
+    }
+
+    function confirmMatch(bankTxnId, erpRecordId) {
+      var txn = bankTransactions.find(function (t) { return t.id === bankTxnId; });
+      var erp = erpRecords.find(function (r) { return r.id === erpRecordId; });
+      if (!txn || !erp) return;
+
+      txn.matched = true;
+      txn.matchedWith = erp.id;
+      txn.matchType = erp.type;
+
+      closeModal();
+      renderReconciliation();
+      renderStats();
+      showToast('✓ Matched: ' + txn.description + ' ↔ ' + erp.label, 'success');
+    }
+
+    function unmatchTransaction(bankTxnId) {
+      var txn = bankTransactions.find(function (t) { return t.id === bankTxnId; });
+      if (!txn) return;
+      txn.matched = false;
+      txn.matchedWith = null;
+      txn.matchType = null;
+      renderReconciliation();
+      renderStats();
+      showToast('Unmatched successfully', 'info');
+    }
+
+    function createFromBankTxn(bankTxnId) {
+      closeModal();
+      showToast('Redirecting to create new record…', 'info');
+    }
+
+    // =============================================================
+    // AUTO RECONCILE
+    // =============================================================
+    function autoReconcileAll() {
+      var matchedCount = 0;
+
+      bankTransactions.filter(function (t) { return !t.matched; }).forEach(function (txn) {
+        var suggestions = findSuggestedMatches(txn);
+        if (suggestions.length > 0 && suggestions[0].score >= 80) {
+          txn.matched = true;
+          txn.matchedWith = suggestions[0].record.id;
+          txn.matchType = suggestions[0].record.type;
+          matchedCount++;
+        }
+      });
+
+      renderReconciliation();
+      renderStats();
+
+      if (matchedCount > 0) {
+        showToast('✓ Auto-reconciled ' + matchedCount + ' transaction(s)', 'success');
+      } else {
+        showToast('No high-confidence matches found. Use manual matching.', 'warning');
+      }
+    }
+
+    // =============================================================
+    // TRANSACTIONS VIEW
+    // =============================================================
+    function renderTransactions() {
+      var rows = bankTransactions.length === 0 ?
+        '<tr><td colspan="6" class="text-center py-10 text-gray-400 text-sm"><div class="flex justify-center mb-2 empty-icon-svg"><i class="fa-solid fa-inbox"></i></div>No transactions. Import a bank statement to get started.</td></tr>' :
+        bankTransactions.map(function (t) {
+          return `
+            <tr class="border-b border-gray-100 table-row-hover">
+              <td class="px-3 py-2.5 text-xs text-gray-500">${formatDate(t.date)}</td>
+              <td class="px-3 py-2.5">
+                <div class="text-xs font-semibold text-gray-800">${t.description}</div>
+                <div class="text-[10px] text-gray-400 font-mono">${t.reference}</div>
+              </td>
+              <td class="px-3 py-2.5 text-right font-mono text-xs text-red-600">${t.debit > 0 ? money(t.debit) : '—'}</td>
+              <td class="px-3 py-2.5 text-right font-mono text-xs text-green-600">${t.credit > 0 ? money(t.credit) : '—'}</td>
+              <td class="px-3 py-2.5 text-right font-mono text-xs text-gray-600">${money(t.balance)}</td>
+              <td class="px-3 py-2.5 text-center">${t.matched ? statusBadge('matched') : statusBadge('unmatched')}</td>
+            </tr>`;
+        }).join('');
+
+      var panelHtml = `
+        <div class="flex items-center justify-between gap-3 flex-wrap mb-3">
+          <div class="text-sm font-bold text-gray-800">
+            Bank Statement Transactions
+            <span class="text-[10px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">${bankTransactions.length}</span>
+          </div>
+          <div class="flex gap-2">
+            <select class="inline-filter-select" onchange="filterTransactions(this.value)">
+              <option value="all">All Transactions</option>
+              <option value="matched">Matched Only</option>
+              <option value="unmatched">Unmatched Only</option>
+              <option value="credit">Credits Only</option>
+              <option value="debit">Debits Only</option>
+            </select>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="bg-gray-50 border-b border-gray-200">
+                <th class="text-left font-semibold whitespace-nowrap px-3 py-2 text-[9.5px] uppercase tracking-wide text-gray-500">Date</th>
+                <th class="text-left font-semibold whitespace-nowrap px-3 py-2 text-[9.5px] uppercase tracking-wide text-gray-500">Description</th>
+                <th class="text-right font-semibold whitespace-nowrap px-3 py-2 text-[9.5px] uppercase tracking-wide text-gray-500">Debit</th>
+                <th class="text-right font-semibold whitespace-nowrap px-3 py-2 text-[9.5px] uppercase tracking-wide text-gray-500">Credit</th>
+                <th class="text-right font-semibold whitespace-nowrap px-3 py-2 text-[9.5px] uppercase tracking-wide text-gray-500">Balance</th>
+                <th class="text-center font-semibold whitespace-nowrap px-3 py-2 text-[9.5px] uppercase tracking-wide text-gray-500">Status</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>`;
+
+      document.getElementById('transactionsPanel').innerHTML = panelHtml;
+    }
+
+    function filterTransactions(filter) {
+      renderTransactions();
+    }
+
+    // =============================================================
+    // RULES VIEW
+    // =============================================================
+    function renderRules() {
+      var rows = bankRules.map(function (r) {
+        return `
+          <tr class="border-b border-gray-100 table-row-hover">
+            <td class="px-3 py-2.5">
+              <div class="text-xs font-semibold text-gray-800">${r.name}</div>
+              <div class="text-[10px] text-gray-400 font-mono">${r.id}</div>
+            </td>
+            <td class="px-3 py-2.5 text-xs text-gray-600 font-mono">${r.condition}</td>
+            <td class="px-3 py-2.5 text-xs text-gray-700">${r.action}</td>
+            <td class="px-3 py-2.5 text-center">
+              <label class="inline-flex items-center cursor-pointer">
+                <input type="checkbox" ${r.enabled ? 'checked' : ''} onchange="toggleRule('${r.id}', this.checked)" class="sr-only peer">
+                <div class="w-9 h-5 bg-gray-200 peer-checked:bg-primary rounded-full relative transition">
+                  <div class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full transition" style="transform:translateX(${r.enabled ? '16px' : '0'});"></div>
+                </div>
+              </label>
+            </td>
+            <td class="px-3 py-2.5 text-center">
+              <button onclick="editRule('${r.id}')" class="btn-icon-action" title="Edit">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button onclick="deleteRule('${r.id}')" class="btn-icon-action danger" title="Delete">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </td>
+          </tr>`;
+      }).join('');
+
+      var panelHtml = `
+        <div class="flex items-center justify-between gap-3 flex-wrap mb-3">
+          <div>
+            <div class="text-sm font-bold text-gray-800">Bank Rules</div>
+            <div class="text-[11px] text-gray-500 mt-0.5">Auto-categorize bank transactions based on description patterns</div>
+          </div>
+          <button onclick="openAddRule()" class="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-dark text-white text-[11px] font-semibold px-3 py-2 rounded-lg transition shadow-sm">
+            <i class="fa-solid fa-plus"></i> New Rule
+          </button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="bg-gray-50 border-b border-gray-200">
+                <th class="text-left font-semibold whitespace-nowrap px-3 py-2 text-[9.5px] uppercase tracking-wide text-gray-500">Rule Name</th>
+                <th class="text-left font-semibold whitespace-nowrap px-3 py-2 text-[9.5px] uppercase tracking-wide text-gray-500">Condition</th>
+                <th class="text-left font-semibold whitespace-nowrap px-3 py-2 text-[9.5px] uppercase tracking-wide text-gray-500">Action</th>
+                <th class="text-center font-semibold whitespace-nowrap px-3 py-2 text-[9.5px] uppercase tracking-wide text-gray-500">Enabled</th>
+                <th class="text-center font-semibold whitespace-nowrap px-3 py-2 text-[9.5px] uppercase tracking-wide text-gray-500">Actions</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>`;
+
+      document.getElementById('rulesPanel').innerHTML = panelHtml;
+    }
+
+    function toggleRule(id, enabled) {
+      var rule = bankRules.find(function (r) { return r.id === id; });
+      if (rule) {
+        rule.enabled = enabled;
+        renderRules();
+        showToast('Rule ' + (enabled ? 'enabled' : 'disabled'), 'info');
+      }
+    }
+
+    function openAddRule() {
+      var html = `
+        ${modalHeader('New Bank Rule', 'Auto-categorize transactions')}
+        <div class="px-5 py-4">
+          ${fld('Rule Name *', '<input type="text" class="form-input" id="r_name" placeholder="e.g. NEFT Receipts">')}
+          ${fld('If Description Contains *', '<input type="text" class="form-input" id="r_condition" placeholder="e.g. NEFT CR">', 'Case-insensitive match against bank description')}
+          ${fld('Then Categorize As *', '<select class="form-input" id="r_action"><option value="receipt">Receipts (Customer Payments)</option><option value="payment">Payments (Vendor Payments)</option><option value="expense">Expense</option><option value="auto">Auto-match only</option></select>')}
+        </div>
+        ${modalFooter('Create Rule', 'onclick="saveRule()"')}
+      `;
+      openModal(html, { width: 'max-w-lg' });
+    }
+
+    function saveRule() {
+      var name = document.getElementById('r_name').value.trim();
+      var condition = document.getElementById('r_condition').value.trim();
+      var action = document.getElementById('r_action').value;
+      if (!name || !condition) {
+        showToast('Please fill required fields', 'error');
+        return;
+      }
+      bankRules.push({
+        id: 'R-' + String(bankRules.length + 1).padStart(3, '0'),
+        name: name,
+        condition: 'Description contains "' + condition + '"',
+        action: action === 'receipt' ? 'Categorize as Receipts' : action === 'payment' ? 'Categorize as Payments' : action === 'expense' ? 'Categorize as Expense' : 'Auto-match',
+        matchType: action,
+        enabled: true
+      });
+      closeModal();
+      renderRules();
+      showToast('Rule created successfully', 'success');
+    }
+
+    function editRule(id) { showToast('Edit rule — coming soon', 'info'); }
+    function deleteRule(id) {
+      if (!confirm('Delete this rule?')) return;
+      bankRules = bankRules.filter(function (r) { return r.id !== id; });
+      renderRules();
+      showToast('Rule deleted', 'warning');
+    }
+
+    // =============================================================
+    // REPORTS VIEW
+    // =============================================================
+    function renderReports() {
+      var totalCredits = bankTransactions.reduce(function (s, t) { return s + t.credit; }, 0);
+      var totalDebits = bankTransactions.reduce(function (s, t) { return s + t.debit; }, 0);
+      var matched = bankTransactions.filter(function (t) { return t.matched; }).length;
+      var unmatched = bankTransactions.length - matched;
+
+      // Monthly summary
+      var monthly = {};
+      bankTransactions.forEach(function (t) {
+        var m = t.date.substring(0, 7);
+        if (!monthly[m]) monthly[m] = { month: m, credits: 0, debits: 0, count: 0 };
+        monthly[m].credits += t.credit;
+        monthly[m].debits += t.debit;
+        monthly[m].count++;
+      });
+
+      var html = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          <!-- BANK BOOK -->
+          <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+            <div class="px-4 py-2.5 border-b border-gray-100 bg-gray-50">
+              <div class="text-sm font-bold text-gray-800">
+                <i class="fa-solid fa-book text-primary mr-1.5"></i>Bank Book Summary
+              </div>
+            </div>
+            <table class="w-full text-xs">
+              <tbody>
+                <tr><td class="px-3 py-2 text-gray-500">Opening Balance</td><td class="px-3 py-2 text-right font-mono font-semibold">${money(bankAccount.openingBalance)}</td></tr>
+                <tr><td class="px-3 py-2 text-gray-500">Total Credits (In)</td><td class="px-3 py-2 text-right font-mono font-semibold text-green-600">+ ${money(totalCredits)}</td></tr>
+                <tr><td class="px-3 py-2 text-gray-500">Total Debits (Out)</td><td class="px-3 py-2 text-right font-mono font-semibold text-red-600">- ${money(totalDebits)}</td></tr>
+                <tr class="border-t-2 border-gray-200 bg-primary-soft"><td class="px-3 py-2 font-bold">Closing Balance</td><td class="px-3 py-2 text-right font-mono font-bold text-primary">${money(bankAccount.currentBalance)}</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- RECONCILIATION SUMMARY -->
+          <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+            <div class="px-4 py-2.5 border-b border-gray-100 bg-gray-50">
+              <div class="text-sm font-bold text-gray-800">
+                <i class="fa-solid fa-clipboard-check text-primary mr-1.5"></i>Reconciliation Summary
+              </div>
+            </div>
+            <table class="w-full text-xs">
+              <tbody>
+                <tr><td class="px-3 py-2 text-gray-500">Total Bank Transactions</td><td class="px-3 py-2 text-right font-mono font-semibold">${bankTransactions.length}</td></tr>
+                <tr><td class="px-3 py-2 text-gray-500">Reconciled</td><td class="px-3 py-2 text-right font-mono font-semibold text-green-600">${matched}</td></tr>
+                <tr><td class="px-3 py-2 text-gray-500">Unreconciled</td><td class="px-3 py-2 text-right font-mono font-semibold text-amber-600">${unmatched}</td></tr>
+                <tr><td class="px-3 py-2 text-gray-500">Reconciliation %</td><td class="px-3 py-2 text-right font-mono font-semibold text-primary">${bankTransactions.length > 0 ? Math.round(matched / bankTransactions.length * 100) : 0}%</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- MONTHLY SUMMARY -->
+          <div class="bg-white border border-gray-200 rounded-xl overflow-hidden md:col-span-2">
+            <div class="px-4 py-2.5 border-b border-gray-100 bg-gray-50">
+              <div class="text-sm font-bold text-gray-800">
+                <i class="fa-solid fa-calendar text-primary mr-1.5"></i>Monthly Summary
+              </div>
+            </div>
+            <table class="w-full text-xs">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-3 py-2 text-left text-[9.5px] uppercase tracking-wide text-gray-500">Month</th>
+                  <th class="px-3 py-2 text-center text-[9.5px] uppercase tracking-wide text-gray-500">Transactions</th>
+                  <th class="px-3 py-2 text-right text-[9.5px] uppercase tracking-wide text-gray-500">Credits (In)</th>
+                  <th class="px-3 py-2 text-right text-[9.5px] uppercase tracking-wide text-gray-500">Debits (Out)</th>
+                  <th class="px-3 py-2 text-right text-[9.5px] uppercase tracking-wide text-gray-500">Net</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${Object.keys(monthly).sort().map(function (k) {
+                  var m = monthly[k];
+                  var net = m.credits - m.debits;
+                  return `
+                    <tr class="border-b border-gray-100">
+                      <td class="px-3 py-2 font-semibold">${k}</td>
+                      <td class="px-3 py-2 text-center">${m.count}</td>
+                      <td class="px-3 py-2 text-right font-mono text-green-600">${money(m.credits)}</td>
+                      <td class="px-3 py-2 text-right font-mono text-red-600">${money(m.debits)}</td>
+                      <td class="px-3 py-2 text-right font-mono font-bold ${net >= 0 ? 'text-green-600' : 'text-red-600'}">${money(net)}</td>
+                    </tr>`;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>`;
+
+      document.getElementById('reportsPanel').innerHTML = html;
+    }
+
+    // =============================================================
+    // IMPORT STATEMENT
+    // =============================================================
+    function openImportStatement() {
+      var html = `
+        ${modalHeader('Import Bank Statement', 'Upload CSV or Excel from your bank')}
+        <div class="px-5 py-4">
+          <div class="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <div class="text-[10px] font-bold uppercase tracking-wide text-gray-500 mb-1">Importing into</div>
+            <div class="text-sm font-semibold text-gray-800">${bankAccount.name}</div>
+            <div class="text-[11px] text-gray-500">${bankAccount.bankName} · ${bankAccount.accountNumber}</div>
+          </div>
+
+          <div class="upload-area" onclick="document.getElementById('stmtFile').click()" id="uploadArea">
+            <i class="fa-solid fa-cloud-arrow-up" style="font-size:32px;color:#6da84c;"></i>
+            <div class="text-sm font-semibold text-gray-700 mt-2">Click to upload statement</div>
+            <div class="text-[11px] text-gray-500 mt-1">CSV, XLS or XLSX · Max 5MB</div>
+            <input type="file" id="stmtFile" accept=".csv,.xls,.xlsx" class="hidden" onchange="handleStatementUpload(event)">
+          </div>
+
+          <div id="uploadPreview" class="mt-3"></div>
+
+          <div class="mt-3 p-3 bg-primary-soft rounded-lg text-[11px] text-gray-600 border border-primary/20">
+            <i class="fa-solid fa-circle-info text-primary mr-1"></i>
+            <b>Expected columns:</b> Date, Description, Reference, Debit, Credit, Balance (in any order).
+            The system will auto-detect column mappings.
+          </div>
+        </div>
+        ${modalFooter('Import Transactions', 'onclick="processStatementImport()" id="importBtn" disabled')}
+      `;
+      openModal(html, { width: 'max-w-2xl' });
+    }
+
+    var uploadedStatementRows = [];
+
+    function handleStatementUpload(event) {
+      var file = event.target.files[0];
+      if (!file) return;
+
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          var data = new Uint8Array(e.target.result);
+          var workbook = XLSX.read(data, { type: 'array' });
+          var sheet = workbook.Sheets[workbook.SheetNames[0]];
+          var json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+          uploadedStatementRows = json;
+          renderUploadPreview(json);
+        } catch (err) {
+          showToast('Error reading file: ' + err.message, 'error');
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function renderUploadPreview(rows) {
+      if (rows.length < 2) {
+        document.getElementById('uploadPreview').innerHTML = '<div class="text-amber-600 text-xs">File appears empty or malformed</div>';
+        return;
+      }
+      var headers = rows[0];
+      var preview = rows.slice(1, 6);
+
+      var html = `
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <div class="px-3 py-2 bg-green-50 border-b border-green-100 text-xs font-semibold text-green-800">
+            <i class="fa-solid fa-check-circle mr-1"></i>File loaded — ${rows.length - 1} transaction(s) detected
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-[10.5px]">
+              <thead class="bg-gray-50">
+                <tr>${headers.map(function (h) { return '<th class="px-2 py-1.5 text-left text-[9px] uppercase tracking-wide text-gray-500">' + h + '</th>'; }).join('')}</tr>
+              </thead>
+              <tbody>
+                ${preview.map(function (r) {
+                  return '<tr class="border-b border-gray-100">' + r.map(function (c) { return '<td class="px-2 py-1.5">' + (c || '') + '</td>'; }).join('') + '</tr>';
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+          ${rows.length > 6 ? '<div class="px-3 py-2 text-[10px] text-gray-500 bg-gray-50">… and ' + (rows.length - 6) + ' more rows</div>' : ''}
+        </div>`;
+      document.getElementById('uploadPreview').innerHTML = html;
+
+      var btn = document.getElementById('importBtn');
+      if (btn) btn.disabled = false;
+    }
+
+    function processStatementImport() {
+      if (uploadedStatementRows.length < 2) {
+        showToast('Please upload a statement file first', 'error');
+        return;
+      }
+      var headers = uploadedStatementRows[0].map(function (h) { return String(h).toLowerCase().trim(); });
+      var dateIdx = headers.findIndex(function (h) { return h.indexOf('date') !== -1; });
+      var descIdx = headers.findIndex(function (h) { return h.indexOf('desc') !== -1 || h.indexOf('narration') !== -1 || h.indexOf('particular') !== -1; });
+      var refIdx = headers.findIndex(function (h) { return h.indexOf('ref') !== -1 || h.indexOf('chq') !== -1 || h.indexOf('cheque') !== -1; });
+      var debitIdx = headers.findIndex(function (h) { return h.indexOf('debit') !== -1 || h.indexOf('withdrawal') !== -1 || h.indexOf('dr') !== -1; });
+      var creditIdx = headers.findIndex(function (h) { return h.indexOf('credit') !== -1 || h.indexOf('deposit') !== -1 || h.indexOf('cr') !== -1; });
+      var balIdx = headers.findIndex(function (h) { return h.indexOf('balance') !== -1; });
+
+      var imported = 0;
+      for (var i = 1; i < uploadedStatementRows.length; i++) {
+        var row = uploadedStatementRows[i];
+        var dateVal = row[dateIdx];
+        var descVal = row[descIdx];
+        if (!dateVal || !descVal) continue;
+
+        bankTransactions.push({
+          id: 'BT-' + String(bankTransactions.length + 1).padStart(3, '0'),
+          date: normalizeDate(dateVal),
+          description: String(descVal),
+          reference: refIdx >= 0 ? String(row[refIdx] || '') : '',
+          debit: debitIdx >= 0 ? (parseFloat(row[debitIdx]) || 0) : 0,
+          credit: creditIdx >= 0 ? (parseFloat(row[creditIdx]) || 0) : 0,
+          balance: balIdx >= 0 ? (parseFloat(row[balIdx]) || 0) : 0,
+          matched: false,
+          matchedWith: null,
+          matchType: null
+        });
+        imported++;
+      }
+
+      bankAccount.lastImportAt = new Date().toISOString().split('T')[0];
+
+      closeModal();
+      renderReconciliation();
+      renderTransactions();
+      renderStats();
+      showToast('✓ Imported ' + imported + ' transaction(s)', 'success');
+    }
+
+    function normalizeDate(v) {
+      if (typeof v === 'string') {
+        var d = new Date(v);
+        if (!isNaN(d.getTime())) return d.toISOString().split('T')[0];
+      }
+      if (typeof v === 'number') {
+        var d2 = new Date((v - 25569) * 86400 * 1000);
+        return d2.toISOString().split('T')[0];
+      }
+      return String(v);
+    }
+
+    // =============================================================
+    // EDIT BANK DETAILS
+    // =============================================================
+    function openEditBankDetails() {
+      var html = `
+        ${modalHeader('Bank Account Details', 'Configure your company bank account')}
+        <div class="px-5 py-4">
+          <div class="grid grid-cols-2 gap-3">
+            ${fld('Account Holder Name *', '<input type="text" class="form-input" id="bd_name" value="' + bankAccount.name + '">')}
+            ${fld('Bank Name *', '<input type="text" class="form-input" id="bd_bank" value="' + bankAccount.bankName + '">')}
+            ${fld('Account Number *', '<input type="text" class="form-input" id="bd_number" value="' + bankAccount.accountNumber + '">')}
+            ${fld('IFSC Code *', '<input type="text" class="form-input" id="bd_ifsc" value="' + bankAccount.ifsc + '">')}
+            ${fld('Branch', '<input type="text" class="form-input" id="bd_branch" value="' + bankAccount.branch + '">')}
+            ${fld('Account Type', '<select class="form-input" id="bd_type"><option ' + (bankAccount.type === 'Current' ? 'selected' : '') + '>Current</option><option ' + (bankAccount.type === 'Savings' ? 'selected' : '') + '>Savings</option></select>')}
+            ${fld('Opening Balance (₹)', '<input type="number" class="form-input" id="bd_opening" value="' + bankAccount.openingBalance + '" step="0.01">', 'As on start of accounting period')}
+          </div>
+        </div>
+        ${modalFooter('Save Bank Details', 'onclick="saveBankDetails()"')}
+      `;
+      openModal(html, { width: 'max-w-2xl' });
+    }
+
+    function saveBankDetails() {
+      bankAccount.name = document.getElementById('bd_name').value.trim();
+      bankAccount.bankName = document.getElementById('bd_bank').value.trim();
+      bankAccount.accountNumber = document.getElementById('bd_number').value.trim();
+      bankAccount.ifsc = document.getElementById('bd_ifsc').value.trim().toUpperCase();
+      bankAccount.branch = document.getElementById('bd_branch').value.trim();
+      bankAccount.type = document.getElementById('bd_type').value;
+      bankAccount.openingBalance = parseFloat(document.getElementById('bd_opening').value) || 0;
+
+      closeModal();
+      renderHeroBank();
+      showToast('Bank details updated', 'success');
+    }
+
+    // =============================================================
+    // TAB SWITCHING
+    // =============================================================
+    document.addEventListener('DOMContentLoaded', function () {
+      var tabs = document.querySelectorAll('#bankingTabs .page-tab-btn');
+      tabs.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          tabs.forEach(function (b) { b.classList.remove('active'); });
           this.classList.add('active');
-          var panels = document.querySelectorAll('.page-tab-panel');
-          panels.forEach(function(p) { p.classList.remove('active'); });
+          document.querySelectorAll('.page-tab-panel').forEach(function (p) { p.classList.remove('active'); });
           document.getElementById(this.dataset.tab).classList.add('active');
         });
       });
     });
 
     // =============================================================
-    // HELPERS
-    // =============================================================
-    function money(n) { return '₹' + Number(n).toLocaleString('en-IN'); }
-
-    function statusBadge(status) {
-      var map = {
-        active: 'badge-green',
-        inactive: 'badge-gray',
-        pending: 'badge-amber',
-        reconciled: 'badge-blue',
-        matched: 'badge-green',
-        unmatched: 'badge-red'
-      };
-      var dot = {
-        active: 'badge-dot-green',
-        inactive: 'badge-dot-gray',
-        pending: 'badge-dot-amber',
-        reconciled: 'badge-dot-blue',
-        matched: 'badge-dot-green',
-        unmatched: 'badge-dot-red'
-      };
-      var label = status.charAt(0).toUpperCase() + status.slice(1);
-      return '<span class="badge ' + map[status] + '"><span class="badge-dot ' + dot[status] + '"></span>' + label + '</span>';
-    }
-
-    function transactionTypeBadge(type) {
-      var map = {
-        deposit: 'badge-green',
-        withdrawal: 'badge-red',
-        transfer: 'badge-blue'
-      };
-      var dot = {
-        deposit: 'badge-dot-green',
-        withdrawal: 'badge-dot-red',
-        transfer: 'badge-dot-blue'
-      };
-      var label = type.charAt(0).toUpperCase() + type.slice(1);
-      return '<span class="badge ' + map[type] + '"><span class="badge-dot ' + dot[type] + '"></span>' + label + '</span>';
-    }
-
-    function rowActionsHtml(editFn, delFn, viewFn) {
-      var html = '<div class="flex gap-1">';
-      if (viewFn) {
-        html += '<button onclick="' + viewFn + '" class="btn-icon-action" title="View">' + iconEye() + '</button>';
-      }
-      html += '<button onclick="' + editFn + '" class="btn-icon-action" title="Edit">' + iconEdit() + '</button>';
-      html += '<button onclick="' + delFn + '" class="btn-icon-action danger" title="Delete">' + iconTrash() + '</button>';
-      html += '</div>';
-      return html;
-    }
-
-    function panelWrap(titleHtml, bodyHtml, extraHead) {
-      return `
-        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-          <div class="flex items-center justify-between gap-3 flex-wrap px-4 py-2.5 border-b border-gray-100">
-            <div class="font-semibold text-sm text-gray-800 flex items-center gap-2">${titleHtml}</div>
-            ${extraHead || ''}
-          </div>
-          <div>${bodyHtml}</div>
-        </div>`;
-    }
-
-    function tableHtml(cols, rowsHtml) {
-      var colHeaders = cols.map(function(c) {
-        return '<th class="text-left font-semibold whitespace-nowrap">' + c + '</th>';
-      }).join('');
-      return `
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead>
-              <tr class="bg-gray-50 border-b border-gray-200">${colHeaders}</tr>
-            </thead>
-            <tbody id="tbody-anchor">${rowsHtml}</tbody>
-          </table>
-        </div>`;
-    }
-
-    // =============================================================
-    // DATA
-    // =============================================================
-
-    var bankAccounts = [{
-      id: 'ACC-001',
-      name: 'HDFC Bank — Current',
-      bankName: 'HDFC Bank',
-      accountNumber: '1234567890',
-      ifsc: 'HDFC0000123',
-      branch: 'BKC, Mumbai',
-      balance: 840000,
-      status: 'active',
-      type: 'Current',
-      createdAt: '2025-04-01'
-    }, {
-      id: 'ACC-002',
-      name: 'ICICI Bank — Current',
-      bankName: 'ICICI Bank',
-      accountNumber: '9876543210',
-      ifsc: 'ICIC0000456',
-      branch: 'Bandra, Mumbai',
-      balance: 360000,
-      status: 'active',
-      type: 'Current',
-      createdAt: '2025-04-01'
-    }, {
-      id: 'ACC-003',
-      name: 'Petty Cash',
-      bankName: 'Cash',
-      accountNumber: 'PC-001',
-      ifsc: '—',
-      branch: 'Office',
-      balance: 60000,
-      status: 'active',
-      type: 'Cash',
-      createdAt: '2025-04-01'
-    }, {
-      id: 'ACC-004',
-      name: 'Payment Clearing',
-      bankName: 'Clearing Account',
-      accountNumber: 'CLR-001',
-      ifsc: '—',
-      branch: '—',
-      balance: 104822,
-      status: 'active',
-      type: 'Clearing',
-      createdAt: '2025-04-01'
-    }];
-
-    var transactions = [{
-      id: 'TXN-001',
-      date: '2026-01-05',
-      accountId: 'ACC-001',
-      type: 'deposit',
-      amount: 250000,
-      description: 'Client payment - XYZ Retail Store',
-      reference: 'INV/25-26/001',
-      status: 'reconciled',
-      createdAt: '2026-01-05'
-    }, {
-      id: 'TXN-002',
-      date: '2026-01-10',
-      accountId: 'ACC-001',
-      type: 'withdrawal',
-      amount: 85000,
-      description: 'Office rent payment',
-      reference: 'EXP-001',
-      status: 'reconciled',
-      createdAt: '2026-01-10'
-    }, {
-      id: 'TXN-003',
-      date: '2026-01-15',
-      accountId: 'ACC-002',
-      type: 'deposit',
-      amount: 150000,
-      description: 'Client payment - ABC Enterprises',
-      reference: 'INV/25-26/002',
-      status: 'pending',
-      createdAt: '2026-01-15'
-    }, {
-      id: 'TXN-004',
-      date: '2026-01-20',
-      accountId: 'ACC-001',
-      type: 'withdrawal',
-      amount: 72000,
-      description: 'Staff salaries',
-      reference: 'EXP-002',
-      status: 'reconciled',
-      createdAt: '2026-01-20'
-    }, {
-      id: 'TXN-005',
-      date: '2026-01-25',
-      accountId: 'ACC-002',
-      type: 'transfer',
-      amount: 50000,
-      description: 'Transfer to HDFC Current',
-      reference: 'TRF-001',
-      status: 'pending',
-      createdAt: '2026-01-25'
-    }, {
-      id: 'TXN-006',
-      date: '2026-02-01',
-      accountId: 'ACC-003',
-      type: 'withdrawal',
-      amount: 15000,
-      description: 'Office supplies',
-      reference: 'EXP-005',
-      status: 'reconciled',
-      createdAt: '2026-02-01'
-    }, {
-      id: 'TXN-007',
-      date: '2026-02-05',
-      accountId: 'ACC-001',
-      type: 'deposit',
-      amount: 31200,
-      description: 'Vendor refund - Global Imports',
-      reference: 'REF-001',
-      status: 'pending',
-      createdAt: '2026-02-05'
-    }, {
-      id: 'TXN-008',
-      date: '2026-02-08',
-      accountId: 'ACC-004',
-      type: 'deposit',
-      amount: 104822,
-      description: 'Payment clearing balance',
-      reference: 'CLR-001',
-      status: 'reconciled',
-      createdAt: '2026-02-08'
-    }];
-
-    var nextAccNo = 5;
-    var nextTxnNo = 9;
-
-    // =============================================================
-    // FUNCTIONS
-    // =============================================================
-
-    function getAccountName(id) {
-      var a = bankAccounts.find(function(x) { return x.id === id; });
-      return a ? a.name : id;
-    }
-
-    function getAccountBalance(id) {
-      var a = bankAccounts.find(function(x) { return x.id === id; });
-      return a ? a.balance : 0;
-    }
-
-    function renderStats() {
-      var totalBalance = bankAccounts.reduce(function(sum, a) { return sum + a.balance; }, 0);
-      var deposits = transactions.filter(function(t) { return t.type === 'deposit'; }).reduce(function(sum, t) { return sum + t.amount; }, 0);
-      var withdrawals = transactions.filter(function(t) { return t.type === 'withdrawal' || t.type === 'transfer'; }).reduce(function(sum, t) { return sum + t.amount; }, 0);
-
-      document.getElementById('totalBalance').textContent = money(totalBalance);
-      document.getElementById('totalAccounts').textContent = bankAccounts.length;
-      document.getElementById('totalTransactions').textContent = transactions.length;
-      document.getElementById('totalDeposits').textContent = money(deposits);
-      document.getElementById('totalWithdrawals').textContent = money(withdrawals);
-    }
-
-    // =============================================================
-    // RENDER ACCOUNTS
-    // =============================================================
-
-    function renderAccounts() {
-      var cardsHtml = bankAccounts.map(function(a) {
-        return `
-          <div class="bank-account-card">
-            <div class="flex items-start justify-between">
-              <div>
-                <div class="bank-name">${a.name}</div>
-                <div class="bank-details">${a.bankName} · ${a.accountNumber}</div>
-                <div class="bank-details">IFSC: ${a.ifsc} · ${a.branch}</div>
-              </div>
-              <div class="text-right">
-                <div class="bank-balance">${money(a.balance)}</div>
-                <div class="bank-details">${statusBadge(a.status)}</div>
-              </div>
-            </div>
-            <div class="flex gap-1 mt-2">
-              <button onclick="editAccount('${a.id}')" class="btn-icon-action" title="Edit">${iconEdit()}</button>
-              <button onclick="deleteAccount('${a.id}')" class="btn-icon-action danger" title="Delete">${iconTrash()}</button>
-            </div>
-          </div>`;
-      }).join('');
-
-      if (bankAccounts.length === 0) {
-        cardsHtml = `
-          <div class="text-center py-8 text-gray-400 text-sm">
-            <div class="flex justify-center mb-2 empty-icon-svg">${iconBank()}</div>
-            No bank accounts found. Click "Add Account" to create one.
-          </div>`;
-      }
-
-      document.getElementById('accountsPanel').innerHTML = `
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">${cardsHtml}</div>
-      `;
-
-      renderStats();
-    }
-
-    // =============================================================
-    // RENDER TRANSACTIONS
-    // =============================================================
-
-    function renderTransactions() {
-      var rowsHtml = transactions.map(function(t) {
-        var sign = t.type === 'deposit' ? '+' : '-';
-        var color = t.type === 'deposit' ? 'text-green-600' : 'text-red-600';
-        return `
-          <tr class="border-b border-gray-100 table-row-hover">
-            <td class="px-3 py-2.5">
-              <div class="font-semibold text-gray-800 text-sm">${t.id}</div>
-              <div class="text-[10px] text-gray-400">${t.date}</div>
-            </td>
-            <td class="px-3 py-2.5">${transactionTypeBadge(t.type)}</td>
-            <td class="px-3 py-2.5 text-sm text-gray-700">${getAccountName(t.accountId)}</td>
-            <td class="px-3 py-2.5 text-sm text-gray-600">${t.description}</td>
-            <td class="px-3 py-2.5 font-mono font-semibold ${color}">${sign}${money(t.amount)}</td>
-            <td class="px-3 py-2.5 text-xs text-gray-500">${t.reference || '—'}</td>
-            <td class="px-3 py-2.5">${statusBadge(t.status)}</td>
-            <td class="px-3 py-2.5">${rowActionsHtml(
-              "editTransaction('"+t.id+"')",
-              "deleteTransaction('"+t.id+"')",
-              "viewTransaction('"+t.id+"')"
-            )}</td>
-          </tr>`;
-      }).join('');
-
-      if (transactions.length === 0) {
-        rowsHtml = `
-          <tr>
-            <td colspan="8" class="text-center py-10 text-gray-400 text-sm">
-              <div class="flex justify-center mb-2 empty-icon-svg">${iconBank()}</div>
-              No transactions found.
-            </td>
-          </tr>`;
-      }
-
-      var panelHtml = panelWrap(
-        'All Transactions <span class="text-[10px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + transactions.length + '</span>',
-        tableHtml(['Transaction', 'Type', 'Account', 'Description', 'Amount', 'Reference', 'Status', 'Actions'], rowsHtml),
-        '<div class="flex items-center gap-2"><span class="text-[10px] text-gray-400">Show:</span><select id="pageSizeSelect" class="text-[10px] border border-gray-200 rounded-lg px-2 py-1 bg-white outline-none"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select></div>'
-      );
-
-      document.getElementById('transactionsPanel').innerHTML = panelHtml;
-    }
-
-    // =============================================================
-    // RENDER RECONCILIATION
-    // =============================================================
-
-    function renderReconciliation() {
-      var reconItems = transactions.map(function(t) {
-        var isMatched = t.status === 'reconciled';
-        return `
-          <div class="recon-item ${isMatched ? 'matched' : 'unmatched'}">
-            <div>
-              <span class="font-semibold text-sm">${t.id}</span>
-              <span class="text-gray-500 text-xs ml-2">${t.date}</span>
-              <span class="text-gray-600 text-sm ml-2">${t.description}</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="font-mono font-semibold ${t.type === 'deposit' ? 'text-green-600' : 'text-red-600'}">${t.type === 'deposit' ? '+' : '-'}${money(t.amount)}</span>
-              ${isMatched ? '<span class="text-green-600 text-xs font-semibold">✓ Matched</span>' : '<button onclick="reconcileTransaction(\''+t.id+'\')" class="text-xs text-primary font-semibold hover:underline">Reconcile</button>'}
-            </div>
-          </div>`;
-      }).join('');
-
-      if (transactions.length === 0) {
-        reconItems = `
-          <div class="text-center py-8 text-gray-400 text-sm">
-            <div class="flex justify-center mb-2 empty-icon-svg">${iconBank()}</div>
-            No transactions to reconcile.
-          </div>`;
-      }
-
-      var totalReconciled = transactions.filter(function(t) { return t.status === 'reconciled'; }).length;
-      var total = transactions.length;
-
-      document.getElementById('reconciliationPanel').innerHTML = `
-        <div class="flex items-center justify-between mb-3">
-          <div>
-            <span class="text-sm font-semibold">Reconciliation Status</span>
-            <span class="text-xs text-gray-500 ml-2">${totalReconciled}/${total} reconciled</span>
-          </div>
-          <button onclick="reconcileAll()" class="text-xs font-semibold text-primary hover:underline">Reconcile All</button>
-        </div>
-        <div class="space-y-2">${reconItems}</div>
-        <div class="mt-3 text-xs text-gray-400">
-          💡 Click "Reconcile" on individual transactions or "Reconcile All" to mark all as reconciled.
-        </div>
-      `;
-    }
-
-    // =============================================================
-    // ACCOUNT FUNCTIONS
-    // =============================================================
-
-    function openAddAccount() { openAccountModal(null); }
-
-    function editAccount(id) {
-      var a = bankAccounts.find(function(x) { return x.id === id; });
-      if (a) openAccountModal(a);
-    }
-
-    function openAccountModal(existing) {
-      var e = existing || {
-        name: '',
-        bankName: '',
-        accountNumber: '',
-        ifsc: '',
-        branch: '',
-        balance: '',
-        type: 'Current',
-        status: 'active'
-      };
-      var isEdit = !!existing;
-
-      var modalContent = `
-        ${modalHeader(isEdit ? 'Edit Account' : 'Add Bank Account', isEdit ? e.id : 'Create a new bank account')}
-        <div class="px-5 py-4">
-          <div class="grid grid-cols-2 gap-3">
-            ${fld('Account Name *', '<input type="text" class="form-input" id="f_name" value="' + e.name + '" placeholder="e.g. HDFC Bank — Current">')}
-            ${fld('Bank Name *', '<input type="text" class="form-input" id="f_bank" value="' + e.bankName + '" placeholder="Bank name">')}
-            ${fld('Account Number *', '<input type="text" class="form-input" id="f_account" value="' + e.accountNumber + '" placeholder="Account number">')}
-            ${fld('IFSC Code', '<input type="text" class="form-input" id="f_ifsc" value="' + e.ifsc + '" placeholder="IFSC code">')}
-            ${fld('Branch', '<input type="text" class="form-input" id="f_branch" value="' + e.branch + '" placeholder="Branch name">')}
-            ${fld('Opening Balance (₹)', '<input type="number" class="form-input" id="f_balance" value="' + (e.balance || '0') + '" placeholder="0.00" step="0.01">')}
-            ${fld('Account Type', '<select class="form-input" id="f_type"><option ' + (e.type === 'Current' ? 'selected' : '') + '>Current</option><option ' + (e.type === 'Savings' ? 'selected' : '') + '>Savings</option><option ' + (e.type === 'Cash' ? 'selected' : '') + '>Cash</option><option ' + (e.type === 'Clearing' ? 'selected' : '') + '>Clearing</option></select>')}
-            ${fld('Status', '<select class="form-input" id="f_status"><option ' + (e.status === 'active' ? 'selected' : '') + ' value="active">Active</option><option ' + (e.status === 'inactive' ? 'selected' : '') + ' value="inactive">Inactive</option></select>')}
-          </div>
-        </div>
-        ${modalFooter(isEdit ? 'Update Account' : 'Save Account', 'onclick="saveAccount(\'' + (isEdit ? e.id : '') + '\')"')}
-      `;
-
-      openModal(modalContent, { width: 'max-w-lg' });
-    }
-
-    function saveAccount(existingId) {
-      var name = document.getElementById('f_name').value.trim();
-      var bankName = document.getElementById('f_bank').value.trim();
-      var accountNumber = document.getElementById('f_account').value.trim();
-      var ifsc = document.getElementById('f_ifsc').value.trim();
-      var branch = document.getElementById('f_branch').value.trim();
-      var balance = parseFloat(document.getElementById('f_balance').value) || 0;
-      var type = document.getElementById('f_type').value;
-      var status = document.getElementById('f_status').value;
-
-      if (!name || !bankName || !accountNumber) {
-        showToast('Please fill all required fields (Name, Bank Name, Account Number)', 'error');
-        return;
-      }
-
-      if (existingId) {
-        var a = bankAccounts.find(function(x) { return x.id === existingId; });
-        if (a) {
-          a.name = name;
-          a.bankName = bankName;
-          a.accountNumber = accountNumber;
-          a.ifsc = ifsc;
-          a.branch = branch;
-          a.balance = balance;
-          a.type = type;
-          a.status = status;
-          showToast('Account updated successfully', 'success');
-        }
-      } else {
-        var newAccount = {
-          id: 'ACC-' + String(nextAccNo++).padStart(3, '0'),
-          name: name,
-          bankName: bankName,
-          accountNumber: accountNumber,
-          ifsc: ifsc || '—',
-          branch: branch || '—',
-          balance: balance,
-          status: status,
-          type: type,
-          createdAt: new Date().toISOString().split('T')[0]
-        };
-        bankAccounts.unshift(newAccount);
-        showToast('Account created successfully', 'success');
-      }
-
-      closeModal();
-      renderAccounts();
-    }
-
-    function deleteAccount(id) {
-      if (confirm('Are you sure you want to delete this account?')) {
-        bankAccounts = bankAccounts.filter(function(x) { return x.id !== id; });
-        renderAccounts();
-        showToast('Account deleted', 'warning');
-      }
-    }
-
-    // =============================================================
-    // TRANSACTION FUNCTIONS
-    // =============================================================
-
-    function openAddTransaction() { openTransactionModal(null); }
-
-    function editTransaction(id) {
-      var t = transactions.find(function(x) { return x.id === id; });
-      if (t) openTransactionModal(t);
-    }
-
-    function openTransactionModal(existing) {
-      var e = existing || {
-        date: new Date().toISOString().split('T')[0],
-        accountId: bankAccounts[0] ? bankAccounts[0].id : '',
-        type: 'deposit',
-        amount: '',
-        description: '',
-        reference: '',
-        status: 'pending'
-      };
-      var isEdit = !!existing;
-
-      var accountOptions = bankAccounts.map(function(a) {
-        return '<option ' + (a.id === e.accountId ? 'selected' : '') + ' value="' + a.id + '">' + a.name + ' (' + money(a.balance) + ')</option>';
-      }).join('');
-
-      var modalContent = `
-        ${modalHeader(isEdit ? 'Edit Transaction' : 'New Transaction', isEdit ? e.id : 'Record a new bank transaction')}
-        <div class="px-5 py-4">
-          <div class="grid grid-cols-2 gap-3">
-            ${fld('Date *', '<input type="date" class="form-input" id="tx_date" value="' + e.date + '">')}
-            ${fld('Account *', '<select class="form-input" id="tx_account">' + accountOptions + '</select>')}
-            ${fld('Type *', '<select class="form-input" id="tx_type"><option ' + (e.type === 'deposit' ? 'selected' : '') + ' value="deposit">Deposit</option><option ' + (e.type === 'withdrawal' ? 'selected' : '') + ' value="withdrawal">Withdrawal</option><option ' + (e.type === 'transfer' ? 'selected' : '') + ' value="transfer">Transfer</option></select>')}
-            ${fld('Amount (₹) *', '<input type="number" class="form-input" id="tx_amount" value="' + (e.amount || '') + '" placeholder="0.00" step="0.01">')}
-          </div>
-          ${fld('Description *', '<input type="text" class="form-input" id="tx_description" value="' + (e.description || '') + '" placeholder="Transaction description">')}
-          ${fld('Reference', '<input type="text" class="form-input" id="tx_reference" value="' + (e.reference || '') + '" placeholder="Invoice/Bill/Cheque number">')}
-          ${fld('Status', '<select class="form-input" id="tx_status"><option ' + (e.status === 'pending' ? 'selected' : '') + ' value="pending">Pending</option><option ' + (e.status === 'reconciled' ? 'selected' : '') + ' value="reconciled">Reconciled</option></select>')}
-        </div>
-        ${modalFooter(isEdit ? 'Update Transaction' : 'Save Transaction', 'onclick="saveTransaction(\'' + (isEdit ? e.id : '') + '\')"')}
-      `;
-
-      openModal(modalContent, { width: 'max-w-lg' });
-    }
-
-    function saveTransaction(existingId) {
-      var date = document.getElementById('tx_date').value;
-      var accountId = document.getElementById('tx_account').value;
-      var type = document.getElementById('tx_type').value;
-      var amount = parseFloat(document.getElementById('tx_amount').value) || 0;
-      var description = document.getElementById('tx_description').value.trim();
-      var reference = document.getElementById('tx_reference').value.trim() || '';
-      var status = document.getElementById('tx_status').value;
-
-      if (!date || !accountId || amount <= 0 || !description) {
-        showToast('Please fill all required fields (Date, Account, Amount, Description)', 'error');
-        return;
-      }
-
-      if (existingId) {
-        var t = transactions.find(function(x) { return x.id === existingId; });
-        if (t) {
-          // Revert old balance
-          var oldAccount = bankAccounts.find(function(a) { return a.id === t.accountId; });
-          if (oldAccount) {
-            if (t.type === 'deposit') oldAccount.balance -= t.amount;
-            else if (t.type === 'withdrawal' || t.type === 'transfer') oldAccount.balance += t.amount;
-          }
-
-          t.date = date;
-          t.accountId = accountId;
-          t.type = type;
-          t.amount = amount;
-          t.description = description;
-          t.reference = reference;
-          t.status = status;
-
-          // Apply new balance
-          var newAccount = bankAccounts.find(function(a) { return a.id === accountId; });
-          if (newAccount) {
-            if (type === 'deposit') newAccount.balance += amount;
-            else if (type === 'withdrawal' || type === 'transfer') newAccount.balance -= amount;
-          }
-          showToast('Transaction updated successfully', 'success');
-        }
-      } else {
-        var newTransaction = {
-          id: 'TXN-' + String(nextTxnNo++).padStart(3, '0'),
-          date: date,
-          accountId: accountId,
-          type: type,
-          amount: amount,
-          description: description,
-          reference: reference,
-          status: status,
-          createdAt: date
-        };
-        transactions.unshift(newTransaction);
-
-        // Update account balance
-        var account = bankAccounts.find(function(a) { return a.id === accountId; });
-        if (account) {
-          if (type === 'deposit') account.balance += amount;
-          else if (type === 'withdrawal' || type === 'transfer') account.balance -= amount;
-        }
-        showToast('Transaction created successfully', 'success');
-      }
-
-      closeModal();
-      renderAccounts();
-      renderTransactions();
-      renderReconciliation();
-    }
-
-    function deleteTransaction(id) {
-      if (confirm('Are you sure you want to delete this transaction?')) {
-        var t = transactions.find(function(x) { return x.id === id; });
-        if (t) {
-          // Revert balance
-          var account = bankAccounts.find(function(a) { return a.id === t.accountId; });
-          if (account) {
-            if (t.type === 'deposit') account.balance -= t.amount;
-            else if (t.type === 'withdrawal' || t.type === 'transfer') account.balance += t.amount;
-          }
-          transactions = transactions.filter(function(x) { return x.id !== id; });
-          renderAccounts();
-          renderTransactions();
-          renderReconciliation();
-          showToast('Transaction deleted', 'warning');
-        }
-      }
-    }
-
-    function viewTransaction(id) {
-      var t = transactions.find(function(x) { return x.id === id; });
-      if (!t) return;
-
-      var modalContent = `
-        ${modalHeader('Transaction Details', t.id)}
-        <div class="px-5 py-4">
-          <div class="grid grid-cols-2 gap-3 text-sm">
-            <div><span class="text-gray-500">Date</span><br><span class="font-semibold">${t.date}</span></div>
-            <div><span class="text-gray-500">Type</span><br>${transactionTypeBadge(t.type)}</div>
-            <div><span class="text-gray-500">Account</span><br><span class="font-semibold">${getAccountName(t.accountId)}</span></div>
-            <div><span class="text-gray-500">Amount</span><br><span class="font-semibold ${t.type === 'deposit' ? 'text-green-600' : 'text-red-600'}">${t.type === 'deposit' ? '+' : '-'}${money(t.amount)}</span></div>
-            <div><span class="text-gray-500">Description</span><br><span class="font-semibold">${t.description}</span></div>
-            <div><span class="text-gray-500">Reference</span><br><span class="font-semibold">${t.reference || '—'}</span></div>
-            <div><span class="text-gray-500">Status</span><br>${statusBadge(t.status)}</div>
-          </div>
-        </div>
-        ${modalFooter('Close', 'onclick="closeModal()"')}
-      `;
-
-      openModal(modalContent, { width: 'max-w-lg' });
-    }
-
-    // =============================================================
-    // RECONCILIATION FUNCTIONS
-    // =============================================================
-
-    function reconcileTransaction(id) {
-      var t = transactions.find(function(x) { return x.id === id; });
-      if (t) {
-        t.status = 'reconciled';
-        renderReconciliation();
-        renderTransactions();
-        showToast('Transaction ' + t.id + ' reconciled!', 'success');
-      }
-    }
-
-    function reconcileAll() {
-      var pending = transactions.filter(function(t) { return t.status !== 'reconciled'; });
-      if (pending.length === 0) {
-        showToast('All transactions are already reconciled!', 'info');
-        return;
-      }
-      pending.forEach(function(t) { t.status = 'reconciled'; });
-      renderReconciliation();
-      renderTransactions();
-      showToast(pending.length + ' transactions reconciled!', 'success');
-    }
-
-    // =============================================================
-    // SEARCH
-    // =============================================================
-
-    (function addSearchToTopbar() {
-      var searchContainer = document.querySelector('.app-main header');
-      if (searchContainer) {
-        var searchHtml = `
-          <div class="hidden sm:flex flex-1 max-w-[420px] relative ml-4">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">${iconSearch()}</span>
-            <input type="text" id="searchInput" placeholder="Search transactions by description, reference…"
-              onkeyup="filterBanking()"
-              class="w-full border border-gray-200 bg-gray-50 focus:bg-white rounded-lg pl-9 pr-3 py-1.5 text-xs outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition placeholder:text-gray-400">
-          </div>
-        `;
-        var headerContent = searchContainer.innerHTML;
-        var hamburgerIndex = headerContent.indexOf('lg:hidden');
-        if (hamburgerIndex !== -1) {
-          var firstDivEnd = headerContent.indexOf('</div>', hamburgerIndex) + 6;
-          var before = headerContent.substring(0, firstDivEnd);
-          var after = headerContent.substring(firstDivEnd);
-          searchContainer.innerHTML = before + searchHtml + after;
-        }
-      }
-    })();
-
-    function filterBanking() {
-      var q = document.getElementById('searchInput').value.toLowerCase();
-      var rows = document.querySelectorAll('#tbody-anchor tr');
-      rows.forEach(function(row) {
-        var text = row.textContent.toLowerCase();
-        row.style.display = text.indexOf(q) !== -1 ? '' : 'none';
-      });
-    }
-
-    // =============================================================
     // INIT
     // =============================================================
-
-    renderAccounts();
-    renderTransactions();
+    renderHeroBank();
     renderReconciliation();
+    renderTransactions();
+    renderRules();
+    renderReports();
+    renderStats();
 
-    console.log('💰 Banking Module Loaded Successfully');
-    console.log('📊 Total Accounts:', bankAccounts.length);
-    console.log('💳 Total Balance:', money(bankAccounts.reduce(function(sum, a) { return sum + a.balance; }, 0)));
-    console.log('📝 Total Transactions:', transactions.length);
+    console.log('🏦 Single-Account Banking & Reconciliation Module Loaded');
+    console.log('Transactions:', bankTransactions.length);
 
   </script>
 
