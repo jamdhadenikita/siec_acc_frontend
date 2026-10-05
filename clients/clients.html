@@ -115,6 +115,7 @@
     width: 36px;
     height: 36px;
     border-radius: 10px;
+    border: 1px solid #6da84c;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -219,7 +220,7 @@
     justify-content: center;
     color: #94a3b8;
     background: transparent;
-    border: none;
+    border: 1px solid #b0b8c9;
     cursor: pointer;
   }
   .btn-icon-action:hover {
@@ -503,18 +504,22 @@
         </div>`;
     }
 
-    function modalFooter(saveLabel, onSaveAttr, extraBtns) {
-      return `
-        <div class="flex items-center justify-between gap-2 px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl shrink-0">
-          <div>${extraBtns || ''}</div>
-          <div class="flex gap-2 ml-auto">
-            <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Cancel</button>
-            <button ${onSaveAttr} class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-primary hover:bg-primary-dark transition shadow-sm inline-flex items-center gap-1.5">
-              ${iconSave()} ${saveLabel}
-            </button>
-          </div>
-        </div>`;
-    }
+    function modalFooter(saveLabel, onSaveAttr, extraBtns, variant) {
+  variant = variant || 'primary';
+  var btnClass = variant === 'danger'
+    ? 'bg-red-600 hover:bg-red-700'
+    : 'bg-primary hover:bg-primary-dark';
+  return `
+    <div class="flex items-center justify-between gap-2 px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl shrink-0">
+      <div>${extraBtns || ''}</div>
+      <div class="flex gap-2 ml-auto">
+        <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 border border-gray-200 hover:bg-white transition">Cancel</button>
+        <button ${onSaveAttr} class="px-4 py-2 rounded-lg text-sm font-semibold text-white ${btnClass} transition shadow-sm inline-flex items-center gap-1.5">
+          ${iconSave()} ${saveLabel}
+        </button>
+      </div>
+    </div>`;
+}
 
     function fld(label, inputHtml, hint, extraClass) {
       return `
@@ -541,6 +546,76 @@
       var map = { green: 'badge-green', amber: 'badge-amber', red: 'badge-red', gray: 'badge-gray', blue: 'badge-blue', purple: 'badge-purple' };
       var dot = { green: 'badge-dot-green', amber: 'badge-dot-amber', red: 'badge-dot-red', gray: 'badge-dot-gray', blue: 'badge-dot-blue', purple: 'badge-dot-purple' };
       return '<span class="badge ' + map[color] + '"><span class="badge-dot ' + dot[color] + '"></span>' + text + '</span>';
+    }
+
+    // Client type badge: business / government / individual have fixed styles,
+    // anything else (custom "Other" text typed by the user) is shown as a gray badge.
+    var STANDARD_CLIENT_TYPES = ['business', 'individual', 'government'];
+
+    function typeBadgeHtml(t) {
+      var key = (t || '').toLowerCase();
+      if (key === 'business') return badge('Business', 'purple');
+      if (key === 'government') return badge('Government', 'blue');
+      if (key === 'individual') return badge('Individual', 'gray');
+      return badge(t ? escHtml(t) : 'Other', 'gray');
+    }
+
+    // ---------- small helpers ----------
+    function escHtml(v) {
+      return String(v == null ? '' : v)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    // ---------- Client types (dropdown values come from the data: GET /get-client-types) ----------
+    // Starts with the 3 standard types so the page still works if the list is unreachable.
+    var CLIENT_TYPES = STANDARD_CLIENT_TYPES.slice();
+    var OTHER_TYPE_VALUE = '__other__';   // value of the "Other" option in the form dropdown
+
+    function typeLabel(t) {
+      if (STANDARD_CLIENT_TYPES.indexOf(String(t).toLowerCase()) !== -1) {
+        return t.charAt(0).toUpperCase() + t.slice(1).toLowerCase();
+      }
+      return t;
+    }
+
+    function typeOptionsHtml(selected) {
+      var sel = (selected || '').toLowerCase();
+      return CLIENT_TYPES.map(function(t) {
+        return '<option value="' + escHtml(t) + '"' + (t.toLowerCase() === sel ? ' selected' : '') + '>' + escHtml(typeLabel(t)) + '</option>';
+      }).join('');
+    }
+
+    // ---------- Countries / States (static lists, no backend needed) ----------
+    var COUNTRIES = ['India', 'Indonesia', 'Nepal', 'New Zealand', 'North Korea', 'Russia','Singapore', 'South Africa'];
+
+    var INDIA_STATES = ['Maharashtra', 'Delhi', 'Karnataka', 'Tamil Nadu', 'Gujarat', 'Uttar Pradesh', 'Rajasthan', 'Kerala', 'Telangana', 'West Bengal', 'Andhra Pradesh', 'Bihar', 'Chhattisgarh', 'Goa', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Madhya Pradesh', 'Odisha', 'Punjab', 'Uttarakhand',
+      'Arunachal Pradesh', 'Assam', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Sikkim', 'Tripura',
+      'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Jammu and Kashmir', 'Ladakh', 'Lakshadweep', 'Puducherry'];
+
+    function countrySelectHtml(current) {
+      current = current || '';
+      var list = COUNTRIES.slice();
+      // a country saved earlier as free text that is not in the list must not be lost
+      if (current && list.indexOf(current) === -1) list.push(current);
+      return '<select id="f_country" class="form-input" onchange="onCountryChange()">' +
+        '<option value=""' + (current ? '' : ' selected') + '>Select Country</option>' +
+        list.map(function(c) {
+          return '<option value="' + escHtml(c) + '"' + (c === current ? ' selected' : '') + '>' + escHtml(c) + '</option>';
+        }).join('') + '</select>';
+    }
+
+    // India -> dropdown of states / UTs.  Any other country -> plain text input (state / province).
+    function stateFieldHtml(country, current, keepUnknown) {
+      current = current || '';
+      if (country === 'India') {
+        var list = INDIA_STATES.slice();
+        if (keepUnknown && current && list.indexOf(current) === -1) list.push(current);
+        return '<select id="f_state" class="form-input">' + list.map(function(st) {
+          return '<option value="' + escHtml(st) + '"' + (st === current ? ' selected' : '') + '>' + escHtml(st) + '</option>';
+        }).join('') + '</select>';
+      }
+      return '<input id="f_state" value="' + escHtml(current) + '" placeholder="State / Province" class="form-input">';
     }
 
     function rowActionsHtml(editFn, delFn, viewFn) {
@@ -575,229 +650,220 @@
         <div class="overflow-x-auto">
           <table class="w-full text-[13px]">
             <thead>
-              <tr class="bg-gray-50 border-b border-gray-200">${colHeaders}</tr>
+              <tr class="bg-gray-200 border border-[#6da84c]">${colHeaders}</tr>
             </thead>
             <tbody id="tbody-anchor">${rowsHtml}</tbody>
           </table>
         </div>`;
     }
 
-    function paginationHtml(totalItems, page, size) {
-      var totalPages = Math.max(1, Math.ceil(totalItems / size));
-      page = Math.min(Math.max(1, page), totalPages);
-      var start = totalItems === 0 ? 0 : (page - 1) * size + 1;
-      var end = Math.min(page * size, totalItems);
-
-      var maxButtons = 5;
-      var startPage = Math.max(1, page - Math.floor(maxButtons / 2));
-      var endPage = Math.min(totalPages, startPage + maxButtons - 1);
-      startPage = Math.max(1, endPage - maxButtons + 1);
-
-      var pageBtns = '';
-      for (var i = startPage; i <= endPage; i++) {
-        pageBtns += '<button onclick="goToPage(' + i + ')" class="btn-page' + (i === page ? ' !bg-primary !border-primary !text-white' : '') + '">' + i + '</button>';
-      }
+    // ---------- Pagination controls ----------
+    // Shows only the current page number, styled like the old highlighted button, + Previous/Next.
+    function paginationHtml(totalItems, page, size, totalPages, hasNext, hasPrevious) {
+      totalPages = totalPages || Math.max(1, Math.ceil(totalItems / size));
 
       return `
         <div class="flex items-center justify-between gap-3 flex-wrap px-5 py-3.5 border-t border-gray-100">
-          <div class="text-[12px] text-gray-500">Showing <b class="text-gray-700">${start}</b>–<b class="text-gray-700">${end}</b> of <b class="text-gray-700">${totalItems}</b> clients</div>
+          <select id="pageSizeSelect" onchange="changePageSize(this.value)" class="mini-select">
+            <option value="10">10 / page</option>
+            <option value="25">25 / page</option>
+            <option value="50">50 / page</option>
+            <option value="100">100 / page</option>
+          </select>
           <div class="flex items-center gap-1.5">
-            <button onclick="goToPage(${page - 1})" class="btn-page" ${page <= 1 ? 'disabled' : ''}>${iconChevronLeft()}</button>
-            ${pageBtns}
-            <button onclick="goToPage(${page + 1})" class="btn-page" ${page >= totalPages ? 'disabled' : ''}>${iconChevronRight()}</button>
+            <button onclick="goToPage(${page - 1})" class="btn-page" ${!hasPrevious ? 'disabled' : ''}>${iconChevronLeft()}</button>
+            <span class="btn-page !bg-primary !border-primary !text-white" style="cursor:default;">${page}</span>
+            <button onclick="goToPage(${page + 1})" class="btn-page" ${!hasNext ? 'disabled' : ''}>${iconChevronRight()}</button>
           </div>
         </div>`;
     }
 
     // =============================================================
-    // DATA
+    // DATA  (DUMMY DATA — in-memory, no backend needed)
     // =============================================================
 
     var customerColors = ['#6da84c', '#1985bf', '#d97706', '#7c3aed', '#dc2626', '#0891b2', '#4f46e5', '#e11d48', '#0d9488'];
 
-    var customers = [{
-      id: 'CUS-001',
-      name: 'XYZ Retail Store',
-      companyName: 'XYZ Retail Private Limited',
-      customerType: 'business',
-      gstin: '07BXYXZ1234F1ZP',
-      pan: 'BXYXZ1234F',
-      email: 'contact@xyzretail.com',
-      phone: '+91-9876543210',
-      billingAddress: 'A-12, Connaught Place',
-      shippingAddress: 'A-12, Connaught Place, New Delhi',
-      city: 'New Delhi',
-      state: 'Delhi',
-      stateCode: '07',
-      pincode: '110001',
-      paymentTerms: 'Net 15 days',
-      creditLimit: 100000,
-      gstRegistered: true,
-      status: 'active',
-      receivable: 82600,
-      createdAt: '2025-01-10',
-      color: customerColors[0]
-    }, {
-      id: 'CUS-002',
-      name: 'ABC Enterprises',
-      companyName: 'ABC Enterprises LLP',
-      customerType: 'business',
-      gstin: '27ABCXY1234E1ZP',
-      pan: 'ABCXY1234E',
-      email: 'info@abcenterprises.com',
-      phone: '+91-9876543211',
-      billingAddress: '45, Industrial Estate, Pune',
-      shippingAddress: '45, Industrial Estate, Pune',
-      city: 'Pune',
-      state: 'Maharashtra',
-      stateCode: '27',
-      pincode: '411001',
-      paymentTerms: 'Net 30 days',
-      creditLimit: 200000,
-      gstRegistered: true,
-      status: 'active',
-      receivable: 45000,
-      createdAt: '2025-02-15',
-      color: customerColors[1]
-    }, {
-      id: 'CUS-003',
-      name: 'Rahul Sharma',
-      companyName: '',
-      customerType: 'individual',
-      gstin: '',
-      pan: 'SHAR1234G',
-      email: 'rahul.sharma@gmail.com',
-      phone: '+91-9876543212',
-      billingAddress: '12, Green Park, Mumbai',
-      shippingAddress: '12, Green Park, Mumbai',
-      city: 'Mumbai',
-      state: 'Maharashtra',
-      stateCode: '27',
-      pincode: '400001',
-      paymentTerms: 'Advance Payment',
-      creditLimit: 0,
-      gstRegistered: false,
-      status: 'active',
-      receivable: 12500,
-      createdAt: '2025-03-01',
-      color: customerColors[2]
-    }, {
-      id: 'CUS-004',
-      name: 'Tech Solutions Inc.',
-      companyName: 'Tech Solutions Incorporated',
-      customerType: 'business',
-      gstin: '29TECH1234H1ZP',
-      pan: 'TECH1234H',
-      email: 'sales@techsolutions.com',
-      phone: '+91-9876543213',
-      billingAddress: '88, Electronics City, Bengaluru',
-      shippingAddress: '88, Electronics City, Bengaluru',
-      city: 'Bengaluru',
-      state: 'Karnataka',
-      stateCode: '29',
-      pincode: '560100',
-      paymentTerms: 'Net 45 days',
-      creditLimit: 300000,
-      gstRegistered: true,
-      status: 'inactive',
-      receivable: 0,
-      createdAt: '2025-04-05',
-      color: customerColors[3]
-    }, {
-      id: 'CUS-005',
-      name: 'Priya Patel',
-      companyName: '',
-      customerType: 'individual',
-      gstin: '',
-      pan: 'PATE1234I',
-      email: 'priya.patel@yahoo.com',
-      phone: '+91-9876543214',
-      billingAddress: '22, Lake View, Surat',
-      shippingAddress: '22, Lake View, Surat',
-      city: 'Surat',
-      state: 'Gujarat',
-      stateCode: '24',
-      pincode: '395001',
-      paymentTerms: 'Cash on Delivery',
-      creditLimit: 0,
-      gstRegistered: false,
-      status: 'active',
-      receivable: 3200,
-      createdAt: '2025-05-20',
-      color: customerColors[4]
-    }, {
-      id: 'CUS-006',
-      name: 'Government of India - PWD',
-      companyName: 'Public Works Department',
-      customerType: 'government',
-      gstin: '19GOV1234J1ZP',
-      pan: 'GOV1234J',
-      email: 'procurement@pwd.gov.in',
-      phone: '+91-9876543215',
-      billingAddress: '56, PWD Office, Kochi',
-      shippingAddress: '56, PWD Office, Kochi',
-      city: 'Kochi',
-      state: 'Kerala',
-      stateCode: '32',
-      pincode: '682001',
-      paymentTerms: 'Net 60 days',
-      creditLimit: 500000,
-      gstRegistered: true,
-      status: 'active',
-      receivable: 185000,
-      createdAt: '2025-06-12',
-      color: customerColors[5]
-    }, {
-      id: 'CUS-007',
-      name: 'Global Exports Ltd.',
-      companyName: 'Global Exports Limited',
-      customerType: 'business',
-      gstin: '07GLOB1234K1ZP',
-      pan: 'GLOB1234K',
-      email: 'info@globalexports.com',
-      phone: '+91-9876543216',
-      billingAddress: '101, Trade Tower, Delhi',
-      shippingAddress: '101, Trade Tower, Delhi',
-      city: 'New Delhi',
-      state: 'Delhi',
-      stateCode: '07',
-      pincode: '110002',
-      paymentTerms: 'Net 15 days',
-      creditLimit: 150000,
-      gstRegistered: true,
-      status: 'active',
-      receivable: 95000,
-      createdAt: '2025-07-01',
-      color: customerColors[6]
-    }, {
-      id: 'CUS-008',
-      name: 'Sunil Kumar',
-      companyName: '',
-      customerType: 'individual',
-      gstin: '',
-      pan: 'KUMR1234L',
-      email: 'sunil.kumar@rediffmail.com',
-      phone: '+91-9876543217',
-      billingAddress: '34, Raj Nagar, Jaipur',
-      shippingAddress: '34, Raj Nagar, Jaipur',
-      city: 'Jaipur',
-      state: 'Rajasthan',
-      stateCode: '08',
-      pincode: '302001',
-      paymentTerms: 'Net 7 days',
-      creditLimit: 0,
-      gstRegistered: false,
-      status: 'inactive',
-      receivable: 0,
-      createdAt: '2025-08-15',
-      color: customerColors[7]
-    }];
+    // ---- Dummy clients (replace later with real backend data) ----
+    var DUMMY_CLIENTS = [
+      { id: 'CL-0001', name: 'Rahul Deshmukh', companyName: 'Deshmukh Traders Pvt Ltd', customerType: 'business', gstin: '27AABCD1234E1Z5', pan: 'AABCD1234E', email: 'rahul@deshmukhtraders.in', phone: '+91-9822012345', billingAddress: '12, Laxmi Road, Shaniwar Peth', shippingAddress: '12, Laxmi Road, Shaniwar Peth', city: 'Pune', state: 'Maharashtra', country: 'India', pincode: '411030', paymentTerms: 'Net 30 days', creditLimit: 500000, receivable: 125000, gstRegistered: true, status: 'active', createdAt: '2026-01-14', color: customerColors[0] },
+      { id: 'CL-0002', name: 'Sneha Kulkarni', companyName: 'Kulkarni Textiles', customerType: 'business', gstin: '27BBKPK5678F1Z2', pan: 'BBKPK5678F', email: 'sneha@kulkarnitextiles.com', phone: '+91-9890098765', billingAddress: '45, MG Road, Camp', shippingAddress: '88, Textile Market, Bhawani Peth', city: 'Pune', state: 'Maharashtra', country: 'India', pincode: '411001', paymentTerms: 'Net 15 days', creditLimit: 300000, receivable: 48500, gstRegistered: true, status: 'active', createdAt: '2026-02-03', color: customerColors[1] },
+      { id: 'CL-0003', name: 'Amit Shah', companyName: 'Shah & Sons Exports', customerType: 'business', gstin: '24AAFCS9876G1Z8', pan: 'AAFCS9876G', email: 'amit@shahexports.in', phone: '+91-9979001122', billingAddress: '7, Ashram Road', shippingAddress: '7, Ashram Road', city: 'Ahmedabad', state: 'Gujarat', country: 'India', pincode: '380009', paymentTerms: 'Net 45 days', creditLimit: 1000000, receivable: 342000, gstRegistered: true, status: 'active', createdAt: '2026-02-21', color: customerColors[2] },
+      { id: 'CL-0004', name: 'Priya Nair', companyName: '', customerType: 'individual', gstin: '', pan: 'CPRPN4321K', email: 'priya.nair@gmail.com', phone: '+91-9447123456', billingAddress: '23, Marine Drive', shippingAddress: '23, Marine Drive', city: 'Kochi', state: 'Kerala', country: 'India', pincode: '682011', paymentTerms: 'Advance Payment', creditLimit: 0, receivable: 0, gstRegistered: false, status: 'active', createdAt: '2026-03-09', color: customerColors[3] },
+      { id: 'CL-0005', name: 'Municipal Corporation Nashik', companyName: 'Nashik Municipal Corporation', customerType: 'government', gstin: '27AAALN1111M1ZP', pan: 'AAALN1111M', email: 'accounts@nmc.gov.in', phone: '+91-2532500100', billingAddress: 'Rajiv Gandhi Bhavan, Sharanpur Road', shippingAddress: 'Rajiv Gandhi Bhavan, Sharanpur Road', city: 'Nashik', state: 'Maharashtra', country: 'India', pincode: '422002', paymentTerms: 'Net 60 days', creditLimit: 2000000, receivable: 780000, gstRegistered: true, status: 'active', createdAt: '2026-03-27', color: customerColors[4] },
+      { id: 'CL-0006', name: 'Vikram Singh', companyName: 'Singh Auto Components', customerType: 'business', gstin: '06AAHFS2468J1Z3', pan: 'AAHFS2468J', email: 'vikram@singhauto.co.in', phone: '+91-9812345678', billingAddress: 'Plot 18, Sector 37, Industrial Area', shippingAddress: 'Plot 18, Sector 37, Industrial Area', city: 'Gurugram', state: 'Haryana', country: 'India', pincode: '122001', paymentTerms: 'Net 30 days', creditLimit: 750000, receivable: 215000, gstRegistered: true, status: 'inactive', createdAt: '2026-04-11', color: customerColors[5] },
+      { id: 'CL-0007', name: 'Anjali Mehta', companyName: '', customerType: 'individual', gstin: '', pan: 'DKMPA7788L', email: 'anjali.mehta@outlook.com', phone: '+91-9820011223', billingAddress: '302, Sea View Apartments, Bandra West', shippingAddress: '302, Sea View Apartments, Bandra West', city: 'Mumbai', state: 'Maharashtra', country: 'India', pincode: '400050', paymentTerms: 'Cash on Delivery', creditLimit: 0, receivable: 0, gstRegistered: false, status: 'active', createdAt: '2026-04-30', color: customerColors[6] },
+      { id: 'CL-0008', name: 'Karthik Raman', companyName: 'Raman Software Solutions', customerType: 'business', gstin: '33AAGCR5555P1Z9', pan: 'AAGCR5555P', email: 'karthik@ramansoft.io', phone: '+91-9444055667', billingAddress: '56, Anna Salai', shippingAddress: '56, Anna Salai', city: 'Chennai', state: 'Tamil Nadu', country: 'India', pincode: '600002', paymentTerms: 'Net 15 days', creditLimit: 400000, receivable: 96000, gstRegistered: true, status: 'active', createdAt: '2026-05-18', color: customerColors[7] },
+      { id: 'CL-0009', name: 'Shree Education Trust', companyName: 'Shree Education Trust', customerType: 'Trust', gstin: '', pan: 'AAATS3333T', email: 'office@shreetrust.org', phone: '+91-9422099887', billingAddress: 'Shree Vidyalaya Campus, Kothrud', shippingAddress: 'Shree Vidyalaya Campus, Kothrud', city: 'Pune', state: 'Maharashtra', country: 'India', pincode: '411038', paymentTerms: 'Net 30 days', creditLimit: 150000, receivable: 22000, gstRegistered: false, status: 'active', createdAt: '2026-06-02', color: customerColors[8] },
+      { id: 'CL-0010', name: 'Gopal Verma', companyName: 'Verma Hardware Mart', customerType: 'business', gstin: '09AAKFV7777Q1Z1', pan: 'AAKFV7777Q', email: 'gopal@vermahardware.in', phone: '+91-9415223344', billingAddress: '14, Hazratganj Market', shippingAddress: '14, Hazratganj Market', city: 'Lucknow', state: 'Uttar Pradesh', country: 'India', pincode: '226001', paymentTerms: 'Net 7 days', creditLimit: 200000, receivable: 61500, gstRegistered: true, status: 'inactive', createdAt: '2026-06-25', color: customerColors[0] },
+      { id: 'CL-0011', name: 'Lim Wei Jie', companyName: 'Lion City Imports', customerType: 'business', gstin: '', pan: '', email: 'weijie@lioncityimports.sg', phone: '+65-91234567', billingAddress: '10 Anson Road, #20-05 International Plaza', shippingAddress: '10 Anson Road, #20-05 International Plaza', city: 'Singapore', state: 'Central Region', country: 'Singapore', pincode: '079903', paymentTerms: 'Advance Payment', creditLimit: 0, receivable: 0, gstRegistered: false, status: 'active', createdAt: '2026-07-08', color: customerColors[1] },
+      { id: 'CL-0012', name: 'Deepa Joshi', companyName: 'Joshi Catering Services', customerType: 'business', gstin: '27AAMFJ8888R1Z6', pan: 'AAMFJ8888R', email: 'deepa@joshicatering.in', phone: '+91-9763400011', billingAddress: '9, Tilak Road, Sadashiv Peth', shippingAddress: '9, Tilak Road, Sadashiv Peth', city: 'Pune', state: 'Maharashtra', country: 'India', pincode: '411030', paymentTerms: 'Net 15 days', creditLimit: 120000, receivable: 18750, gstRegistered: true, status: 'active', createdAt: '2026-08-19', color: customerColors[2] },
+      { id: 'CL-0013', name: 'Zila Parishad Satara', companyName: 'Zila Parishad Satara', customerType: 'government', gstin: '27AAAZP2222S1Z4', pan: 'AAAZP2222S', email: 'finance@zpsatara.gov.in', phone: '+91-2162234500', billingAddress: 'Collector Office Compound, Powai Naka', shippingAddress: 'Collector Office Compound, Powai Naka', city: 'Satara', state: 'Maharashtra', country: 'India', pincode: '415001', paymentTerms: 'Net 60 days', creditLimit: 1500000, receivable: 450000, gstRegistered: true, status: 'active', createdAt: '2026-09-05', color: customerColors[3] },
+      { id: 'CL-0014', name: 'Ramesh Patil', companyName: '', customerType: 'individual', gstin: '', pan: 'BHRPP9090M', email: 'ramesh.patil@yahoo.in', phone: '+91-9921112233', billingAddress: '5, Shivaji Nagar', shippingAddress: '5, Shivaji Nagar', city: 'Kolhapur', state: 'Maharashtra', country: 'India', pincode: '416001', paymentTerms: 'Cash on Delivery', creditLimit: 0, receivable: 7500, gstRegistered: false, status: 'inactive', createdAt: '2026-09-22', color: customerColors[4] }
+    ];
 
-    var nextCustomerNo = 9;
+    var customers = [];    // current page's rows only
+    var META = null;       // stat cards
+    var PAGINATION = null; // { page, size, totalItems, totalPages, hasNext, hasPrevious }
 
-    // Pagination state
+    // ---------- Mock "backend": same URLs as before, but works on DUMMY_CLIENTS in memory ----------
+    // To go back to the real backend later, replace this api() with the fetch-based one.
+    function mockRequest(method, path, body) {
+      var parts = path.split('?');
+      var route = parts[0];
+      var qs = new URLSearchParams(parts[1] || '');
+
+      // GET /get-client-types
+      if (method === 'GET' && route === '/get-client-types') {
+        var types = STANDARD_CLIENT_TYPES.slice();
+        DUMMY_CLIENTS.forEach(function(c) {
+          if (c.customerType && types.map(function(t) { return t.toLowerCase(); }).indexOf(c.customerType.toLowerCase()) === -1) types.push(c.customerType);
+        });
+        return types;
+      }
+
+      // GET /get-all-clients?status=&gst=&type=&search=&page=&size=
+      if (method === 'GET' && route === '/get-all-clients') {
+        var status = qs.get('status') || 'all';
+        var gst = qs.get('gst') || 'all';
+        var type = (qs.get('type') || 'all').toLowerCase();
+        var search = (qs.get('search') || '').toLowerCase();
+        var page = parseInt(qs.get('page'), 10) || 1;
+        var size = parseInt(qs.get('size'), 10) || 10;
+
+        var filtered = DUMMY_CLIENTS.filter(function(c) {
+          if (status !== 'all' && c.status !== status) return false;
+          if (gst === 'registered' && !c.gstRegistered) return false;
+          if (gst === 'unregistered' && c.gstRegistered) return false;
+          if (type !== 'all' && (c.customerType || '').toLowerCase() !== type) return false;
+          if (search) {
+            var hay = [c.id, c.name, c.companyName, c.phone, c.email, c.gstin].join(' ').toLowerCase();
+            if (hay.indexOf(search) === -1) return false;
+          }
+          return true;
+        });
+
+        var totalItems = filtered.length;
+        var totalPages = Math.max(1, Math.ceil(totalItems / size));
+        var start = (page - 1) * size;
+
+        return {
+          customers: filtered.slice(start, start + size).map(function(c) { return Object.assign({}, c); }),
+          pagination: { page: page, size: size, totalItems: totalItems, totalPages: totalPages, hasNext: page < totalPages, hasPrevious: page > 1 },
+          meta: {
+            totalCustomers: DUMMY_CLIENTS.length,
+            activeCustomers: DUMMY_CLIENTS.filter(function(c) { return c.status === 'active'; }).length,
+            gstRegisteredCustomers: DUMMY_CLIENTS.filter(function(c) { return c.gstRegistered; }).length,
+            totalReceivable: DUMMY_CLIENTS.reduce(function(s, c) { return s + (Number(c.receivable) || 0); }, 0)
+          }
+        };
+      }
+
+      // GET /get-client/{id}
+      if (method === 'GET' && route.indexOf('/get-client/') === 0) {
+        var id = decodeURIComponent(route.substring('/get-client/'.length));
+        var found = DUMMY_CLIENTS.find(function(c) { return c.id === id; });
+        if (!found) throw new Error('Client not found: ' + id);
+        return Object.assign({}, found);
+      }
+
+      // POST /create-client
+      if (method === 'POST' && route === '/create-client') {
+        if (!body || !body.name) throw new Error('Client name is required');
+        var maxNo = DUMMY_CLIENTS.reduce(function(m, c) { return Math.max(m, parseInt(String(c.id).replace(/\D/g, ''), 10) || 0); }, 0);
+        var created = Object.assign({}, body, {
+          id: 'CL-' + String(maxNo + 1).padStart(4, '0'),
+          createdAt: new Date().toISOString().slice(0, 10)
+        });
+        DUMMY_CLIENTS.unshift(created);
+        return Object.assign({}, created);
+      }
+
+      // PUT /update-client/{id}
+      if (method === 'PUT' && route.indexOf('/update-client/') === 0) {
+        var uid = decodeURIComponent(route.substring('/update-client/'.length));
+        var idx = DUMMY_CLIENTS.findIndex(function(c) { return c.id === uid; });
+        if (idx === -1) throw new Error('Client not found: ' + uid);
+        var old = DUMMY_CLIENTS[idx];
+        DUMMY_CLIENTS[idx] = Object.assign({}, old, body, { id: old.id, createdAt: old.createdAt, color: old.color, receivable: old.receivable });
+        return Object.assign({}, DUMMY_CLIENTS[idx]);
+      }
+
+      // DELETE /delete-client/{id}
+      if (method === 'DELETE' && route.indexOf('/delete-client/') === 0) {
+        var did = decodeURIComponent(route.substring('/delete-client/'.length));
+        var before = DUMMY_CLIENTS.length;
+        DUMMY_CLIENTS = DUMMY_CLIENTS.filter(function(c) { return c.id !== did; });
+        if (DUMMY_CLIENTS.length === before) throw new Error('Client not found: ' + did);
+        return null;
+      }
+
+      throw new Error('Unknown route: ' + method + ' ' + path);
+    }
+
+    // Same signature as the old fetch wrapper: returns a Promise of data, rejects with Error(message)
+    function api(method, path, body) {
+      return new Promise(function(resolve, reject) {
+        try {
+          var data = mockRequest(method, path, body);
+          console.log('[MOCK API]', method, path, data);
+          resolve(data);
+        } catch (err) {
+          reject(err);
+        }
+      });
+    }
+
+    // Null-safe defaults; the page code expects strings/numbers
+    function normalizeCustomer(c) {
+      ['name', 'companyName', 'customerType', 'gstin', 'pan', 'email', 'phone', 'billingAddress',
+       'shippingAddress', 'city', 'state', 'country', 'pincode', 'paymentTerms', 'status', 'createdAt']
+        .forEach(function(k) { if (c[k] == null) c[k] = ''; });
+      c.creditLimit = Number(c.creditLimit) || 0;
+      c.receivable = Number(c.receivable) || 0;
+      c.gstRegistered = !!c.gstRegistered;
+      if (!c.color) c.color = customerColors[0];
+      return c;
+    }
+
+    // Pagination + filter state
     var currentPage = 1;
-    var pageSize = 25;
+    var pageSize = 10;
+    var activeFilters = { status: 'all', gst: 'all', type: 'all' };
+    var searchDebounceTimer = null;
+
+    function buildQuery() {
+      var searchInput = document.getElementById('searchInput');
+      var q = searchInput ? searchInput.value.trim() : '';
+      var params = new URLSearchParams();
+      params.set('status', activeFilters.status);
+      params.set('gst', activeFilters.gst);
+      params.set('type', activeFilters.type);
+      if (q) params.set('search', q);
+      params.set('page', currentPage);
+      params.set('size', pageSize);
+      return params.toString();
+    }
+
+    // Client types (standard + custom ones found in the data) for the form and the "All Types" filter
+    function loadClientTypes() {
+      return api('GET', '/get-client-types')
+        .then(function(list) {
+          if (Array.isArray(list) && list.length) CLIENT_TYPES = list;
+        })
+        .catch(function(err) { console.warn('Could not load client types, using defaults:', err.message); });
+    }
+
+    function loadCustomers() {
+      return api('GET', '/get-all-clients?' + buildQuery())
+        .then(function(data) {
+          customers = ((data && data.customers) || []).map(normalizeCustomer);
+          PAGINATION = (data && data.pagination) || null;
+          META = (data && data.meta) || null;
+        })
+        .catch(function(err) { showToast(err.message, 'error'); })
+        .then(function() { renderCustomers(); });
+    }
 
     // =============================================================
     // FUNCTIONS
@@ -811,80 +877,41 @@
     }
 
     function renderStats() {
-      document.getElementById('totalCustomers').textContent = customers.length;
-      var active = customers.filter(function(c) { return c.status === 'active'; });
-      document.getElementById('activeCustomers').textContent = active.length;
-      var gst = customers.filter(function(c) { return c.gstRegistered; });
-      document.getElementById('gstCustomers').textContent = gst.length;
-      var total = customers.reduce(function(sum, c) { return sum + c.receivable; }, 0);
+      var m = META;
+      document.getElementById('totalCustomers').textContent = m ? m.totalCustomers : customers.length;
+      document.getElementById('activeCustomers').textContent = m ? m.activeCustomers : customers.filter(function(c) { return c.status === 'active'; }).length;
+      document.getElementById('gstCustomers').textContent = m ? m.gstRegisteredCustomers : customers.filter(function(c) { return c.gstRegistered; }).length;
+      var total = m ? m.totalReceivable : customers.reduce(function(sum, c) { return sum + c.receivable; }, 0);
       document.getElementById('totalReceivable').textContent = money(total);
-    }
-
-    // Single source of truth for the active filter selections (survives table re-renders)
-    var activeFilters = { status: 'all', gst: 'all', type: 'all' };
-
-    function getFilteredCustomers() {
-      var searchInput = document.getElementById('searchInput');
-      var q = searchInput ? searchInput.value.toLowerCase() : '';
-      var status = activeFilters.status;
-      var gst = activeFilters.gst;
-      var type = activeFilters.type;
-
-      return customers.filter(function(c) {
-        var matchSearch = c.name.toLowerCase().indexOf(q) !== -1 ||
-          c.companyName.toLowerCase().indexOf(q) !== -1 ||
-          c.id.toLowerCase().indexOf(q) !== -1 ||
-          c.phone.indexOf(q) !== -1 ||
-          c.email.toLowerCase().indexOf(q) !== -1;
-        var matchStatus = status === 'all' || c.status === status;
-        var matchGST = gst === 'all' || (gst === 'yes' ? c.gstRegistered : !c.gstRegistered);
-        var matchType = type === 'all' || c.customerType === type;
-        return matchSearch && matchStatus && matchGST && matchType;
-      });
     }
 
     // Filter toolbar shown inside the table panel header
     function filtersToolbarHtml() {
       return `
-        <div class="flex items-center gap-2 flex-wrap">
-          <select id="filterStatus" onchange="filterCustomers()" class="mini-select">
+        <div class="flex items-center gap-2  flex-wrap">
+          <select id="filterStatus" onchange="filterCustomers()" class="mini-select border-gray-400">
             <option value="all">All Status</option>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
-          <select id="filterGST" onchange="filterCustomers()" class="mini-select">
+          <select id="filterGST" onchange="filterCustomers()" class="mini-select border-gray-400">
             <option value="all">All GST</option>
-            <option value="yes">Registered</option>
-            <option value="no">Unregistered</option>
+            <option value="registered">Registered</option>
+            <option value="unregistered">Unregistered</option>
           </select>
-          <select id="filterType" onchange="filterCustomers()" class="mini-select">
+          <select id="filterType" onchange="filterCustomers()" class="mini-select border-gray-400">
             <option value="all">All Types</option>
-            <option value="business">Business</option>
-            <option value="individual">Individual</option>
-            <option value="government">Government</option>
+            ${typeOptionsHtml('')}
           </select>
-          <select id="pageSizeSelect" onchange="changePageSize(this.value)" class="mini-select">
-            <option value="10">10 / page</option>
-            <option value="25" selected>25 / page</option>
-            <option value="50">50 / page</option>
-            <option value="100">100 / page</option>
-          </select>
-          <button onclick="resetFilters()" class="btn-reset" title="Reset all filters &amp; search">
+          <button onclick="resetFilters()" class="btn-reset border border-gray-400" title="Reset all filters &amp; search">
             ${iconRefresh()} Reset
           </button>
         </div>`;
     }
 
     function renderCustomers() {
-      var filtered = getFilteredCustomers();
-      var totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
-      if (currentPage > totalPages) currentPage = totalPages;
-      if (currentPage < 1) currentPage = 1;
-
-      var paged = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize);
-
       var rowsHtml = '';
-      if (paged.length === 0) {
+      if (!customers.length) {
         rowsHtml = `
           <tr>
             <td colspan="8" class="text-center py-10 text-gray-400 text-sm">
@@ -894,14 +921,12 @@
             </td>
           </tr>`;
       } else {
-        rowsHtml = paged.map(function(c) {
+        rowsHtml = customers.map(function(c) {
           var statusBadgeHtml = c.status === 'active' ? badge('Active', 'green') : badge('Inactive', 'gray');
           var gstBadge = c.gstRegistered ? badge('GST Registered', 'blue') : badge('Unregistered', 'amber');
-          var typeBadge = c.customerType === 'business' ? badge('Business', 'purple') :
-                          c.customerType === 'government' ? badge('Government', 'blue') :
-                          badge('Individual', 'gray');
+          var typeBadge = typeBadgeHtml(c.customerType);
           return `
-            <tr class="border-b border-gray-100 table-row-hover">
+            <tr class="border-b border-gray-400 table-row-hover">
               <td class="px-4 py-3 align-middle">
                 <div class="flex items-center gap-3">
                   <div class="customer-avatar" style="background:${c.color}">${getInitials(c.name)}</div>
@@ -926,29 +951,37 @@
         }).join('');
       }
 
+      var totalItems   = PAGINATION ? PAGINATION.totalItems  : customers.length;
+      var pgPage       = PAGINATION ? PAGINATION.page         : currentPage;
+      var pgSize       = PAGINATION ? PAGINATION.size         : pageSize;
+      var pgTotalPages = PAGINATION ? PAGINATION.totalPages   : 1;
+      var pgHasNext    = PAGINATION ? PAGINATION.hasNext      : false;
+      var pgHasPrev    = PAGINATION ? PAGINATION.hasPrevious  : false;
+
       var bodyHtml = tableHtml(
         ['Client', 'Company', 'Type', 'GSTIN', 'GST Status', 'Receivable', 'Status', 'Actions'],
         rowsHtml,
         ['left', 'left', 'center', 'left', 'center', 'right', 'center', 'right']
-      ) + paginationHtml(filtered.length, currentPage, pageSize);
+      ) + paginationHtml(totalItems, pgPage, pgSize, pgTotalPages, pgHasNext, pgHasPrev);
 
       var panelHtml = panelWrap(
-        'All Clients <span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + filtered.length + '</span>',
+        'All Clients <span class="text-[11px] font-bold bg-primary-soft text-primary-dark px-2 py-0.5 rounded-full ml-1">' + totalItems + '</span>',
         bodyHtml,
         filtersToolbarHtml()
       );
 
       document.getElementById('customersPanel').innerHTML = panelHtml;
 
-      // restore filter selections after re-render
+      // restore filter/page-size selections after re-render
       var st = document.getElementById('filterStatus'); if (st) st.value = activeFilters.status;
       var gs = document.getElementById('filterGST'); if (gs) gs.value = activeFilters.gst;
       var ty = document.getElementById('filterType'); if (ty) ty.value = activeFilters.type;
-      var ps = document.getElementById('pageSizeSelect'); if (ps) ps.value = String(pageSize);
+      var ps = document.getElementById('pageSizeSelect'); if (ps) ps.value = String(pgSize);
 
       renderStats();
     }
 
+    // Any filter change resets to page 1 and reloads
     function filterCustomers() {
       var st = document.getElementById('filterStatus');
       var gs = document.getElementById('filterGST');
@@ -957,31 +990,39 @@
       if (gs) activeFilters.gst = gs.value;
       if (ty) activeFilters.type = ty.value;
       currentPage = 1;
-      renderCustomers();
+      loadCustomers();
     }
 
     function changePageSize(val) {
-      pageSize = parseInt(val, 10) || 25;
+      pageSize = parseInt(val, 10) || 10;
       currentPage = 1;
-      renderCustomers();
+      loadCustomers();
     }
 
     function goToPage(p) {
-      var filtered = getFilteredCustomers();
-      var totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+      var totalPages = PAGINATION ? PAGINATION.totalPages : 1;
       if (p < 1 || p > totalPages) return;
       currentPage = p;
-      renderCustomers();
+      loadCustomers();
     }
 
     function resetFilters() {
       activeFilters = { status: 'all', gst: 'all', type: 'all' };
-      pageSize = 25;
+      pageSize = 10;
       currentPage = 1;
       var searchInput = document.getElementById('searchInput');
       if (searchInput) searchInput.value = '';
-      renderCustomers();
+      loadCustomers();
       showToast('Filters reset', 'info');
+    }
+
+    // Debounced so typing doesn't reload on every keystroke
+    function debouncedSearch() {
+      if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(function() {
+        currentPage = 1;
+        loadCustomers();
+      }, 350);
     }
 
     // =============================================================
@@ -991,50 +1032,114 @@
     function openAddCustomer() { openCustomerModal(null); }
 
     function editCustomer(id) {
-      var c = customers.find(function(x) { return x.id === id; });
-      if (c) openCustomerModal(c);
+      api('GET', '/get-client/' + encodeURIComponent(id))
+        .then(function(c) { openCustomerModal(normalizeCustomer(c)); })
+        .catch(function(err) { showToast(err.message, 'error'); });
     }
 
     function viewCustomer(id) {
-      var c = customers.find(function(x) { return x.id === id; });
-      if (!c) return;
+      api('GET', '/get-client/' + encodeURIComponent(id))
+        .then(function(c) { showCustomerDetails(normalizeCustomer(c)); })
+        .catch(function(err) { showToast(err.message, 'error'); });
+    }
 
-      var modalContent = `
-        ${modalHeader('Client Details — ' + c.name, c.id)}
-        <div class="px-6 py-5 modal-scroll">
-          <div class="flex items-center gap-4 mb-5">
-            <div class="customer-avatar" style="background:${c.color}; width:48px; height:48px; font-size:18px;">${getInitials(c.name)}</div>
-            <div>
-              <div class="text-lg font-semibold">${c.name}</div>
-              <div class="text-sm text-gray-500">${c.companyName || 'Individual Client'}</div>
-            </div>
-          </div>
+    function showCustomerDetails(c) {
 
-          <div class="grid grid-cols-2 form-grid-2 gap-x-6 gap-y-4 text-sm border-t border-gray-100 pt-5">
-            <div><span class="text-gray-500">Client ID</span><br><span class="font-mono font-semibold">${c.id}</span></div>
-            <div><span class="text-gray-500">Status</span><br>${c.status === 'active' ? badge('Active', 'green') : badge('Inactive', 'gray')}</div>
-            <div><span class="text-gray-500">Client Type</span><br>${c.customerType === 'business' ? badge('Business', 'purple') : c.customerType === 'government' ? badge('Government', 'blue') : badge('Individual', 'gray')}</div>
-            <div><span class="text-gray-500">GSTIN</span><br><span class="font-mono">${c.gstin || '—'}</span></div>
-            <div><span class="text-gray-500">PAN</span><br><span class="font-mono">${c.pan || '—'}</span></div>
-            <div><span class="text-gray-500">GST Status</span><br>${c.gstRegistered ? badge('Registered', 'blue') : badge('Unregistered', 'amber')}</div>
-            <div><span class="text-gray-500">Email</span><br><span class="text-gray-700">${c.email}</span></div>
-            <div><span class="text-gray-500">Phone</span><br><span class="text-gray-700">${c.phone}</span></div>
-            <div class="col-span-2"><span class="text-gray-500">Billing Address</span><br><span class="text-gray-700">${c.billingAddress}, ${c.city}, ${c.state} - ${c.pincode}</span></div>
-            ${c.shippingAddress && c.shippingAddress !== c.billingAddress ? '<div class="col-span-2"><span class="text-gray-500">Shipping Address</span><br><span class="text-gray-700">' + c.shippingAddress + ', ' + c.city + ', ' + c.state + ' - ' + c.pincode + '</span></div>' : ''}
-            <div><span class="text-gray-500">Payment Terms</span><br><span class="font-semibold">${c.paymentTerms}</span></div>
-            <div><span class="text-gray-500">Credit Limit</span><br><span class="font-semibold">${c.creditLimit > 0 ? money(c.creditLimit) : '—'}</span></div>
-            <div><span class="text-gray-500">Total Receivable</span><br><span class="font-semibold text-amber-600">${money(c.receivable)}</span></div>
-          </div>
+  // small helper so every row looks identical: bordered card + label + value
+  function detailCard(label, valueHtml) {
+    return `
+      <div class="border border-gray-200 rounded-lg bg-white px-3.5 py-2.5">
+        <div class="text-[10.5px] font-semibold uppercase tracking-wider text-gray-500 mb-1">${label}</div>
+        <div class="text-[13px] text-gray-800">${valueHtml}</div>
+      </div>`;
+  }
 
-          <div class="mt-4 text-[11px] text-gray-400 flex items-center gap-1.5">
-            ${iconInfo()} Created on ${c.createdAt}
+  function sectionTitle(icon, text) {
+    return `
+      <div class="flex items-center gap-2 mt-5 mb-2.5 first:mt-0">
+        <span class="text-primary">${icon}</span>
+        <span class="text-[11px] font-bold uppercase tracking-wider text-gray-600">${text}</span>
+        <div class="flex-1 h-px bg-gray-200"></div>
+      </div>`;
+  }
+
+  // Builds the full address only when the street address actually exists.
+  // If the street address is empty, show a dash instead of ", City, State - Pincode".
+  function buildFullAddress(street, cust) {
+    street = (street || '').trim();
+    if (!street) return '—';
+    return street +
+      (cust.city ? ', ' + cust.city : '') +
+      (cust.state ? ', ' + cust.state : '') +
+      (cust.country ? ', ' + cust.country : '') +
+      (cust.pincode ? ' - ' + cust.pincode : '');
+  }
+
+  var modalContent = `
+    ${modalHeader('Client Details — ' + c.name, c.id)}
+    <div class="px-6 py-5 modal-scroll">
+
+      <!-- Header card -->
+      <div class="flex items-center gap-4 mb-2 p-4 border border-gray-200 rounded-xl bg-gray-50">
+        <div class="customer-avatar" style="background:${c.color}; width:52px; height:52px; font-size:20px;">${getInitials(c.name)}</div>
+        <div class="min-w-0">
+          <div class="text-lg font-bold text-gray-900 truncate">${c.name}</div>
+          <div class="text-[12.5px] text-gray-500 truncate">${c.companyName || 'Individual Client'}</div>
+          <div class="mt-1.5 flex gap-1.5 flex-wrap">
+            ${c.status === 'active' ? badge('Active', 'green') : badge('Inactive', 'gray')}
+            ${c.gstRegistered ? badge('GST Registered', 'blue') : badge('Unregistered', 'amber')}
           </div>
         </div>
-        ${modalFooter('Close', 'onclick="closeModal()"')}
-      `;
+      </div>
 
-      openModal(modalContent, { width: 'max-w-2xl' });
-    }
+      <!-- Identity -->
+      ${sectionTitle(iconUser(), 'Identity')}
+      <div class="grid grid-cols-2 form-grid-2 gap-3">
+        ${detailCard('Client ID', '<span class="font-mono font-semibold">' + c.id + '</span>')}
+        ${detailCard('Client Type', typeBadgeHtml(c.customerType))}
+        ${detailCard('Company Name', c.companyName || '—')}
+        ${detailCard('Created On', '<span class="text-gray-600">' + (c.createdAt || '—') + '</span>')}
+      </div>
+
+      <!-- Contact -->
+      ${sectionTitle(iconMail(), 'Contact')}
+      <div class="grid grid-cols-2 form-grid-2 gap-3">
+        ${detailCard('Email', c.email ? '<a href="mailto:' + c.email + '" class="text-secondary hover:underline">' + c.email + '</a>' : '—')}
+        ${detailCard('Phone', c.phone ? '<a href="tel:' + c.phone + '" class="text-secondary hover:underline">' + c.phone + '</a>' : '—')}
+      </div>
+
+      <!-- Address -->
+      ${sectionTitle(iconLocation(), 'Address')}
+      <div class="grid grid-cols-1 gap-3">
+        ${detailCard('Billing Address', buildFullAddress(c.billingAddress, c))}
+        ${detailCard('Shipping Address', buildFullAddress(c.shippingAddress || c.billingAddress, c))}
+        ${detailCard('Country', c.country || '—')}
+      </div>
+
+      <!-- Tax -->
+      ${sectionTitle(iconGST(), 'Tax & GST')}
+      <div class="grid grid-cols-2 form-grid-2 gap-3">
+        ${detailCard('GSTIN', '<span class="font-mono">' + (c.gstin || '—') + '</span>')}
+        ${detailCard('PAN', '<span class="font-mono">' + (c.pan || '—') + '</span>')}
+        ${detailCard('GST Status',
+          c.gstRegistered ? badge('Registered', 'blue') : badge('Unregistered', 'amber')
+        )}
+      </div>
+
+      <!-- Financials -->
+      ${sectionTitle(iconCredit(), 'Payment & Credit')}
+      <div class="grid grid-cols-3 form-grid-3 gap-3">
+        ${detailCard('Payment Terms', '<span class="font-semibold">' + (c.paymentTerms || '—') + '</span>')}
+        ${detailCard('Credit Limit', '<span class="font-semibold">' + (c.creditLimit > 0 ? money(c.creditLimit) : '—') + '</span>')}
+        ${detailCard('Total Receivable', '<span class="font-semibold text-amber-600">' + money(c.receivable) + '</span>')}
+      </div>
+
+    </div>
+    ${modalFooter('Close', 'onclick="closeModal()"')}
+  `;
+
+  openModal(modalContent, { width: 'max-w-2xl' });
+}
 
     function openCustomerModal(existing) {
       var e = existing || {
@@ -1049,7 +1154,7 @@
         shippingAddress: '',
         city: '',
         state: 'Maharashtra',
-        stateCode: '27',
+        country: 'India',
         pincode: '',
         paymentTerms: 'Net 15 days',
         creditLimit: '',
@@ -1059,7 +1164,11 @@
       };
       var isEdit = !!existing;
 
-      var stateOptions = ['Maharashtra', 'Delhi', 'Karnataka', 'Tamil Nadu', 'Gujarat', 'Uttar Pradesh', 'Rajasthan', 'Kerala', 'Telangana', 'West Bengal', 'Andhra Pradesh', 'Bihar', 'Chhattisgarh', 'Goa', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Madhya Pradesh', 'Odisha', 'Punjab', 'Uttarakhand'];
+      // Client type: custom types (added via "Other" -> Add) come from the list.
+      // If this client has a type that is somehow not in the list yet, keep it so it is not lost.
+      if (e.customerType && CLIENT_TYPES.map(function(t) { return t.toLowerCase(); }).indexOf(e.customerType.toLowerCase()) === -1) {
+        CLIENT_TYPES = CLIENT_TYPES.concat([e.customerType]);
+      }
 
       var modalContent = `
         ${modalHeader(isEdit ? 'Edit Client' : 'Add New Client', isEdit ? e.id : 'Create a new client master record')}
@@ -1081,23 +1190,31 @@
 
           <div id="tab-basic" class="modal-tab-panel active">
             <div class="grid grid-cols-2 form-grid-2 gap-x-4 gap-y-4">
-              ${fld('Client Name <span class="required">*</span>', '<input id="f_name" value="' + e.name + '" placeholder="e.g. XYZ Retail Store" class="' + inputBase() + '">')}
+              ${fld('Client Name', '<input id="f_name" value="' + e.name + '" placeholder="e.g. XYZ Retail Store" class="' + inputBase() + '">')}
               ${fld('Company Name', '<input id="f_company" value="' + (e.companyName || '') + '" placeholder="Company legal name" class="' + inputBase() + '">')}
-              ${fld('Client Type', '<select id="f_type" class="' + inputBase() + '"><option ' + (e.customerType === 'business' ? 'selected' : '') + ' value="business">Business</option><option ' + (e.customerType === 'individual' ? 'selected' : '') + ' value="individual">Individual</option><option ' + (e.customerType === 'government' ? 'selected' : '') + ' value="government">Government</option></select>', null, 'col-span-2')}
-              ${fld('Email <span class="required">*</span>', '<input id="f_email" type="email" value="' + e.email + '" placeholder="client@domain.com" class="' + inputBase() + '">')}
-              ${fld('Phone <span class="required">*</span>', '<input id="f_phone" value="' + e.phone + '" placeholder="+91-XXXXXXXXXX" class="' + inputBase() + '">')}
+              ${fld('Client Type', '<select id="f_type" class="' + inputBase() + '" onchange="toggleTypeOther()">' + typeOptionsHtml(e.customerType) + '<option value="' + OTHER_TYPE_VALUE + '">Other</option></select>', null, 'col-span-2')}
+              <div id="f_typeOtherWrap" class="col-span-2 hidden">
+                ${fld('Specify Client Type', `<div style="display:flex;align-items:center;gap:8px;">
+                    <input id="f_typeOther" maxlength="30" placeholder="e.g. Trust, NGO, Partnership" class="form-input" style="flex:1;min-width:0;"
+                      onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomClientType();}">
+                    <button type="button" id="f_typeAddBtn" onclick="addCustomClientType()"
+                      class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-primary hover:bg-primary-dark transition shadow-sm whitespace-nowrap">Add</button>
+                  </div>`, )}
+              </div>
+              ${fld('Email', '<input id="f_email" type="email" value="' + e.email + '" placeholder="client@domain.com" class="' + inputBase() + '">')}
+              ${fld('Phone', '<input id="f_phone" value="' + e.phone + '" placeholder="+91-XXXXXXXXXX" class="' + inputBase() + '">')}
             </div>
           </div>
 
           <div id="tab-address" class="modal-tab-panel">
             <div class="grid grid-cols-1 gap-y-4 mb-4">
-              ${fld('Billing Address <span class="required">*</span>', '<textarea id="f_billingAddress" rows="2" class="' + inputBase() + '" placeholder="Street address">' + (e.billingAddress || '') + '</textarea>')}
+              ${fld('Billing Address', '<textarea id="f_billingAddress" rows="2" class="' + inputBase() + '" placeholder="Street address">' + (e.billingAddress || '') + '</textarea>')}
               ${fld('Shipping Address', '<textarea id="f_shippingAddress" rows="2" class="' + inputBase() + '" placeholder="Shipping address (if different)">' + (e.shippingAddress || '') + '</textarea>')}
             </div>
             <div class="grid grid-cols-3 form-grid-3 gap-x-4 gap-y-4">
               ${fld('City', '<input id="f_city" value="' + (e.city || '') + '" placeholder="City" class="' + inputBase() + '">')}
-              ${fld('State', '<select id="f_state" class="' + inputBase() + '" onchange="updateCustomerStateCode()">' + stateOptions.map(function(s) { return '<option ' + (s === e.state ? 'selected' : '') + '>' + s + '</option>'; }).join('') + '</select>')}
-              ${fld('State Code', '<input id="f_stateCode" value="' + (e.stateCode || '27') + '" class="' + inputBase() + '" disabled>')}
+              ${fld('State', '<div id="f_stateWrap">' + stateFieldHtml(e.country, e.state, true) + '</div>')}
+              ${fld('Country', countrySelectHtml(e.country))}
               ${fld('Pincode', '<input id="f_pincode" value="' + (e.pincode || '') + '" placeholder="6-digit PIN" class="' + inputBase() + '">')}
             </div>
           </div>
@@ -1112,7 +1229,7 @@
 
           <div id="tab-payment" class="modal-tab-panel">
             <div class="grid grid-cols-2 form-grid-2 gap-x-4 gap-y-4 mb-4">
-              ${fld('Payment Terms <span class="required">*</span>', '<select id="f_paymentTerms" class="' + inputBase() + '"><option ' + (e.paymentTerms === 'Net 7 days' ? 'selected' : '') + '>Net 7 days</option><option ' + (e.paymentTerms === 'Net 15 days' ? 'selected' : '') + '>Net 15 days</option><option ' + (e.paymentTerms === 'Net 30 days' ? 'selected' : '') + '>Net 30 days</option><option ' + (e.paymentTerms === 'Net 45 days' ? 'selected' : '') + '>Net 45 days</option><option ' + (e.paymentTerms === 'Net 60 days' ? 'selected' : '') + '>Net 60 days</option><option ' + (e.paymentTerms === 'Advance Payment' ? 'selected' : '') + '>Advance Payment</option><option ' + (e.paymentTerms === 'Cash on Delivery' ? 'selected' : '') + '>Cash on Delivery</option></select>')}
+              ${fld('Payment Terms', '<select id="f_paymentTerms" class="' + inputBase() + '"><option ' + (e.paymentTerms === 'Net 7 days' ? 'selected' : '') + '>Net 7 days</option><option ' + (e.paymentTerms === 'Net 15 days' ? 'selected' : '') + '>Net 15 days</option><option ' + (e.paymentTerms === 'Net 30 days' ? 'selected' : '') + '>Net 30 days</option><option ' + (e.paymentTerms === 'Net 45 days' ? 'selected' : '') + '>Net 45 days</option><option ' + (e.paymentTerms === 'Net 60 days' ? 'selected' : '') + '>Net 60 days</option><option ' + (e.paymentTerms === 'Advance Payment' ? 'selected' : '') + '>Advance Payment</option><option ' + (e.paymentTerms === 'Cash on Delivery' ? 'selected' : '') + '>Cash on Delivery</option></select>')}
               ${fld('Credit Limit (₹)', '<input id="f_creditLimit" type="number" value="' + (e.creditLimit || '') + '" placeholder="e.g. 100000" class="' + inputBase() + '">', 'Set 0 for no credit limit')}
             </div>
             ${fld('Status', '<div class="form-radio-row"><label><input type="radio" name="customerStatus" value="active" ' + (e.status === 'active' ? 'checked' : '') + '> <span class="font-medium">Active</span></label><label><input type="radio" name="customerStatus" value="inactive" ' + (e.status === 'inactive' ? 'checked' : '') + '> <span class="font-medium">Inactive</span></label></div>')}
@@ -1138,33 +1255,57 @@
       }, 50);
     }
 
-    // State code updater
-    function updateCustomerStateCode() {
-      var state = document.getElementById('f_state').value;
-      var stateCodeMap = {
-        'Maharashtra': '27',
-        'Delhi': '07',
-        'Karnataka': '29',
-        'Tamil Nadu': '33',
-        'Gujarat': '24',
-        'Uttar Pradesh': '09',
-        'Rajasthan': '08',
-        'Kerala': '32',
-        'Telangana': '36',
-        'West Bengal': '19',
-        'Andhra Pradesh': '28',
-        'Bihar': '10',
-        'Chhattisgarh': '22',
-        'Goa': '30',
-        'Haryana': '06',
-        'Himachal Pradesh': '02',
-        'Jharkhand': '20',
-        'Madhya Pradesh': '23',
-        'Odisha': '21',
-        'Punjab': '03',
-        'Uttarakhand': '05'
-      };
-      document.getElementById('f_stateCode').value = stateCodeMap[state] || '';
+    // Show / hide the "Specify Client Type" input when "Other" is chosen
+    function toggleTypeOther() {
+      var sel = document.getElementById('f_type');
+      var wrap = document.getElementById('f_typeOtherWrap');
+      if (!sel || !wrap) return;
+      if (sel.value === OTHER_TYPE_VALUE) {
+        wrap.classList.remove('hidden');
+        var inp = document.getElementById('f_typeOther');
+        if (inp) inp.focus();
+      } else {
+        wrap.classList.add('hidden');
+      }
+    }
+
+    // "Other" -> Add button: puts the typed type in the Client Type dropdown and selects it.
+    // It is kept when the client is saved; after that it also appears in the "All Types" filter.
+    function addCustomClientType() {
+      var inp = document.getElementById('f_typeOther');
+      var sel = document.getElementById('f_type');
+      if (!inp || !sel) return;
+      var name = inp.value.trim().replace(/\s+/g, ' ');
+      if (!name) { showToast('Please enter a client type', 'warning'); inp.focus(); return; }
+      if (name.toLowerCase() === 'other') { showToast('"Other" is reserved, please enter a specific type', 'warning'); return; }
+
+      // already in the dropdown (any casing)? just select it
+      var found = null;
+      for (var k = 0; k < sel.options.length; k++) {
+        if (sel.options[k].value !== OTHER_TYPE_VALUE && sel.options[k].value.toLowerCase() === name.toLowerCase()) { found = sel.options[k]; break; }
+      }
+      if (!found) {
+        found = document.createElement('option');
+        found.value = name;
+        found.textContent = name;
+        sel.insertBefore(found, sel.querySelector('option[value="' + OTHER_TYPE_VALUE + '"]'));
+      }
+      sel.value = found.value;
+
+      inp.value = '';
+      document.getElementById('f_typeOtherWrap').classList.add('hidden');
+      showToast('"' + found.value + '" added. It will be saved when you save the client', 'success');
+    }
+
+    // Country changed -> India shows the state dropdown, other countries get a free-text state
+    function onCountryChange() {
+      var c = document.getElementById('f_country');
+      var wrap = document.getElementById('f_stateWrap');
+      if (!c || !wrap) return;
+      var stEl = document.getElementById('f_state');
+      var cur = stEl ? stEl.value : '';
+      if (c.value === 'India' && INDIA_STATES.indexOf(cur) === -1) cur = 'Maharashtra';
+      wrap.innerHTML = stateFieldHtml(c.value, cur, false);
     }
 
     // =============================================================
@@ -1175,13 +1316,21 @@
       var name = document.getElementById('f_name') ? document.getElementById('f_name').value.trim() : '';
       var companyName = document.getElementById('f_company') ? document.getElementById('f_company').value.trim() : '';
       var customerType = document.getElementById('f_type') ? document.getElementById('f_type').value : 'business';
+      if (customerType === OTHER_TYPE_VALUE) {
+        var otherText = document.getElementById('f_typeOther') ? document.getElementById('f_typeOther').value.trim() : '';
+        if (!otherText) {
+          showToast('Please specify the client type', 'warning');
+          return;
+        }
+        customerType = otherText; // typed but "Add" not clicked -> still saved as a new type
+      }
       var email = document.getElementById('f_email') ? document.getElementById('f_email').value.trim() : '';
       var phone = document.getElementById('f_phone') ? document.getElementById('f_phone').value.trim() : '';
       var billingAddress = document.getElementById('f_billingAddress') ? document.getElementById('f_billingAddress').value.trim() : '';
       var shippingAddress = document.getElementById('f_shippingAddress') ? document.getElementById('f_shippingAddress').value.trim() : '';
       var city = document.getElementById('f_city') ? document.getElementById('f_city').value.trim() : '';
       var state = document.getElementById('f_state') ? document.getElementById('f_state').value : 'Maharashtra';
-      var stateCode = document.getElementById('f_stateCode') ? document.getElementById('f_stateCode').value : '27';
+      var country = document.getElementById('f_country') ? document.getElementById('f_country').value.trim() : '';
       var pincode = document.getElementById('f_pincode') ? document.getElementById('f_pincode').value.trim() : '';
       var gstin = document.getElementById('f_gstin') ? document.getElementById('f_gstin').value.trim().toUpperCase() : '';
       var pan = document.getElementById('f_pan') ? document.getElementById('f_pan').value.trim().toUpperCase() : '';
@@ -1192,88 +1341,81 @@
       var statusRadio = document.querySelector('input[name="customerStatus"]:checked');
       var status = statusRadio ? statusRadio.value : 'active';
 
-      if (!name || !email || !phone) {
-        showToast('Please fill all required fields (Name, Email, Phone)', 'error');
-        return;
-      }
+      var body = {
+        name: name,
+        companyName: companyName,
+        customerType: customerType,
+        email: email,
+        phone: phone,
+        billingAddress: billingAddress,
+        shippingAddress: shippingAddress || billingAddress,
+        city: city,
+        state: state,
+        country: country,
+        pincode: pincode,
+        gstin: gstin,
+        pan: pan,
+        paymentTerms: paymentTerms,
+        creditLimit: creditLimit,
+        gstRegistered: gstRegistered,
+        status: status
+      };
 
-      var color = customerColors[Math.floor(Math.random() * customerColors.length)];
-
+      var request;
       if (existingId) {
-        var c = customers.find(function(x) { return x.id === existingId; });
-        if (c) {
-          c.name = name;
-          c.companyName = companyName;
-          c.customerType = customerType;
-          c.email = email;
-          c.phone = phone;
-          c.billingAddress = billingAddress;
-          c.shippingAddress = shippingAddress || billingAddress;
-          c.city = city;
-          c.state = state;
-          c.stateCode = stateCode;
-          c.pincode = pincode;
-          c.gstin = gstin;
-          c.pan = pan;
-          c.paymentTerms = paymentTerms;
-          c.creditLimit = creditLimit;
-          c.gstRegistered = gstRegistered;
-          c.status = status;
-          showToast('Client updated successfully', 'success');
-        }
+        request = api('PUT', '/update-client/' + encodeURIComponent(existingId), body);
       } else {
-        var newCustomer = {
-          id: 'CUS-' + String(nextCustomerNo++).padStart(3, '0'),
-          name: name,
-          companyName: companyName,
-          customerType: customerType,
-          email: email,
-          phone: phone,
-          billingAddress: billingAddress,
-          shippingAddress: shippingAddress || billingAddress,
-          city: city,
-          state: state,
-          stateCode: stateCode,
-          pincode: pincode,
-          gstin: gstin,
-          pan: pan,
-          paymentTerms: paymentTerms,
-          creditLimit: creditLimit,
-          gstRegistered: gstRegistered,
-          status: status,
-          receivable: 0,
-          createdAt: new Date().toISOString().split('T')[0],
-          color: color
-        };
-        customers.unshift(newCustomer);
-        showToast('Client added successfully', 'success');
+        body.receivable = 0;
+        body.color = customerColors[Math.floor(Math.random() * customerColors.length)];
+        request = api('POST', '/create-client', body);
       }
 
-      closeModal();
-      renderCustomers();
+      request
+        .then(function() {
+          closeModal();
+          showToast(existingId ? 'Client updated successfully' : 'Client added successfully', 'success');
+          return loadClientTypes().then(loadCustomers);
+        })
+        .catch(function(err) { showToast(err.message, 'error'); });
     }
 
     function delCustomer(id) {
-      var c = customers.find(function(x) { return x.id === id; });
-      if (!c) return;
+  var c = customers.find(function(x) { return x.id === id; });
+  if (!c) return;
 
-      var modalContent = `
-        ${modalHeader('Delete Client', c.name)}
-        <div class="px-6 py-5 text-sm text-gray-600">
-          <p>Are you sure you want to permanently delete <b class="text-gray-800">${c.name}</b>?</p>
-          <p class="text-gray-400 text-[12px] mt-1">This action cannot be undone. All associated transactions will be affected.</p>
-          ${c.receivable > 0 ? '<p class="text-amber-600 text-[12px] mt-2">⚠️ This client has outstanding receivable of ' + money(c.receivable) + '</p>' : ''}
+  var modalContent = `
+    ${modalHeader('Delete Client', c.name)}
+    <div class="px-6 py-5 text-sm text-gray-600">
+      <div class="flex items-start gap-3 p-3.5 border border-red-200 bg-red-50 rounded-lg mb-4">
+        <div class="w-9 h-9 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+          ${iconTrash()}
         </div>
-        ${modalFooter('Delete', 'onclick="confirmDeleteCustomer(\'' + id + '\')"', '')}
-      `;
-      openModal(modalContent, { width: 'max-w-md' });
-    }
+        <div>
+          <p class="font-semibold text-red-700">This action cannot be undone</p>
+          <p class="text-[12px] text-red-600 mt-0.5">The client record and its associations will be permanently removed.</p>
+        </div>
+      </div>
+
+      <p class="mb-2">Are you sure you want to permanently delete
+        <b class="text-gray-900">${c.name}</b>${c.companyName ? ' (' + c.companyName + ')' : ''}?</p>
+
+      ${c.receivable > 0
+        ? '<div class="border border-amber-200 bg-amber-50 rounded-lg px-3.5 py-2.5 mt-3 text-[12.5px] text-amber-700">⚠ This client has an outstanding receivable of <b>' + money(c.receivable) + '</b>.</div>'
+        : ''}
+    </div>
+    ${modalFooter('Delete', 'onclick="confirmDeleteCustomer(\'' + id + '\')"', '', 'danger')}
+  `;
+  openModal(modalContent, { width: 'max-w-md' });
+}
 
     function confirmDeleteCustomer(id) {
-      customers = customers.filter(function(x) { return x.id !== id; });
-      closeModal();
-      renderCustomers();
-      showToast('Client deleted successfully', 'warning');
+      api('DELETE', '/delete-client/' + encodeURIComponent(id))
+        .then(function() {
+          closeModal();
+          showToast('Client deleted successfully', 'warning');
+          return loadCustomers();
+        })
+        .catch(function(err) { showToast(err.message, 'error'); });
     }
 
     // =============================================================
@@ -1287,7 +1429,7 @@
           <div class="hidden sm:flex flex-1 max-w-[420px] relative ml-4">
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">${iconSearch()}</span>
             <input type="text" id="searchInput" placeholder="Search clients by name, company, phone…"
-              onkeyup="filterCustomers()"
+              onkeyup="debouncedSearch()"
               class="w-full border border-gray-200 bg-gray-50 focus:bg-white rounded-lg pl-9 pr-3 py-2 text-[13px] outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition placeholder:text-gray-400">
           </div>
         `;
@@ -1306,12 +1448,9 @@
     // INIT
     // =============================================================
 
-    renderCustomers();
+    loadClientTypes().then(loadCustomers);
 
-    console.log('👥 Clients Module Loaded Successfully');
-    console.log('📊 Total Clients:', customers.length);
-    console.log('✅ Active Clients:', customers.filter(function(c) { return c.status === 'active'; }).length);
-    console.log('💰 Total Receivable:', customers.reduce(function(sum, c) { return sum + c.receivable; }, 0));
+    console.log('Clients Module Loaded - DUMMY DATA mode (no backend)');
 
   </script>
 
